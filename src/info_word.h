@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 typedef struct infos{
-	enum type{'e','c','n'};
+	enum type{c,e,n}type; 
 	int posx;
 	int posy;
 	int lar;
@@ -14,23 +14,23 @@ typedef struct infos{
 typedef struct W_list{
 
 	infos info;
-	struct W_list *nxt=NULL;
+	struct W_list *nxt;
 
 }W_list;
 
 // renvoi une liste null
-W_list WL_init(void);
+W_list* WL_init(void);
 
 // ajoute en tete de liste
-W_list  WL_add(*W_list liste ,infos toadd);
+W_list*  WL_add(W_list *liste ,infos toadd);
 
 // retourn l info a la ieme position de la liste
-infos WL(W_list liste ,int i);
+infos WL(W_list *liste ,int i);
 
 // libere la liste(ou pas , va savoir)
-void WL_free(W_list liste);
+void WL_free(W_list *liste);
 
 // retourne le prochain element
-W_list WL_nxt(W_list liste);
+W_list* WL_nxt(W_list *liste);
 
 #endif

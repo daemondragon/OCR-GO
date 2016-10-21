@@ -8,7 +8,7 @@ W_list* WL_init(void){
 }
 W_list*  WL_add(W_list *liste ,infos toadd){
 	W_list *new_word;
-	new_word = (*W_list)malloc (sizeof(W_list));
+	new_word = malloc (sizeof(W_list));
 	new_word -> info= toadd;
 	new_word -> nxt = liste; 
 }
