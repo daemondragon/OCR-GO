@@ -1,7 +1,7 @@
 CC          = gcc
 EXEC        = prog
 CFLAGS      = -Wall -Wextra -lm -std=c99 -DDEBUG
-LIBFLAGS    = `pkg-config --cflags --libs gtk+-2.0` 
+LIBFLAGS    = `pkg-config gtk+-2.0 --cflags --libs`
 
 SOURCES     = $(wildcard src/*.c)
 OBJS        = $(SOURCES:.c=.o)
@@ -11,7 +11,7 @@ all : $(OBJS)
 	$(CC) -o $(EXEC) $(OBJS) $(CFLAGS) $(LIBFLAGS)
 
 src/%.o : src/%.c
-	$(CC) $< -c -o $@ $(CFLAGS)
+	$(CC) $< -c -o $@ $(CFLAGS) $(LIBFLAGS)
 
 clean :
 	rm -f $(OBJS)
