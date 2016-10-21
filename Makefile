@@ -15,7 +15,5 @@ src/%.o : src/%.c
 
 clean :
 	rm -f $(OBJS)
-
-mrproper : clean
 	rm -f $(EXEC)
 
