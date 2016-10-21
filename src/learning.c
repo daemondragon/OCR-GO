@@ -49,7 +49,7 @@ float neural_network_results(neural_network_t *net,
 
     float result = (float)nb_valid_answers / (float)nb_exemples;
     #ifdef DEBUG
-    printf("Neural network pass %.3f\%% of the tests...\n", result);
+    printf("Neural network pass %.3f\%% of the tests...\n", result * 100);
     #endif
     return (result);
 }
