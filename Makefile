@@ -1,7 +1,7 @@
 CC          = gcc
 EXEC        = prog
 CFLAGS      = -Wall -Wextra -lm -std=c99 -DDEBUG
-LIBFLAGS    = 'gtk3-config --cflags --libs'
+LIBFLAGS    = #ajout ici
 
 SOURCES     = $(wildcard src/*.c)
 OBJS        = $(SOURCES:.c=.o)
