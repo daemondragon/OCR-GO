@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "info_word.h"
 
-int main (int argc, char *argv[]){
+int decoupage (void){
 
 return 0;
 }
