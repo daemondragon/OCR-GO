@@ -28,7 +28,7 @@ double * image_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end)
 	*matrix_end = matrix + width*height;
 	return matrix;
 }
-double * image_to_matrix_colors(GdkPixbuf *pixbuf)
+/*double * image_to_matrix_colors(GdkPixbuf *pixbuf) 	//not used and not tested
 {
 	guchar *pixel=NULL;
 	gint channel=0;
@@ -50,7 +50,7 @@ double * image_to_matrix_colors(GdkPixbuf *pixbuf)
 		}
 	}
 	return matrix;
-}
+}*/
 
 /*int main(int argc, char *argv[])	//test the image_to_matrix_grey
 {
