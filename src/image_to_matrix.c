@@ -13,7 +13,7 @@ double * image_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end)
 	width=gdk_pixbuf_get_width(pixbuf);
 	gint height = gdk_pixbuf_get_height(pixbuf);
 	guchar red, green, blue;
-	double *matrix = malloc(sizeof(double) * width *height);
+	double *matrix = malloc(sizeof(double) * width * height);
 	for (gint y = 0; y<height; y++)
 	{
 		for (gint x = 0; x<width; x++)
@@ -21,7 +21,8 @@ double * image_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end)
 			red   = pixel[(x*channel)+(y*width*channel)];
 			green = pixel[(x*channel)+(y*width*channel)+1];
 			blue  = pixel[(x*channel)+(y*width*channel)+2];
-			*(matrix + x + y*width) = (red+green+blue)/765; //considering that the max value of each colors is 255
+			*(matrix + x + y*width) = (red+green+blue); 
+			*(matrix + x + y*width) = *(matrix + x + y*width)/765;//considering that the max value of each colors is 255
 		}
 	}
 	*matrix_end = matrix + width*height;
@@ -51,3 +52,16 @@ double * image_to_matrix_colors(GdkPixbuf *pixbuf)
 	return matrix;
 }
 
+/*int main(int argc, char *argv[])	//test the image_to_matrix_grey
+{
+	double * matrix_end;
+	GError *error = NULL;
+	GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file("test.png",&error);	
+	double  *matrix = image_to_matrix_grey(pixbuf, &matrix_end);
+	printf("I am here\n");
+	for (double *index = matrix; index<matrix_end; index++)
+ 	{
+		printf("%f\n",*index);
+	}
+	return 0;
+}*/
