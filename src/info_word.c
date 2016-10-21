@@ -1,34 +1,15 @@
 #include <err.h>
 #include <stdlib.h>
-#include <stdio>
 
-typedef struct infos{
-	enum type{'e','c','n'};
-	int posx;
-	int posy;
-	int lar;
-	int lon;
-}
 
-typedef struct W_list{
-
-	infos info;
-	struct W_list *nxt=NULL;
-
-}
-
-*W_list WL_nul(void){
+W_list WL_init(void){
 	return NULL;
 }
-
-void  WL_add(*W_list liste ,infos toadd){
+W_list  WL_add(*W_list liste ,infos toadd){
 	*W_list new_word;
 	new_word = (*W_list)malloc (sizeof(W_list));
 	new_word -> info= toadd;
-	while (liste->nxt!=NULL){
-		liste=liste->nxt;
-	}
-	liste -> nxt = new_word; 
+	new_word -> nxt = liste; 
 }
 
 infos WL(W_list liste ,int i){
@@ -42,12 +23,15 @@ void WL_free(W_list liste){
 	W_list *temp= liste;
 	while(temp->nxt!=NULL){
 		temp= temp->nxt;
-		liste.free();
+		free(liste);
 		liste=temp;
 	}
+	free(temp);
 }
 
-
+W_list WL_nxt(W_list liste){
+	return liste->nxt;
+}
 
 
 
