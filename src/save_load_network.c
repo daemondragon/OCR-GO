@@ -5,6 +5,10 @@
 
 neural_network_t* load_neural_network(char filename[])
 {
+    #ifdef DEBUG
+    printf("Load \"%s\" neural network...\n", filename);
+    #endif
+
     FILE *file = fopen(filename, "r");
     if (!file)
         return (NULL);
@@ -40,6 +44,10 @@ neural_network_t* load_neural_network(char filename[])
 
 char save_neural_network(neural_network_t* net, char filename[])
 {
+    #ifdef DEBUG
+    printf("Save neural network as \"%s\"...\n", filename);
+    #endif
+
     if (!net)
         return (0);
 

@@ -1,6 +1,6 @@
 CC          = gcc
 EXEC        = prog
-CFLAGS      = -Wall -Wextra -lm -std=c99
+CFLAGS      = -Wall -Wextra -lm -std=c99 -DDEBUG
 LIBFLAGS    = #
 
 SOURCES     = $(wildcard src/*.c)

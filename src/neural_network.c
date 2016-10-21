@@ -1,11 +1,16 @@
 #include "neural_network.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 neural_network_t* create_neural_network(uint32_t nb_layers,
                                         uint32_t *nb_neurons_per_layer)
 {
+    #ifdef DEBUG
+    printf("Neural network creation...\n");
+    #endif
+
     if (nb_layers <= 0)
         return (NULL);
 
@@ -42,6 +47,11 @@ neural_network_t* create_neural_network(uint32_t nb_layers,
 
 void delete_neural_network(neural_network_t *neural)
 {
+
+    #ifdef DEBUG
+    printf("Delete neural network...\n");
+    #endif
+
     if (!neural)
         return;
 
@@ -54,6 +64,10 @@ void delete_neural_network(neural_network_t *neural)
 
 void initialize_weights_and_biaises(neural_network_t *net, uint32_t seed)
 {
+    #ifdef DEBUG
+    printf("Neural network weigths initialization...\n");
+    #endif
+
     if (!net)
         return;
 
