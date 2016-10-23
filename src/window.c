@@ -3,7 +3,8 @@
  
 
 void on_quitter_btn(GtkWidget *pBtn, gpointer data);
-
+void creer_file_selection();
+void recuperer_chemin(GtkWidget *bouton, GtkWidget *file_selection);
 
 int main(int argc, char **argv)
 {
@@ -39,10 +40,13 @@ int main(int argc, char **argv)
 
     MenuItems = gtk_image_menu_item_new_from_stock(GTK_STOCK_NEW,NULL);
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
- 
+  
     MenuItems = gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN,NULL);
+    g_signal_connect(G_OBJECT(MenuItems), "activate", G_CALLBACK(creer_file_selection),(GtkWidget*) Window); 
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
- 
+        
+
+
     MenuItems = gtk_image_menu_item_new_from_stock(GTK_STOCK_SAVE,NULL);
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
  
@@ -107,3 +111,24 @@ void on_quitter_btn(GtkWidget* widget, gpointer data)
             break;
     }
 }
+void creer_file_selection()
+{
+    GtkWidget *selection;
+     
+    selection = gtk_file_selection_new( g_locale_to_utf8( "Sélectionnez un fichier", -1, NULL, NULL, NULL) );
+    gtk_widget_show(selection);
+     
+    //On interdit l'utilisation des autres fenêtres.
+    gtk_window_set_modal(GTK_WINDOW(selection), TRUE);
+     
+    g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(selection)->ok_button), "clicked", G_CALLBACK(recuperer_chemin), selection );
+     
+    g_signal_connect_swapped(G_OBJECT(GTK_FILE_SELECTION(selection)->cancel_button), "clicked", G_CALLBACK(gtk_widget_destroy), selection);
+}
+ 
+void recuperer_chemin(GtkWidget *bouton, GtkWidget *file_selection)
+{
+   
+ gtk_main_quit();
+}
+
