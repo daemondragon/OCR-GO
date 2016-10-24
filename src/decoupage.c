@@ -23,7 +23,7 @@ char black_line(double *matrix,int l,int seuil) {
 	return 0;
 }
 
-double* search_white(double *matrix,double *start, int l,int seuil){
+double* h_search_white(double *matrix,double *start, int l,int seuil){
 	double *end_zone = matrix;
 	while(black_line(end_zone,l,seuil)&& end_zone>start+1){
 		end_zone-=l;
@@ -31,7 +31,7 @@ double* search_white(double *matrix,double *start, int l,int seuil){
  	return end_zone;
 } 
 
-double* search_black(double *matrix,double *start, int l,int seuil){
+double* h_search_black(double *matrix,double *start, int l,int seuil){
         double *end_zone = matrix;
         while(!((black_line(end_zone,l,seuil)))&& end_zone>start+1){
                 end_zone-=l;
@@ -39,6 +39,20 @@ double* search_black(double *matrix,double *start, int l,int seuil){
         return end_zone;
 }
 
-
+W_list* cutting(double *matrix,int l, int seuil){
+	double *cursor= matrix + l - 1;
+	double *word_start;
+	double *word_end;
+	float	word_space=0;
+	double *band_start;
+	double *band_end;
+	W_list *word_list
+	while (cursor >= matrix){
+		band_start = h_search_black(cursor-(double)l, matrix,l,seuil);
+		cursor=band_start;
+		band_end = h_search_white(cursor,matrix,l,seuil);
+		 
+		
+		}
 
 
