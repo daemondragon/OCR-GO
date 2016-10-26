@@ -1,5 +1,5 @@
-#ifndef NEURAL_LAYER_HPP
-#define NEURAL_LAYER_HPP
+#ifndef NEURAL_LAYER_H
+#define NEURAL_LAYER_H
 
 /*
 ** This neural network have in every layer a sigmoid function for activation,
