@@ -15,7 +15,7 @@ void learn(neural_network_t *net,
         return;
 
     #ifdef DEBUG
-    printf("Start neural network learning (%d exemples, %d iterations)...\n",
+    printf("Neural network learning (%d exemples, %d iterations)...",
             nb_exemples, nb_iterations);
     #endif
 
@@ -32,7 +32,7 @@ void learn(neural_network_t *net,
         }
     }
     #ifdef DEBUG
-    printf("End of neural network learning...\n");
+    printf("Done\n");
     #endif
 }
 

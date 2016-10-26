@@ -8,21 +8,34 @@ neural_network_t* create_neural_network(uint32_t nb_layers,
                                         uint32_t *nb_neurons_per_layer)
 {
     #ifdef DEBUG
-    printf("Neural network creation...\n");
+    printf("Neural network creation...");
     #endif
 
     if (nb_layers <= 0)
+    {
+        #ifdef DEBUG
+        printf("Failed (0)\n");
+        #endif
         return (NULL);
+    }
 
     neural_network_t *neural = malloc(sizeof(neural_network_t));
     if (!neural)
+    {
+        #ifdef DEBUG
+        printf("Failed (1)\n");
+        #endif
         return (NULL);
+    }
 
     neural->nb_layers = nb_layers;
     neural->layers = malloc(sizeof(neural_layer_t*) * nb_layers);
     if (!neural->layers)
     {
         free(neural);
+        #ifdef DEBUG
+        printf("Failed (2)\n");
+        #endif
         return (NULL);
     }
 
@@ -38,10 +51,17 @@ neural_network_t* create_neural_network(uint32_t nb_layers,
             free(neural->layers);
             free(neural);
 
+            #ifdef DEBUG
+            printf("Failed (3)\n");
+            #endif
+
             return (NULL);
         }
     }
 
+    #ifdef DEBUG
+    printf("Done\n");
+    #endif
     return (neural);
 }
 
@@ -49,7 +69,7 @@ void delete_neural_network(neural_network_t *neural)
 {
 
     #ifdef DEBUG
-    printf("Delete neural network...\n");
+    printf("Delete neural network...");
     #endif
 
     if (!neural)
@@ -60,12 +80,16 @@ void delete_neural_network(neural_network_t *neural)
 
     free(neural->layers);
     free(neural);
+
+    #ifdef DEBUG
+    printf("Done\n");
+    #endif
 }
 
 void initialize_weights_and_biaises(neural_network_t *net, uint32_t seed)
 {
     #ifdef DEBUG
-    printf("Neural network weigths initialization...\n");
+    printf("Neural network weigths initialization...");
     #endif
 
     if (!net)
@@ -83,6 +107,10 @@ void initialize_weights_and_biaises(neural_network_t *net, uint32_t seed)
         for (uint32_t n = 0 ; n < net->layers[l]->nb_neurons ; n++)
             net->layers[l]->biaises[n] = 0.0;
     }
+
+    #ifdef DEBUG
+    printf("Done\n");
+    #endif
 }
 
 uint32_t get_connection_index(neural_layer_t *layer,

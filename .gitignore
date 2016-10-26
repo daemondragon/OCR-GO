@@ -5,3 +5,5 @@
 *.tar.bz2
 *.tgz
 *.swp
+*.swo
+*.net
