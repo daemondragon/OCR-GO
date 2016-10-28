@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "info_word.h"
 
+#define VERTICAL_SEUIL 1
+
 char black_line(double *matrix,int l,int seuil)
 {
 	int dots=0;
@@ -38,8 +40,31 @@ double* h_search_black(double *matrix,double *start, int l,int seuil){
 	return end_zone;
 }
 
+char black_column(double *band_start,double *band_end,int l)
+{
+double *cursor = band_end;
+int dot = 0;
+int seuil = (int)( ((band_start-band_end)/(float)l) *0.1* VERTICAL_SEUIL + 0.5 ) ;
+  for(;cursor>band_start;cursor+=l)
+    {
+    if(*cursor > 0.9)
+      {
+      dot++;
+      if(dot>= seuil)
+	{
+	return 1;
+	}
+      }
+    } 
+return 0;
+}
 
-void v_cutting(double *band_start, double *band_end,int l,W_list *word_list,float *word_space,float *word_count )
+void v_cutting(double *band_start,
+		double *band_end,
+		int l,
+		W_list *word_list,
+		float *word_space,	
+		float *word_count )
 {
 
 }
