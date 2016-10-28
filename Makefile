@@ -16,4 +16,6 @@ src/%.o : src/%.c
 clean :
 	rm -f $(OBJS)
 	rm -f $(EXEC)
-
+c :
+	rm -f $(OBJS)
+	rm -f $(EXEC)
