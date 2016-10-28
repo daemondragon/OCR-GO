@@ -66,8 +66,44 @@ void v_cutting(double *band_start,
 		float *word_space,	
 		float *word_count )
 {
+	double h = ((band_end-band_start)+1)/l -1;
+	infos new_word;
+	for(int k=0 ; k<l ; ++k)
+	{
+		
+		// white column 
+		new_word.width=0;
+		while(!(black_column(band_start, band_end-k , l)))
+		{
+			new_word.width++;
+			k++;	
+		}
+		new_word.type= E;
+		new_word.pos = band_end-k - (int)(h*l); 
+		new_word.height = h+1;
+		WL_add(word_list,new_word );
 
+
+		// a word
+		new_word.width=0;
+		while(black_column(band_start,band_end-k,l))
+		{
+			new_word.width++;
+			k++;
+		}
+		new_word.type= W;
+		new_word.pos = band_end-k- (int)(h*l) ;  
+		new_word.height = h+1;
+		WL_add(word_list,new_word );
+		*word_space += new_word.width;
+		++*word_count;
+	}
+	new_word.type = N;
+	WL_add(word_list, new_word);
 }
+
+
+
 
 
 
@@ -85,6 +121,7 @@ W_list* cutting(double *matrix,int size,int l, int seuil){
 		cursor=band_end;
 		v_cutting(band_start,band_end,l,word_list,&word_space,&word_count);
 	}
+	WL(word_list,word_space/word_count );
 	return word_list;
 }
 

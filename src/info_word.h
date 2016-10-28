@@ -4,11 +4,10 @@
 
 #include <stdlib.h>
 typedef struct infos{
-	enum type{c,e,n}type; 
-	int posx;
-	int posy;
-	int lar;
-	int lon;
+	enum type{W,E,N}type; 
+	double *pos;
+	int width;
+	int height;
 }infos;
 
 typedef struct W_list{
