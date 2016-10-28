@@ -7,6 +7,7 @@
 #include "feed_forward.h"
 #include "back_propagation.h"
 #include "learning.h"
+#include "window.h"
 
 void    print_result(neural_network_t *net)
 {
@@ -112,6 +113,8 @@ int main(int argc, char *argv[])
         for (size_t i = 0; i < nb_arguments; i++)
             printf("    %s - %s\n", arguments[i].arg,
                                     arguments[i].description);
+
+        run_window(argc, argv);
     }
 
     return (0);

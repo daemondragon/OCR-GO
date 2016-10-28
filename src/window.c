@@ -1,14 +1,6 @@
-#include <stdlib.h>
-#include <gtk/gtk.h>
- 
+#include "window.h"
 
-void on_quitter_btn(GtkWidget *pBtn, gpointer data);
-void creer_file_selection();
-void recuperer_chemin(GtkWidget *bouton, GtkWidget *file_selection);
-
-#if 0//A elnver si tu veut que ça compile
-
-int main(int argc, char **argv)
+int run_window(int argc, char **argv)
 {
     GtkWidget *Window;
     GtkWidget *Table;
@@ -86,8 +78,6 @@ int main(int argc, char **argv)
  
     return EXIT_SUCCESS;
 }
-
-#endif
 
 void on_quitter_btn(GtkWidget* widget, gpointer data)
 {
