@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "info_word.h"
+#include "cutting.h"
 
 #define VERTICAL_SEUIL 1
 
