@@ -12,6 +12,9 @@ double *pixbuf_to_matrix_grey(GdkPixbuf *pixbuf, double **matrix_end, int *point
 // return an double array with grey_pixel vals, and the pointers vals
 double *file_to_matrix_grey(const char *filename, double **matrix_end, int *pointer_width, int *pointer_height );
 
+//create image from matrix
+GtkWidget * image_from_matrix (double *matrix, int width, int height);
+
 
 #endif
 
