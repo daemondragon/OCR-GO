@@ -45,8 +45,9 @@ W_list * v_cutting(double *band_start, double *band_end, int width,
                    W_list *word_list,
                    int *sum_space_size, int *space_count)
 {
-    int threshold = 1;//((band_end - band_start) * VERTICAL_PERCENTAGE_THRESHOLD
-                    // width);
+    int threshold = ((band_end - band_start) * VERTICAL_PERCENTAGE_THRESHOLD
+                    / width);
+    threshold = (threshold <= 1 ? 1 : threshold);
 
     int temp_sum_space_size = 0;
     int temp_space_count = 0;
@@ -105,7 +106,7 @@ W_list * v_cutting(double *band_start, double *band_end, int width,
         {//add space
             info.type = SPACE;
             info.pos = char_end;
-            info.width = (band_start + i - char_end);
+            info.width = (char_end - (band_start + i + 1));
             word_list = WL_add(word_list, info);
         }
     }
@@ -141,18 +142,15 @@ W_list* cutting(double *matrix, size_t weight, size_t height, int threshold)
         if (matrix > band_start)
             break;//Nothing found : cursor before matrix start
 
-        //TRAITEMENT
-        printf("%d %d\n", (band_start - matrix) / weight, 
-                          (band_end - matrix) / weight);
-
+        //WORK ON BAND
         word_list = v_cutting(band_start, band_end, weight,
                               word_list, &sum_space_size, &space_count);
         
         actual = band_start - weight;
     }
 
-	//if (space_count > 0)
-	    //word_list = WL_clean(word_list, sum_space_size / space_count);
+	if (space_count > 0)
+	    word_list = WL_clean(word_list, sum_space_size / space_count);
 
 	return (word_list);
 }
