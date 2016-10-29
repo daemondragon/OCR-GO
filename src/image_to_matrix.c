@@ -59,61 +59,51 @@ GtkWidget * image_from_matrix (double *matrix, int width, int height)
                 }
         }
         return gtk_image_new_from_pixbuf(pixbuf);
-
 }
 
+
+double * new_matrix_copy(double *matrix, double *matrix_end, double **new_matrix_end)
+{
+	size_t len = matrix_end - matrix;
+	double *new_matrix = malloc(sizeof(double)*len);
+	*new_matrix_end = new_matrix + len;
+	for (size_t i = 0; i<len; i++)
+	{
+		*(new_matrix + i) = *(matrix + i);
+	}
+	return new_matrix;
+}
 
 /*double * image_to_matrix_colors(GdkPixbuf *pixbuf) 	//not used and not tested
+  {
+  guchar *pixel=NULL;
+  gint channel=0;
+  gint width=0;
+  if (!pixbuf) return FALSE;
+  pixel=gdk_pixbuf_get_pixels(pixbuf);
+  channel=gdk_pixbuf_get_n_channels(pixbuf);
+  width=gdk_pixbuf_get_width(pixbuf);
+  gint height = gdk_pixbuf_get_height(pixbuf);
+  guchar red, green, blue;
+  double *matrix = malloc(sizeof(double) * width * height * 3);
+  for (gint y = 0; y<height; y++)
+  {
+  for (gint x = 0; x<width; x++)
+  {
+ *(matrix + x * 3 + y * width * 3)  = pixel[(x*channel)+(y*width*channel)]/255;
+ *(matrix + x * 3 + y * width * 3 + 1) = pixel[(x*channel)+(y*width*channel)+1]/255;
+ *(matrix + x * 3 + y * width * 3 + 2) = pixel[(x*channel)+(y*width*channel)+2]/255;	
+ }
+ }
+ return matrix;
+ }*/
+int main()
 {
-	guchar *pixel=NULL;
-	gint channel=0;
-	gint width=0;
-	if (!pixbuf) return FALSE;
-	pixel=gdk_pixbuf_get_pixels(pixbuf);
-	channel=gdk_pixbuf_get_n_channels(pixbuf);
-	width=gdk_pixbuf_get_width(pixbuf);
-	gint height = gdk_pixbuf_get_height(pixbuf);
-	guchar red, green, blue;
-	double *matrix = malloc(sizeof(double) * width * height * 3);
-	for (gint y = 0; y<height; y++)
-	{
-		for (gint x = 0; x<width; x++)
-		{
-				*(matrix + x * 3 + y * width * 3)  = pixel[(x*channel)+(y*width*channel)]/255;
-				*(matrix + x * 3 + y * width * 3 + 1) = pixel[(x*channel)+(y*width*channel)+1]/255;
-				*(matrix + x * 3 + y * width * 3 + 2) = pixel[(x*channel)+(y*width*channel)+2]/255;	
-		}
-	}
-	return matrix;
-}*/
-/*
-static void activate (GtkApplication* app, gpointer user_data)
-{
-	double * matrix_end;
-	int width, height;
-	double  *matrix = file_to_matrix_grey("test", &matrix_end, &width, &height);
-	binarize_simple(matrix, matrix_end);
-	GtkWidget *Image = image_from_matrix(matrix, width ,height);
-	GtkWidget *window;
-
-	window = gtk_application_window_new (app);
-	gtk_window_set_title (GTK_WINDOW (window), "Window");
-	gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
-	gtk_container_add(GTK_CONTAINER (window), Image);
-	gtk_widget_show_all (window);
+	int width=0,height=0;
+	double *matrix_end;
+	double *matrix = file_to_matrix_grey("test", &matrix_end, &width, &height);
+	double *new_matrix_end;
+	double * new_matrix = new_matrix_copy(matrix, matrix_end, &new_matrix_end);
+	printf("%f = %f\n",*(matrix + width*height-1), *(new_matrix +width*height-1));
+	return 0;
 }
-
-
-int main(int argc, char *argv[])	//test the image_to_matrix_grey
-{
-	GtkApplication *app;
-	int status;
-
-	app = gtk_application_new ("org.gtk.example", G_APPLICATION_FLAGS_NONE);
-	g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
-	status = g_application_run (G_APPLICATION (app), argc, argv);
-	g_object_unref (app);
-
-	return status;
-}
-*/
