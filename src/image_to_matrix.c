@@ -98,8 +98,8 @@ double * new_matrix_copy(double *matrix, double *matrix_end, double **new_matrix
  return matrix;
  }*/
  
-#if 0
-int main()
+
+void test_filters()
 {
 	int width=0,height=0;
 	double *matrix_end;
@@ -107,6 +107,5 @@ int main()
 	double *new_matrix_end;
 	double * new_matrix = new_matrix_copy(matrix, matrix_end, &new_matrix_end);
 	printf("%f = %f\n",*(matrix + width*height-1), *(new_matrix +width*height-1));
-	return 0;
 }
-#endif
+

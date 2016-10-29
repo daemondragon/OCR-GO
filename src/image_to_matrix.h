@@ -16,8 +16,11 @@ double *file_to_matrix_grey(const char *filename, double **matrix_end, int *poin
 GtkWidget * image_from_matrix (double *matrix, int width, int height);
 
 // copy a matrix
-double * new_matrix_copy(double *matrix, double *matrix_end, double **new_matrix_end)
+double * new_matrix_copy(double *matrix, double *matrix_end, double **new_matrix_end);
 
+
+
+void test_filters();
 
 #endif
 
