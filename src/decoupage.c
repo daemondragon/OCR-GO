@@ -19,7 +19,7 @@ char black_line(double *matrix,int l,int seuil)
 				return 1;
 			}
 		}
-		temp++;
+		temp--;
 	}
 	return 0;
 }
@@ -114,14 +114,16 @@ W_list* cutting(double *matrix,int size,int l, int seuil){
 	double *band_start;
 	double *band_end;
 	W_list *word_list=WL_init();
-	while(cursor >= matrix){
-		band_start = h_search_black(matrix,cursor+l-1,l,seuil);
-		cursor=band_start;
+	while(cursor > matrix){
+		band_start = h_search_black(matrix,cursor,l,seuil);
+		cursor=band_start-l;
+		if(cursor>matrix){
 		band_end = h_search_white(matrix,cursor+l-1,l,seuil);
 		cursor=band_end;
 		v_cutting(band_start,band_end,l,word_list,&word_space,&word_count);
+		}
 	}
-	WL(word_list,word_space/word_count );
+	WL_clean(word_list,word_space/word_count );
 	return word_list;
 }
 
