@@ -37,24 +37,29 @@ W_list* WL_nxt(W_list *liste){
 }
 
 
-W_list* WL_clean(W_list *liste, float min)
+W_list* WL_clean(W_list *list, float min)
 {
-	if(liste==NULL)
-	{return NULL;}
-	W_list *new_list = liste->nxt;
-	free(liste);	
-	while(new_list->nxt != NULL)
-	{
-		if((float)new_list->info.width <=min )
-		{	
-			W_list *temp  = new_list->nxt;
-			free(new_list);
-			new_list=temp;
-		}
-		else
-		{
-			new_list = new_list->nxt;
-		}
-	}
-	return new_list;
+    if (!list)
+        return (NULL);
+
+    W_list *actual = list;
+    //First element must be a WORD
+    while (actual->nxt)
+    {
+        if (actual->nxt->info.type == SPACE)
+        {
+            if (actual->nxt->info.width <= min)
+            {
+                W_list *temp = actual->nxt;
+                actual->nxt = actual->nxt->nxt;
+                free(temp);
+            }
+            else
+                actual = actual->nxt;
+        }
+        else
+            actual = actual->nxt;
+    }
+
+	return list;
 }	

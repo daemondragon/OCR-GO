@@ -6,12 +6,12 @@
 
 #define VERTICAL_PERCENTAGE_THRESHOLD   0.1
 
-char is_black_line(double *start, int weight, int threshold)
+char is_black_line(double *start, int width, int threshold)
 {
 	int dots = 0;
     double *actual = start;
 
-    for(int i = 0; i < weight; ++i, ++actual)
+    for(int i = 0; i < width; ++i, ++actual)
 	{
 		if (*actual < 0.10)//Black
 		{
@@ -22,7 +22,7 @@ char is_black_line(double *start, int weight, int threshold)
 	return (dots >= threshold);
 }
 
-char is_black_column(double *start, double *end, int weigth, int threshold)
+char is_black_column(double *start, double *end, int width, int threshold)
 {
     int dots = 0;
     double *actual = start;
@@ -33,7 +33,7 @@ char is_black_column(double *start, double *end, int weigth, int threshold)
         {
             dots++;
         }
-        actual += weight;
+        actual += width;
     }
 
     return (dots >= threshold);
@@ -41,69 +41,76 @@ char is_black_column(double *start, double *end, int weigth, int threshold)
 
 
 //return the new modified list (else it will be lost)
-W_list * v_cutting(double *band_start, double *band_end, int weight,
+W_list * v_cutting(double *band_start, double *band_end, int width,
                    W_list *word_list,
-                   float *sum_space_size, float *space_count)
+                   int *sum_space_size, int *space_count)
 {
-    int threshold = ((band_end - band_start) * VERTICAL_PERCENTAGE_THRESHOLD
-                    / weight);
-    double *char_start = NULL;
-    double *char_end = NULL;
-    /*
-    int i = 0;
-    while (i < weight &&
-           !is_black_column(band_start + i, band_end + i, weight, threshold))
-        ++i;
+    int threshold = 1;//((band_end - band_start) * VERTICAL_PERCENTAGE_THRESHOLD
+                    // width);
 
-    while (i < weight)
+    int temp_sum_space_size = 0;
+    int temp_space_count = 0;
+    
+    infos info;
+    info.height = (band_end - band_start) / width + 1;
+
+    //Add return to list
+    info.type = NEW_LINE;
+    info.pos = NULL;//ONLY position in list is important
+    info.width = 0;
+    word_list = WL_add(word_list, info);
+
+    int i = width - 1;
+    while (i >= 0 &&
+           !is_black_column(band_start + i, band_end + i, width, threshold))
+        --i;
+
+    while (i >= 0)
     {
-        ++(*space_count);//It's done wrongfully the first time we encounter
-        //a white space
-        while (i < weight &&
-           !is_black_column(band_start + i, band_end + i, weight, threshold))
+        (*sum_space_size) += temp_sum_space_size;
+        (*space_count) += temp_space_count;
+        temp_sum_space_size = 0;
+        temp_space_count = 0;
+
+        double *char_end = band_start + i;
+        while (i >= 0 && is_black_column(band_start + i,
+                                         band_end + i,
+                                         width,
+                                         threshold))
         {
-            ++(*sum_space_size);
-            ++i;
+            --i;
         }
-        while (i)
+        double *char_start = band_start + i;
+        //End of char
+
+        //Add char
+        info.type = WORD;
+        info.pos = char_start;
+        info.width = (char_end - char_start);
+        word_list = WL_add(word_list, info);
+
+        //Space
+        ++temp_space_count;
+        while (i >= 0 && !is_black_column(band_start + i,
+                                          band_end + i,
+                                          width,
+                                          threshold))
+        {
+            --i;
+            ++temp_sum_space_size;
+        }
+
+        //End of white columns
+        if (i >= 0)
+        {//add space
+            info.type = SPACE;
+            info.pos = char_end;
+            info.width = (band_start + i - char_end);
+            word_list = WL_add(word_list, info);
+        }
     }
-    */
+
     return (word_list);
-
-	double h = ((band_end-band_start)+1)/l -1;
-	infos new_word;
-	for(int k=0 ; k<l ; ++k)
-	{
-		
-		// white column 
-		new_word.width=0;
-		while(!(black_column(band_start, band_end-k , l)))
-		{
-			new_word.width++;
-			k++;	
-		}
-		new_word.type= E;
-		new_word.pos = band_end-k - (int)(h*l); 
-		new_word.height = h+1;
-		WL_add(word_list,new_word );
-
-
-		// a word
-		new_word.width=0;
-		while(black_column(band_start,band_end-k,l))
-		{
-			new_word.width++;
-			k++;
-		}
-		new_word.type= W;
-		new_word.pos = band_end-k- (int)(h*l) ;  
-		new_word.height = h+1;
-		WL_add(word_list,new_word );
-		*word_space += new_word.width;
-		++*word_count;
-	}
-	new_word.type = N;
-	WL_add(word_list, new_word);
 }
 
 
@@ -139,29 +146,13 @@ W_list* cutting(double *matrix, size_t weight, size_t height, int threshold)
                           (band_end - matrix) / weight);
 
         word_list = v_cutting(band_start, band_end, weight,
-                              word_list, sum_space_size, space_count);
+                              word_list, &sum_space_size, &space_count);
         
         actual = band_start - weight;
     }
-    /*
-	double *cursor= matrix + size - 1;
-	float	word_space =0;
-	float	word_count =0;
-	double *band_start;
-	double *band_end;
-	
-	while(cursor > matrix){
-		band_start = h_search_black(matrix,cursor,l,seuil);
-		cursor=band_start-l;
-		if(cursor>matrix){
-		band_end = h_search_white(matrix,cursor+l-1,l,seuil);
-		cursor=band_end;
-		v_cutting(band_start,band_end,l,word_list,&word_space,&word_count);
-		}
-	}
-	*/
-	if (space_count > 0)
-	    WL_clean(word_list, sum_space_size / space_count);
+
+	//if (space_count > 0)
+	    //word_list = WL_clean(word_list, sum_space_size / space_count);
 
 	return (word_list);
 }

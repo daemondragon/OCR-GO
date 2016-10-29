@@ -97,6 +97,8 @@ double * new_matrix_copy(double *matrix, double *matrix_end, double **new_matrix
  }
  return matrix;
  }*/
+ 
+#if 0
 int main()
 {
 	int width=0,height=0;
@@ -107,3 +109,4 @@ int main()
 	printf("%f = %f\n",*(matrix + width*height-1), *(new_matrix +width*height-1));
 	return 0;
 }
+#endif

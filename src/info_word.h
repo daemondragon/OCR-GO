@@ -3,18 +3,18 @@
 
 
 #include <stdlib.h>
-typedef struct infos{
-	enum type{W,E,N}type; 
+typedef struct infos
+{
+	enum type{WORD, SPACE, NEW_LINE}type; 
 	double *pos;
 	int width;
 	int height;
 }infos;
 
-typedef struct W_list{
-
+typedef struct W_list
+{
 	infos info;
 	struct W_list *nxt;
-
 }W_list;
 
 // renvoi une liste null
