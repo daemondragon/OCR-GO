@@ -93,7 +93,7 @@ typedef struct
 int main(int argc, char *argv[])
 {
     argument_t  arguments[] = {{"xor", "show neural network xor", show_xor},
-			       {"tcut", "rapid test for cutting",test_cut    }};
+			                   {"cut", "rapid test for cutting", test_cut}};
     size_t nb_arguments = 2;
     if (argc > 1)
     {

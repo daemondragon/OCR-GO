@@ -6,12 +6,12 @@
 W_list* WL_init(void){
 	return NULL;
 }
-W_list*  WL_add(W_list *liste ,infos toadd)
+W_list*  WL_add(W_list *liste ,infos to_add)
 {
 	W_list *new_word;
 	new_word = malloc (sizeof(W_list));
-	new_word -> info= toadd;
-	new_word -> nxt = liste; 
+	new_word->info = to_add;
+	new_word->nxt = liste; 
 	return new_word;
 }
 
