@@ -8,6 +8,7 @@
 #include "back_propagation.h"
 #include "learning.h"
 #include "window.h"
+#include "testing_cut.h"
 
 void    print_result(neural_network_t *net)
 {
@@ -91,8 +92,9 @@ typedef struct
 
 int main(int argc, char *argv[])
 {
-    argument_t  arguments[] = {{"xor", "show neural network xor", show_xor}};
-    size_t nb_arguments = 1;
+    argument_t  arguments[] = {{"xor", "show neural network xor", show_xor},
+			       {"tcut", "rapid test for cutting",test_cut    }};
+    size_t nb_arguments = 2;
     if (argc > 1)
     {
         for (size_t i = 0; i < nb_arguments; i++)

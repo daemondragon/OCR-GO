@@ -32,4 +32,6 @@ void WL_free(W_list *liste);
 // retourne le prochain element
 W_list* WL_nxt(W_list *liste);
 
+W_list* WL_clean(W_list *liste, float min);
+
 #endif

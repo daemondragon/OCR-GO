@@ -39,7 +39,10 @@ W_list* WL_nxt(W_list *liste){
 
 W_list* WL_clean(W_list *liste, float min)
 {
+	if(liste==NULL)
+	{return NULL;}
 	W_list *new_list = liste->nxt;
+	free(liste);	
 	while(new_list->nxt != NULL)
 	{
 		if((float)new_list->info.width <=min )
