@@ -76,11 +76,14 @@ void show_cutting()
 
 	
 	while(word_list!=NULL)
-	{
+	{	
+		printf("lolol \n");
 		size_t posx = (word_list->info.pos - matrix)/l;
 		size_t posy = (word_list->info.pos - matrix)%l;
+		printf(" %d \n",word_list->info.type);
 		if (word_list->info.type == WORD)
     	{
+			printf("un lol \n");
         	for(size_t i = posx-1; i< posx + word_list->info.width +1;++i)
 				{
 					for(size_t j=posy-1;
@@ -93,8 +96,9 @@ void show_cutting()
 					}			
 				} 
     	}
-		else if (word_list->info.type == SPACE)
+		if (word_list->info.type == SPACE)
 		{
+			printf("2 lol \n");
 			for(size_t i = posx-1; i< posx + word_list->info.width +1;++i)
 			{	
 				if(is_valid(i,posy,l,h))

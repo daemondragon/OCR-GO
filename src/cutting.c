@@ -14,7 +14,7 @@ char is_black_line(double *start, int width, int threshold)
     for(int i = 0; i < width; ++i, ++actual)
 	{
 		if (*actual < 0.10)//Black
-		{
+		{	
 			dots++;
 		}
 	}
