@@ -66,7 +66,7 @@ return x<width && y<heigth ;
 void show_cutting()
 {	
    
-    double *matrix = file_to_matrix_grey("./image_test/test_cut",0,0,0);
+    double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,0,0);
 	size_t l = 503;
 	size_t h = 640;	
 	W_list *word_list = cutting(matrix,l,h,1);
