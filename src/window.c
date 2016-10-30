@@ -9,7 +9,7 @@ int run_window(int argc, char **argv)
     GtkWidget * MenuBar;
     GtkWidget * Menu;
     GtkWidget * MenuItems;
-    
+    GtkWidget * img;   
  
     gtk_init(&argc, &argv);
     /* creation of the window and initialisation of size and place of the window */
@@ -28,7 +28,7 @@ int run_window(int argc, char **argv)
 
     /*Creation of the Menu Box and his different parameter */
     VboxMenu = gtk_vbox_new(FALSE, 0);
-    
+    img = gtk_vbox_new(FALSE,0);
     MenuBar = gtk_menu_bar_new();
     Menu = gtk_menu_new();
 
@@ -64,10 +64,16 @@ int run_window(int argc, char **argv)
    MenuItems = gtk_menu_item_new_with_label("XOR test");
    g_signal_connect(G_OBJECT(MenuItems), "activate", G_CALLBACK(test_xor),NULL);
    gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
-   
+      
+   MenuItems = gtk_menu_item_new_with_label("Filter test");
+   g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(test_filter),NULL);
+   gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);   
+
    MenuItems = gtk_menu_item_new_with_label("Cut test");
    g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(cut_test),NULL);
    gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
+
+   
    MenuItems = gtk_menu_item_new_with_label("Test");
   
    gtk_menu_item_set_submenu(GTK_MENU_ITEM(MenuItems),Menu);
@@ -81,7 +87,7 @@ int run_window(int argc, char **argv)
         0, 0);
     
     gtk_table_attach_defaults(GTK_TABLE(Table),VboxMenu,0,2,0,10);
-    
+    gtk_table_attach_defaults(GTK_TABLE(Table),img,3,7,3,7);
     g_signal_connect(G_OBJECT(Button[0]),"clicked",G_CALLBACK(on_quitter_btn),(GtkWidget*) Window);
 
 
@@ -141,17 +147,22 @@ void creer_file_selection()
 void recuperer_chemin(GtkWidget *bouton,GtkWidget *file_selection)
 {
    
+  
   const gchar *chemin;
   chemin = gtk_file_selection_get_filename(GTK_FILE_SELECTION(file_selection));
-
-
+  
+ 
   bouton = gtk_message_dialog_new(GTK_WINDOW(file_selection),
   GTK_DIALOG_MODAL,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,
   "file selected : \n%s", chemin);
   gtk_dialog_run(GTK_DIALOG(bouton)); 
   gtk_widget_destroy(bouton);
   gtk_widget_destroy(file_selection);
-
+  
+  
+  
+ 
+ 
 }
 void test_xor()
 {
@@ -160,4 +171,8 @@ void test_xor()
 void cut_test()
 {
      show_cutting();
+}
+void test_filter()
+{
+     test_filters();
 }
