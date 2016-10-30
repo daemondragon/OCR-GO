@@ -27,9 +27,9 @@ double * pixbuf_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end,
 	{
 		for (gint x = 0; x < width; x++)
 		{
-			red   = pixel[(x*channel)+(y*width*channel) + 1];
-			green = pixel[(x*channel)+(y*width*channel) + 2];
-			blue  = pixel[(x*channel)+(y*width*channel) + 3];
+			red   = pixel[(x*channel)+(y*width*channel)];
+			green = pixel[(x*channel)+(y*width*channel) + 1];
+			blue  = pixel[(x*channel)+(y*width*channel) + 2];
 
 			matrix[x + y * width] = ((int)red + (int)green + (int)blue) / 765.0;
 			//considering that the max value of each colors is 255

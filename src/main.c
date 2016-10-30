@@ -8,6 +8,20 @@
 #include "image_to_matrix.h"
 #include "filters.h"
 
+void show_picture()
+{
+    int w;
+    int h;
+
+    double *pixels = file_to_matrix_grey("./image_test/min.png", NULL, &w, &h);
+
+    printf("%d %d\n", w, h);
+
+    for (size_t i = 0; i < w * h; ++i)
+        printf("%f ", pixels[i]);
+    printf("\n");
+}
+
 char is_same_string(char *s1, char *s2)
 {
     while (*s1 != '\0' && *s2 != '\0')
@@ -36,8 +50,9 @@ int main(int argc, char *argv[])
 			                   {"cut", "rapid test for cutting", test_cut},
 					   {"filter", "test for filters", test_filters},
 					   {"pcut", "pretty test for cutting", show_cutting},
-					   {"mat_copy", "test for copying matrix", test_mat_copy}};
-    size_t nb_arguments = 4;
+					   {"mat_copy", "test for copying matrix", test_mat_copy},
+					   {"load", "load image", show_picture}};
+    size_t nb_arguments = 6;
     if (argc > 1)
     {
         for (size_t i = 0; i < nb_arguments; i++)
