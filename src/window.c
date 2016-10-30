@@ -15,7 +15,7 @@ int run_window(int argc, char **argv)
     /* creation of the window and initialisation of size and place of the window */
     Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_container_set_border_width(GTK_CONTAINER(Window),5);
-    gtk_window_set_default_size(GTK_WINDOW(Window), 900, 700);
+    gtk_window_set_default_size(GTK_WINDOW(Window), 800, 600);
     gtk_window_set_title(GTK_WINDOW(Window),"OCR GO ");
     g_signal_connect(G_OBJECT(Window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
  
@@ -57,6 +57,17 @@ int run_window(int argc, char **argv)
     /* ETAPE 6 */
     gtk_menu_shell_append(GTK_MENU_SHELL(MenuBar), MenuItems);
     
+    /*second sub menu */
+   
+   Menu = gtk_menu_new();
+
+   MenuItems = gtk_menu_item_new_with_label("XOR test");
+   gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
+
+   MenuItems = gtk_menu_item_new_with_label("Test");
+  
+   gtk_menu_item_set_submenu(GTK_MENU_ITEM(MenuItems),Menu);
+   gtk_menu_shell_append(GTK_MENU_SHELL(MenuBar),MenuItems);
 
     gtk_box_pack_start(GTK_BOX(VboxMenu), MenuBar, FALSE,FALSE,0);      
     /* Insertion des boutons */
