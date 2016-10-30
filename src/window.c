@@ -62,8 +62,12 @@ int run_window(int argc, char **argv)
    Menu = gtk_menu_new();
 
    MenuItems = gtk_menu_item_new_with_label("XOR test");
+   g_signal_connect(G_OBJECT(MenuItems), "activate", G_CALLBACK(test_xor),NULL);
    gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
-
+   
+   MenuItems = gtk_menu_item_new_with_label("Cut test");
+   g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(cut_test),NULL);
+   gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
    MenuItems = gtk_menu_item_new_with_label("Test");
   
    gtk_menu_item_set_submenu(GTK_MENU_ITEM(MenuItems),Menu);
@@ -149,4 +153,11 @@ void recuperer_chemin(GtkWidget *bouton,GtkWidget *file_selection)
   gtk_widget_destroy(file_selection);
 
 }
-
+void test_xor()
+{
+	show_xor();
+}
+void cut_test()
+{
+     show_cutting();
+}
