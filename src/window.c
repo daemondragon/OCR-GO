@@ -15,7 +15,7 @@ int run_window(int argc, char **argv)
     /* creation of the window and initialisation of size and place of the window */
     Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_container_set_border_width(GTK_CONTAINER(Window),5);
-    gtk_window_set_default_size(GTK_WINDOW(Window), 600, 600);
+    gtk_window_set_default_size(GTK_WINDOW(Window), 900, 700);
     gtk_window_set_title(GTK_WINDOW(Window),"OCR GO ");
     g_signal_connect(G_OBJECT(Window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
  
@@ -83,25 +83,25 @@ void on_quitter_btn(GtkWidget* widget, gpointer data)
 {
     GtkWidget *Question;
  
-    /* Création de la boite de message */
+    /* Creation of the box message*/
     /* Type : Question -> GTK_MESSAGE_QUESTION */
-    /* Boutons : 1 OUI, 1 NON -> GTK_BUTTONS_YES_NO */
+    /* Boutons : 1 YES, 1 NO -> GTK_BUTTONS_YES_NO */
     Question = gtk_message_dialog_new (GTK_WINDOW(data),
         GTK_DIALOG_MODAL,
         GTK_MESSAGE_QUESTION,
         GTK_BUTTONS_YES_NO,
-        "Voulez-vous vraiment\nquitter ce programme?");
+        "Are you sure you want\n to leave this program?");
  
-    /* Affichage et attente d une réponse */
+    /* Display and dialog part to know what the user want to do*/
     switch(gtk_dialog_run(GTK_DIALOG(Question)))
     {
         case GTK_RESPONSE_YES:
-            /* OUI -> on quitte l application */
+            /* OUI -> We leave the application*/
             gtk_widget_destroy(widget);
             gtk_main_quit();
             break;
         case GTK_RESPONSE_NO:
-            /* NON -> on détruit la boite de message */
+            /* NON -> We destroy the box message */
             gtk_widget_destroy(Question);
             break;
     }
@@ -113,7 +113,7 @@ void creer_file_selection()
     selection = gtk_file_selection_new( g_locale_to_utf8( "Sélect a file ", -1, NULL, NULL, NULL) );
     gtk_widget_show(selection);
      
-    //On interdit l'utilisation des autres fenêtres.
+    //We stop the utilisation of others window during the file selection.
     gtk_window_set_modal(GTK_WINDOW(selection), TRUE);
      
     g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(selection)->ok_button),

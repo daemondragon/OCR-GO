@@ -64,7 +64,13 @@ return x<width && y<heigth ;
 }
 
 void show_cutting()
-{
+{	
+    GtkWidget * Window;
+    Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_container_set_border_width(GTK_CONTAINER(Window),5);
+    gtk_window_set_default_size(GTK_WINDOW(Window),600,600);
+    gtk_window_set_title(GTK_WINDOW(Window),"OCR TEST IMAGE");
+    g_signal_connect(G_OBJECT(Window),"destroy", G_CALLBACK(gtk_main_quit), NULL);
     double *matrix = file_to_matrix_grey("./image_test/test_cut",0,0,0);
 	size_t l = 503;
 	size_t h = 640;	
@@ -102,5 +108,11 @@ void show_cutting()
 	}	
 	
 	GtkWidget *new_image = image_from_matrix(matrix,l,h);
+ 	gtk_container_add(GTK_CONTAINER(Window), GTK_WIDGET(new_image));
+	gtk_widget_show(Window);
+	gtk_main();
+	
+
+
 }
 
