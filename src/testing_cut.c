@@ -67,7 +67,9 @@ void show_cutting()
 	int h = 20;
 
     double *matrix = file_to_matrix_grey("./image_test/test_cutv0_5.png",0,&l,&h);
-
+	
+	--l;
+	--h;
     printf("%f %f %f\n", *matrix, *(matrix + (l * h) / 2), *(matrix + (l * h) - 1));
     printf("%d\n", is_black_line(matrix, l, 1));
     printf("%d\n", is_black_line(matrix + l * (h / 2), l, 1));
@@ -91,7 +93,7 @@ void show_cutting()
 
             printf("pos: %d %d", posx, posy);
 
-        	for(size_t i = posx - 1; i < posx + word_list->info.width + 1;++i)
+        	for(size_t i = posx - 1; i < posx + wid ;++i)
 		    {
 				if(is_valid(i, posy-1, l, h))
 			   	{
@@ -103,16 +105,17 @@ void show_cutting()
 				}		
 			}
 
-			for(size_t j = posy - 1; j < posy + word_list->info.height + 1 ; ++j)		
+			for(size_t j = posy - 1; j < posy + hei  ; ++j)		
 			{
 				if(is_valid(posx-1, j ,l ,h))
 			   	{
 					*(matrix + j*l + posx -1)= 0.8; 
+					printf(" tot %d posx:%d l:%d j:%d \n", j*l + posx -1,posx,l,j);
 				}
 
 				if(is_valid(posx + wid, posy + wid + 1 , l, h))
 			   	{
-					*(matrix + j* l + posx + wid + 1) = 0.8; 
+					*(matrix + j*l + posx + wid + 1) = 0.8; 
 				}		
 			}			
 			
