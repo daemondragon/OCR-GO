@@ -78,18 +78,22 @@ void show_cutting()
 
 	while(word_list!=NULL)
 	{		
+		printf( "%d \n" ,word_list->info.type);
 		if (word_list->info.type == WORD)
     	{
+			printf("edzdzdzded");
 			size_t posx = (word_list->info.pos - matrix)/l;
 			size_t posy = (word_list->info.pos - matrix)%l;
 
-        	for(size_t i = posx-1; i< posx + word_list->info.width +1;++i)
+        	for(size_t i = posx-5; i< posx + word_list->info.width +5;++i)
 				{
-					for(size_t j=posy-1;
-							i< posy + word_list->info.height+1;++i)		
+					for(size_t j=posy-5;
+							i< posy + word_list->info.height+5;++i)		
 					{
+						
 						if(is_valid(i,j,l,h))
-						{
+						{	
+							printf("eded");
 							*(matrix + i*l + j)= 0.8; 
 						}		
 					}			
