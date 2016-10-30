@@ -15,21 +15,26 @@ W_list*  WL_add(W_list *liste ,infos to_add)
 	return new_word;
 }
 
-infos WL(W_list *liste ,int i){
+infos WL(W_list *liste ,int i)
+{
 	for(int j=0;j<i;++j){
 		liste=liste->nxt;
 	}
 	return liste->info;
 }
 
-void WL_free(W_list *liste){
-	W_list *temp = liste;
-	while(liste->nxt != NULL){
-		temp = temp->nxt;
-		free(liste);
-		liste=temp;
+void WL_free(W_list *list)
+{
+    if (!list)
+        return;
+
+	while(list->nxt != NULL)
+	{
+	    W_list *temp = list->nxt;
+	    free(temp);
+	    list->nxt = list->nxt->nxt;
 	}
-	free(liste);
+	free(list);
 }
 
 W_list* WL_nxt(W_list *liste){
