@@ -66,7 +66,7 @@ void show_cutting()
    	int l = 40;
 	int h = 20;
 
-    double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,&l,&h);
+    double *matrix = file_to_matrix_grey("./image_test/test_cutv0_5.png",0,&l,&h);
 
     printf("%f %f %f\n", *matrix, *(matrix + (l * h) / 2), *(matrix + (l * h) - 1));
     printf("%d\n", is_black_line(matrix, l, 1));
