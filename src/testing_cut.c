@@ -66,7 +66,7 @@ return x<width && y<heigth ;
 void show_cutting()
 {
    
-    double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,0,0);
+    
 
    	int ll = 503;
 	int hh = 640;
