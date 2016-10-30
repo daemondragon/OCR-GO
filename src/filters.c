@@ -80,11 +80,24 @@ void binarize_mean_zone(double *matrix, int width, int height, int nb_zone)
 	}
 }
 
+double *file_to_matrix_bin(const char *filename, double **matrix_end,
+		                        int *pointer_width, int *pointer_height )
+{
+	double * matrix = file_to_matrix_bin(filename, matrix_end,
+			     		pointer_width, pointer_height );
+	binarize_simple(matrix, *matrix_end);
+	return matrix;
+}
 
+GtkWidget * file_to_image_bin(const char *filename)
+{
+	int width, height;
+	double *matrix_end;
+	double *matrix = file_to_matrix_bin(filename, &matrix_end,
+					&width, &height);
+	return image_from_matrix(matrix, width, height);
+}
 void test_filters ()
 {
-	int width,height;
-	double *matrix_end;
-	double *matrix = file_to_matrix_grey("test", &matrix_end, &width, &height);
-	binarize_simple(matrix, matrix_end);
+	file_to_image_bin("test");
 }
