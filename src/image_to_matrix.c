@@ -6,18 +6,15 @@
 double * pixbuf_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end,
 		int *pointer_width, int *pointer_height)
 {
-	guchar *pixel=NULL;
-	gint channel=0;
-	gint width=0;
 	if (!pixbuf)
 	{
 		perror("Erreur fonction pixbuf_to_matrix_grey no pixbuf");
 		return NULL;
 	}
 
-	pixel=gdk_pixbuf_get_pixels(pixbuf);
-	channel=gdk_pixbuf_get_n_channels(pixbuf);
-	width=gdk_pixbuf_get_width(pixbuf);
+	guchar *pixel = gdk_pixbuf_get_pixels(pixbuf);
+	gint channel = gdk_pixbuf_get_n_channels(pixbuf);
+	gint width = gdk_pixbuf_get_width(pixbuf);
 	gint height = gdk_pixbuf_get_height(pixbuf);
 	
 	*pointer_width = width;
@@ -32,8 +29,8 @@ double * pixbuf_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end,
 			red   = pixel[(x*channel)+(y*width*channel)];
 			green = pixel[(x*channel)+(y*width*channel)+1];
 			blue  = pixel[(x*channel)+(y*width*channel)+2];
-			*(matrix + x + y*width) = (red+green+blue);
-			*(matrix + x + y*width) = *(matrix + x + y*width)/765;
+			*(matrix + x + y*width) = ((int)red+(int)green+(int)blue);
+			*(matrix + x + y*width) = *(matrix + x + y*width)/765.0;
 			//considering that the max value of each colors is 255
 		}
 	}

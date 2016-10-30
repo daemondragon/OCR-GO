@@ -81,7 +81,7 @@ W_list * v_cutting(double *band_start, double *band_end, int width,
         {
             --i;
         }
-        double *char_start = band_start + i;
+        double *char_start = band_start + i + 1;
         //End of char
 
         //Add char
@@ -115,10 +115,10 @@ W_list * v_cutting(double *band_start, double *band_end, int width,
 }
 
 
-W_list* cutting(double *matrix, size_t weight, size_t height, int threshold)
+W_list* cutting(double *matrix, size_t width, size_t height, int threshold)
 {
     //actual is the first pixel of the last line
-    double *actual = matrix + weight * (height - 1);
+    double *actual = matrix + width * (height - 1);
 
     int sum_space_size = 0;
     int space_count = 0;
@@ -126,27 +126,31 @@ W_list* cutting(double *matrix, size_t weight, size_t height, int threshold)
 
     while (matrix <= actual)
     {
-        while (matrix <= actual && !is_black_line(actual, weight, threshold))
-            actual -= weight;
+        while (matrix <= actual && !is_black_line(actual, width, threshold))
+            actual -= width;
+        
+        printf("end of white lines: %d\n", (actual - matrix) / width);
         //We are on the last black line of a horizontal block (first pixel)
 
-        double *band_start = actual - weight;
+        double *band_start = actual - width;
         double *band_end = actual;
         while (matrix <= band_start &&
-               is_black_line(band_start, weight, threshold))
-            band_start -= weight;
+               is_black_line(band_start, width, threshold))
+            band_start -= width;
 
         //We are on the white line just before the first black line (band)
-        band_start += weight;
+        band_start += width;
 
         if (matrix > band_start)
             break;//Nothing found : cursor before matrix start
 
         //WORK ON BAND
-        word_list = v_cutting(band_start, band_end, weight,
+        printf("lines found! %d %d\n", (band_start - matrix) / width, (band_end - matrix) / width);
+        
+        word_list = v_cutting(band_start, band_end, width,
                               word_list, &sum_space_size, &space_count);
         
-        actual = band_start - weight;
+        actual = band_start - width;
     }
 
 	if (space_count > 0)
