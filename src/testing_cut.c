@@ -58,7 +58,7 @@ WL_free(word_list);
 
 char is_valid(size_t x ,size_t y, size_t width, size_t heigth)
 {
-return x<width && y<heigth ;
+return x<width && y<heigth  ;
 }
 
 void show_cutting()
@@ -86,19 +86,36 @@ void show_cutting()
 
 			size_t posx = (word_list->info.pos - matrix) % l;
 			size_t posy = (word_list->info.pos - matrix) / l;
+			size_t hei = word_list->info.height;
+			size_t wid = word_list->info.width;
 
             printf("pos: %d %d", posx, posy);
 
-        	for(size_t i = posx - 5; i < posx + word_list->info.width + 5;++i)
+        	for(size_t i = posx - 1; i < posx + word_list->info.width + 1;++i)
 		    {
-				for(size_t j = posy - 5; j < posy + word_list->info.height + 5 ; ++j)		
-				{
-					if(is_valid(i,j,l,h))
-			    	{
-						*(matrix + j*l + i)= 0.8; 
-					}		
-				}			
+				if(is_valid(i, posy-1, l, h))
+			   	{
+					*(matrix + (posy - 1) * l + i) = 0.8;
+				}
+				if(is_valid(i, posy + hei + 1 , l, h))
+			   	{
+					*(matrix + (posy + hei + 1) * l + i) = 0.8; 
+				}		
 			}
+
+			for(size_t j = posy - 1; j < posy + word_list->info.height + 1 ; ++j)		
+			{
+				if(is_valid(posx-1, j ,l ,h))
+			   	{
+					*(matrix + j*l + posx -1)= 0.8; 
+				}
+
+				if(is_valid(posx + wid, posy + wid + 1 , l, h))
+			   	{
+					*(matrix + j* l + posx + wid + 1) = 0.8; 
+				}		
+			}			
+			
     	}
 		if (word_list->info.type == SPACE)
 		{/*
