@@ -72,7 +72,8 @@ void show_cutting()
 	size_t l = 503;
 	size_t h = 640;	
 	W_list *word_list = cutting(matrix,l,h,1);
-		
+	printf("coca\n");
+
 	
 	while(word_list!=NULL)
 	{
