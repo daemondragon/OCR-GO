@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
     argument_t  arguments[] = {{"xor", "show neural network xor", show_xor},
 			                   {"cut", "rapid test for cutting", test_cut},
 					   {"filter", "test for filters", test_filters},
+					   {"pcut", "pretty test for cutting", show_cutting},
 					   {"mat_copy", "test for copying matrix", test_mat_copy}};
     size_t nb_arguments = 4;
     if (argc > 1)
