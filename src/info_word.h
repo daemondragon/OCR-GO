@@ -7,8 +7,8 @@ typedef struct infos
 {
 	enum type{WORD, SPACE, NEW_LINE}type; 
 	double *pos;
-	int width;
-	int height;
+	size_t width;
+	size_t height;
 }infos;
 
 typedef struct W_list
