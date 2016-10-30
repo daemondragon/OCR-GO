@@ -67,8 +67,15 @@ void show_cutting()
 	int h = 20;
 
     double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,&l,&h);
-	W_list *word_list = cutting(matrix,l,h,1);
 
+    printf("%f %f %f\n", *matrix, *(matrix + (l * h) / 2), *(matrix + (l * h) - 1));
+    printf("%d\n", is_black_line(matrix, l, 1));
+    printf("%d\n", is_black_line(matrix + l * (h / 2), l, 1));
+    printf("%d\n", is_black_line(matrix + l * (h - 1), l, 1));
+
+    W_list *word_list = cutting(matrix,l,h,1);
+
+    #if 1
 	while(word_list!=NULL)
 	{
 		//printf( "%d \n" ,word_list->info.type);
@@ -106,7 +113,8 @@ void show_cutting()
 			}*/		
 		}
 		word_list = WL_nxt(word_list); 
-	}	
+	}
+	#endif
 	GtkWidget *new_image = image_from_matrix(matrix,l,h);
  	test_window(new_image);
 }

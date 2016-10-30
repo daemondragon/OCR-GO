@@ -14,6 +14,7 @@ double * pixbuf_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end,
 
 	guchar *pixel = gdk_pixbuf_get_pixels(pixbuf);
 	gint channel = gdk_pixbuf_get_n_channels(pixbuf);
+
 	gint width = gdk_pixbuf_get_width(pixbuf);
 	gint height = gdk_pixbuf_get_height(pixbuf);
 	
@@ -22,15 +23,15 @@ double * pixbuf_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end,
 	guchar red, green, blue;
 	double *matrix = malloc(sizeof(double) * width * height);
 
-	for (gint y = 0; y<height; y++)
+	for (gint y = 0; y < height; y++)
 	{
-		for (gint x = 0; x<width; x++)
+		for (gint x = 0; x < width; x++)
 		{
-			red   = pixel[(x*channel)+(y*width*channel)];
-			green = pixel[(x*channel)+(y*width*channel)+1];
-			blue  = pixel[(x*channel)+(y*width*channel)+2];
-			*(matrix + x + y*width) = ((int)red+(int)green+(int)blue);
-			*(matrix + x + y*width) = *(matrix + x + y*width)/765.0;
+			red   = pixel[(x*channel)+(y*width*channel) + 1];
+			green = pixel[(x*channel)+(y*width*channel) + 2];
+			blue  = pixel[(x*channel)+(y*width*channel) + 3];
+
+			matrix[x + y * width] = ((int)red + (int)green + (int)blue) / 765.0;
 			//considering that the max value of each colors is 255
 		}
 	}
@@ -56,17 +57,17 @@ GtkWidget * image_from_matrix (double *matrix, int width, int height)
 	GdkPixbuf *pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, 0, 8, width, height);
 	guchar *pixel=gdk_pixbuf_get_pixels(pixbuf);
 	int channel=gdk_pixbuf_get_n_channels(pixbuf);
-	for (gint y = 0; y<height; y++)
+	for (gint y = 0; y < height; y++)
+    {
+        for (gint x = 0; x < width; x++)
         {
-                for (gint x = 0; x<width; x++)
-                {
-			int grey_level = *(matrix + x + y*width)*255;
-                        pixel[(x*channel)+(y*width*channel)] = grey_level;
-                        pixel[(x*channel)+(y*width*channel)+1] = grey_level;
-                        pixel[(x*channel)+(y*width*channel)+2] = grey_level ;
-                }
+	        int grey_level = matrix[x + y * width] * 255;
+            pixel[(x*channel)+(y*width*channel)] = grey_level;
+            pixel[(x*channel)+(y*width*channel)+1] = grey_level;
+            pixel[(x*channel)+(y*width*channel)+2] = grey_level ;
         }
-        return gtk_image_new_from_pixbuf(pixbuf);
+    }
+    return gtk_image_new_from_pixbuf(pixbuf);
 }
 
 
