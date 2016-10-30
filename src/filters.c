@@ -83,7 +83,7 @@ void binarize_mean_zone(double *matrix, int width, int height, int nb_zone)
 double *file_to_matrix_bin(const char *filename, double **matrix_end,
 		                        int *pointer_width, int *pointer_height )
 {
-	double * matrix = file_to_matrix_bin(filename, matrix_end,
+	double * matrix = file_to_matrix_grey(filename, matrix_end,
 			     		pointer_width, pointer_height );
 	binarize_simple(matrix, *matrix_end);
 	return matrix;
