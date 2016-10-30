@@ -103,6 +103,16 @@ void test_filters ()
 	int argc = 0;
 	char **argv = NULL;
 	gtk_init(&argc, &argv);
+	GtkWidget *image2 = gtk_image_new_from_file ("image_test/binarize.png");
+        GtkWidget *Window2;
+        Window2 = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        gtk_container_set_border_width(GTK_CONTAINER(Window2),5);
+        gtk_window_set_default_size(GTK_WINDOW(Window2),600,600);
+        gtk_window_set_title(GTK_WINDOW(Window2),"OCR TEST IMAGE");
+        g_signal_connect(G_OBJECT(Window2),"destroy", G_CALLBACK(gtk_main_quit), NULL);
+        gtk_container_add(GTK_CONTAINER(Window2), image2);
+        gtk_widget_show_all(Window2);
+        gtk_main();
 	GtkWidget *Window;
 	Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width(GTK_CONTAINER(Window),5);
@@ -111,6 +121,5 @@ void test_filters ()
 	g_signal_connect(G_OBJECT(Window),"destroy", G_CALLBACK(gtk_main_quit), NULL);
 	gtk_container_add(GTK_CONTAINER(Window), image);
 	gtk_widget_show_all(Window);
-	gtk_main();
-
+	gtk_main(); 
 }
