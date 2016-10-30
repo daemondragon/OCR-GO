@@ -68,24 +68,18 @@ void show_cutting()
    
     
 
-   	int ll = 503;
-	int hh = 640;
+   	int l;
+	int h;
 
-    double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,&ll,&hh);
-	size_t l = 503;
-	size_t h = 640;	
+    double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,&l,&h);
 	W_list *word_list = cutting(matrix,l,h,1);
-	printf("coca\n");
 
-	
+    printf("%d %d\n", l, h);
+
 	while(word_list!=NULL)
-	{	
-		printf("lolol \n");
-		
-		
+	{		
 		if (word_list->info.type == WORD)
     	{
-			printf("un lol \n");
 			size_t posx = (word_list->info.pos - matrix)/l;
 			size_t posy = (word_list->info.pos - matrix)%l;
 
@@ -105,7 +99,6 @@ void show_cutting()
 		{
 			size_t posx = (word_list->info.pos - matrix)/l;
 			size_t posy = (word_list->info.pos - matrix)%l;
-			printf("2 lol \n");
 			for(size_t i = posx-1; i< posx + word_list->info.width +1;++i)
 			{	
 				if(is_valid(i,posy,l,h))
@@ -116,18 +109,15 @@ void show_cutting()
 		}
 		word_list = WL_nxt(word_list); 
 	}	
-	
 	GtkWidget *new_image = image_from_matrix(matrix,l,h);
  	test_window(new_image);
-	
-
-
 }
+
 void test_window(GtkWidget *widget)
 {
-    int argc;
-    char **argv;
-    gtk_init(&argc,&argv);   
+    int argc = 0;
+    char **argv = NULL;
+    gtk_init(&argc, &argv);   
 
     GtkWidget *Window;
     Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -139,6 +129,4 @@ void test_window(GtkWidget *widget)
     gtk_container_add(GTK_CONTAINER(Window),GTK_WIDGET(widget));
     gtk_widget_show(Window);
     gtk_main();
-
-
 }
