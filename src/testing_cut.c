@@ -103,6 +103,7 @@ void show_cutting()
 				}
 			}		
 		}
+		word_list = WL_nxt(word_list); 
 	}	
 	
 	GtkWidget *new_image = image_from_matrix(matrix,l,h);
