@@ -6,6 +6,7 @@
 #include "testing_cut.h"
 
 #include "image_to_matrix.h"
+#include "filters.h"
 
 char is_same_string(char *s1, char *s2)
 {
@@ -33,8 +34,9 @@ int main(int argc, char *argv[])
 {
     argument_t  arguments[] = {{"xor", "show neural network xor", show_xor},
 			                   {"cut", "rapid test for cutting", test_cut},
-			                   {"filter", "test for filters", test_filters}};
-    size_t nb_arguments = 3;
+					   {"filter", "test for filters", test_filters},
+					   {"mat_copy", "test for copying matrix", test_mat_copy}};
+    size_t nb_arguments = 4;
     if (argc > 1)
     {
         for (size_t i = 0; i < nb_arguments; i++)

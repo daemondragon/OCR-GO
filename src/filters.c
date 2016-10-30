@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "image_to_matrix.h"
 
 void binarize_simple(double *matrix, double *end_matrix)
 {
@@ -11,9 +11,9 @@ void binarize_simple(double *matrix, double *end_matrix)
 	}
 	mean = mean / (end_matrix - matrix);
 	for (double *index = matrix; index < end_matrix; index++)
-	{      
+	{
 		if (*index > mean)
-		{       
+		{
 			*index = 1.0;
 		}
 		else
@@ -24,7 +24,8 @@ void binarize_simple(double *matrix, double *end_matrix)
 
 }
 
-void _binarize_mean_zone(double *matrix,int xmin, int xmax, int ymin, int ymax, int width)
+void _binarize_mean_zone(double *matrix,int xmin, int xmax,
+			int ymin, int ymax, int width)
 {
 	//xmin xmax ymin ymax set to limit the zone
 	double mean = 0;
@@ -41,7 +42,7 @@ void _binarize_mean_zone(double *matrix,int xmin, int xmax, int ymin, int ymax, 
 		for (int x = xmin; x < xmax; x++)
 		{
 			if (*(matrix + x + y*width) > mean)
-			{	
+			{
 				*(matrix + x + y*width) = 1.0;
 			}
 			else
@@ -72,10 +73,18 @@ void binarize_mean_zone(double *matrix, int width, int height, int nb_zone)
 			}
 			_binarize_mean_zone(matrix, xmin, xmax, ymin, ymax, width);
 			xmin = xmax;
-			xmax += width/nb_zone; 
+			xmax += width/nb_zone;
 		}
 		ymin = ymax;
 		ymax += height/nb_zone;
 	}
+}
 
+
+void test_filters ()
+{
+	int width,height;
+	double *matrix_end;
+	double *matrix = file_to_matrix_grey("test", &matrix_end, &width, &height);
+	binarize_simple(matrix, matrix_end);
 }
