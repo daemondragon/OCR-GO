@@ -5,7 +5,8 @@
 
 double * pixbuf_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end,
 		int *pointer_width, int *pointer_height)
-{
+{	
+	printf("2truc");
 	guchar *pixel=NULL;
 	gint channel=0;
 	gint width=0;
@@ -14,14 +15,20 @@ double * pixbuf_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end,
 		perror("Erreur fonction pixbuf_to_matrix_grey no pixbuf");
 		return NULL;
 	}
+	printf("3truc");
 	pixel=gdk_pixbuf_get_pixels(pixbuf);
 	channel=gdk_pixbuf_get_n_channels(pixbuf);
 	width=gdk_pixbuf_get_width(pixbuf);
 	gint height = gdk_pixbuf_get_height(pixbuf);
+	printf("4truc \n");	
 	*pointer_width = width;
+	printf("4truc \n");	
 	*pointer_height = height;
+	printf("4truc \n");	
 	guchar red, green, blue;
+	printf("5truc \n");	
 	double *matrix = malloc(sizeof(double) * width * height);
+	printf("untruc");
 	for (gint y = 0; y<height; y++)
 	{
 		for (gint x = 0; x<width; x++)
@@ -34,7 +41,7 @@ double * pixbuf_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end,
 			//considering that the max value of each colors is 255
 		}
 	}
-	*matrix_end = matrix + width*height;
+	*matrix_end = matrix + width*height-1;
 	return matrix;
 }
 
