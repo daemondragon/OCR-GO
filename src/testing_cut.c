@@ -6,7 +6,7 @@
 
 char is_valid(size_t x ,size_t y, size_t width, size_t heigth)
 {
-return x<width && y<heigth  ;
+    return (x < width && y < heigth);
 }
 
 void show_cutting()
