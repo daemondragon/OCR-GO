@@ -81,16 +81,15 @@ void show_cutting()
 		{//NEW_LINE
 		    if (previous && word_list->nxt)
 		    {
-		        double *pos_up = (previous->info.pos -
-		            (previous->info.pos - matrix) % l)
-		                + l * previous->info.height;
-		        double *pos_down = (word_list->nxt->info.pos -
-		            (word_list->nxt->info.pos - matrix) % l);
-		        double *middle = (double*)((size_t)pos_up / 2 +
-		                                   (size_t)pos_down / 2);
+		        size_t pos_up = (previous->info.pos - matrix + 
+		                         l * previous->info.height) / l * l;
+		        size_t pos_down = (word_list->nxt->info.pos - matrix) / l *l;
+
+		        size_t middle = ((pos_up + pos_down) / 2) / l * l;
+
 		        for (int i = 0 ; i < l ; ++i)
 		        {
-		            middle[i] = 0.8;
+		            matrix[middle + i] = 0.8;
 		        }
 		    }
 		}
