@@ -4,7 +4,8 @@
 
 #include "cutting.h"
 
-#define VERTICAL_PERCENTAGE_THRESHOLD   0.1
+#define VERTICAL_THRESHOLD   1
+#define BLACK_THRESHOLD     0.4
 
 char is_black_line(double *start, int width, int threshold)
 {
@@ -13,8 +14,8 @@ char is_black_line(double *start, int width, int threshold)
 
     for(int i = 0; i < width; ++i, ++actual)
 	{
-		if (*actual < 0.10)//Black
-		{	
+		if (*actual < BLACK_THRESHOLD)//Black
+		{
 			dots++;
 		}
 	}
@@ -29,7 +30,7 @@ char is_black_column(double *start, double *end, int width, int threshold)
 
     while (actual <= end)
     {
-        if (*actual < 0.1)//Black
+        if (*actual < BLACK_THRESHOLD)//Black
         {
             dots++;
         }
@@ -45,13 +46,11 @@ W_list * v_cutting(double *band_start, double *band_end, int width,
                    W_list *word_list,
                    int *sum_space_size, int *space_count)
 {
-    int threshold = ((band_end - band_start) * VERTICAL_PERCENTAGE_THRESHOLD
-                    / width);
+    int threshold = VERTICAL_THRESHOLD;
     threshold = (threshold <= 1 ? 1 : threshold);
 
     int temp_sum_space_size = 0;
     int temp_space_count = 0;
-    
     infos info;
     info.height = (band_end - band_start) / width + 1;
 
@@ -148,13 +147,10 @@ W_list* cutting(double *matrix, size_t width, size_t height, int threshold)
         printf("lines found! %d %d\n", (band_start - matrix) / width,
                                        (band_end - matrix) / width);
         #endif
-        
         word_list = v_cutting(band_start, band_end, width,
-                              word_list, &sum_space_size, &space_count);
-        
+        word_list, &sum_space_size, &space_count);
         actual = band_start - width;
     }
-
 	if (space_count > 0)
 	    word_list = WL_clean(word_list, sum_space_size / space_count);
 

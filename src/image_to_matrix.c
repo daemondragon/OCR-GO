@@ -18,7 +18,7 @@ double * pixbuf_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end,
 	gint width = gdk_pixbuf_get_width(pixbuf);
 	gint height = gdk_pixbuf_get_height(pixbuf);
 	gint rowstride = gdk_pixbuf_get_rowstride(pixbuf);
-	
+
 	*pointer_width = width;
 	*pointer_height = height;
 	guchar red, green, blue;

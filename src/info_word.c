@@ -11,7 +11,7 @@ W_list*  WL_add(W_list *liste ,infos to_add)
 	W_list *new_word;
 	new_word = malloc (sizeof(W_list));
 	new_word->info = to_add;
-	new_word->nxt = liste; 
+	new_word->nxt = liste;
 	return new_word;
 }
 
@@ -67,4 +67,4 @@ W_list* WL_clean(W_list *list, float min)
     }
 
 	return list;
-}	
+}
