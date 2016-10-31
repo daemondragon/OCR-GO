@@ -1,0 +1,4 @@
+Notre projet OCR GO peux etre lance de 2 manières différentes:
+-via la console en rentrant ./prog et un argument(pcut,filter,xor,load,
+mat_copy)
+-via l'interface en cliquant sur l'un des choix dans le menu test.
