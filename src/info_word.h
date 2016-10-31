@@ -5,7 +5,7 @@
 #include <stdlib.h>
 typedef struct infos
 {
-	enum type{WORD, SPACE, NEW_LINE}type; 
+	enum type{WORD, SPACE, NEW_LINE}type;
 	double *pos;
 	size_t width;
 	size_t height;
