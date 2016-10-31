@@ -1,5 +1,6 @@
 #include "window.h"
 
+
 int run_window(int argc, char **argv)
 {
     GtkWidget *Window;
@@ -39,7 +40,7 @@ int run_window(int argc, char **argv)
 
     MenuItems = gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN,NULL);
     g_signal_connect(G_OBJECT(MenuItems), "activate",
-                         G_CALLBACK(creer_file_selection),
+                         G_CALLBACK(create_file_selection),
                          (GtkWidget*) Window);
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
 
@@ -55,11 +56,8 @@ int run_window(int argc, char **argv)
     g_signal_connect(G_OBJECT(MenuItems), "activate",
                              G_CALLBACK(on_quitter_btn),(GtkWidget*) Window);
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
-    /* ETAPE 4 */
     MenuItems = gtk_menu_item_new_with_label("Fichier");
-    /* ETAPE 5 */
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(MenuItems), Menu);
-    /* ETAPE 6 */
     gtk_menu_shell_append(GTK_MENU_SHELL(MenuBar), MenuItems);
 
     /*second sub menu */
@@ -85,7 +83,7 @@ int run_window(int argc, char **argv)
    gtk_menu_shell_append(GTK_MENU_SHELL(MenuBar),MenuItems);
 
     gtk_box_pack_start(GTK_BOX(VboxMenu), MenuBar, FALSE,FALSE,0);
-    /* Insertion des boutons */
+    /* Insertion of boutons */
     gtk_table_attach(GTK_TABLE(Table), Button[0],
       9,10 ,9,10,GTK_EXPAND | GTK_FILL, GTK_EXPAND,0, 0);
 
@@ -131,7 +129,7 @@ void on_quitter_btn(GtkWidget* widget, gpointer data)
             break;
     }
 }
-void creer_file_selection()
+void create_file_selection()
 {
     GtkWidget *selection;
 
@@ -143,14 +141,14 @@ void creer_file_selection()
     gtk_window_set_modal(GTK_WINDOW(selection), TRUE);
 
     g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(selection)->ok_button),
-     "clicked", G_CALLBACK(recuperer_chemin), selection );
+     "clicked", G_CALLBACK(get_way), selection );
 
     g_signal_connect_swapped(G_OBJECT(GTK_FILE_SELECTION(selection)
                                                             ->cancel_button),
       "clicked", G_CALLBACK(gtk_widget_destroy), selection);
 }
 
-void recuperer_chemin(GtkWidget *bouton,GtkWidget *file_selection)
+void get_way(GtkWidget *bouton,GtkWidget *file_selection)
 {
 
 
