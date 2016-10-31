@@ -74,7 +74,7 @@ void show_cutting()
 		{//NEW_LINE
 		    if (previous && word_list->nxt)
 		    {
-		        size_t pos_up = (previous->info.pos - matrix + 
+		        size_t pos_up = (previous->info.pos - matrix +
 		                         l * previous->info.height) / l * l;
 		        size_t pos_down = (word_list->nxt->info.pos - matrix) / l *l;
 
