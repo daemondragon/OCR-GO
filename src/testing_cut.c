@@ -17,6 +17,7 @@ void show_cutting()
     double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,&l,&h);
 
     W_list *word_list = cutting(matrix,l,h,1);
+    W_list *previous = NULL;
 
 	while(word_list!=NULL)
 	{
@@ -63,7 +64,7 @@ void show_cutting()
 			}
 
     	}
-		if (word_list->info.type == SPACE)
+		else if (word_list->info.type == SPACE)
 		{
 			size_t posx = (word_list->info.pos - matrix)/l;
 			size_t posy = (word_list->info.pos - matrix)%l;
@@ -72,10 +73,28 @@ void show_cutting()
 			{
 			    if(is_valid(i,posy,l,h))
 				{
-					*(matrix+i*l)= 0.6;
+					//*(matrix+i*l)= 0.6;
 				}
 			}
 		}
+		else
+		{//NEW_LINE
+		    if (previous && word_list->nxt)
+		    {
+		        double *pos_up = (previous->info.pos -
+		            (previous->info.pos - matrix) % l)
+		                + l * previous->info.height;
+		        double *pos_down = (word_list->nxt->info.pos -
+		            (word_list->nxt->info.pos - matrix) % l);
+		        double *middle = (double*)((size_t)pos_up / 2 +
+		                                   (size_t)pos_down / 2);
+		        for (int i = 0 ; i < l ; ++i)
+		        {
+		            middle[i] = 0.8;
+		        }
+		    }
+		}
+		previous = word_list;
 		word_list = WL_nxt(word_list);
 	}
 
