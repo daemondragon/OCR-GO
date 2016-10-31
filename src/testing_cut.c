@@ -68,15 +68,13 @@ void show_cutting()
 
     double *matrix = file_to_matrix_grey("./image_test/test_cutv0_5.png",0,&l,&h);
 	
-	--l;
-	--h;
-    printf("%f %f %f\n", *matrix, *(matrix + (l * h) / 2), *(matrix + (l * h) - 1));
+	printf("%f %f %f\n", *matrix, *(matrix + (l * h) / 2), *(matrix + (l * h) - 1));
     printf("%d\n", is_black_line(matrix, l, 1));
     printf("%d\n", is_black_line(matrix + l * (h / 2), l, 1));
     printf("%d\n", is_black_line(matrix + l * (h - 1), l, 1));
 
     W_list *word_list = cutting(matrix,l,h,1);
-
+	
     #if 1
 	while(word_list!=NULL)
 	{
@@ -87,7 +85,9 @@ void show_cutting()
     	                               word_list->info.height);
 
 			size_t posx = (word_list->info.pos - matrix) % l;
+			
 			size_t posy = (word_list->info.pos - matrix) / l;
+			printf(" posy %d \n",word_list->info.pos - matrix);
 			size_t hei = word_list->info.height;
 			size_t wid = word_list->info.width;
 
@@ -95,13 +95,14 @@ void show_cutting()
 
         	for(size_t i = posx - 1; i < posx + wid ;++i)
 		    {
+				//printf("i %d posy-1 %d \n",i,posy-1);
 				if(is_valid(i, posy-1, l, h))
 			   	{
 					*(matrix + (posy - 1) * l + i) = 0.8;
 				}
 				if(is_valid(i, posy + hei + 1 , l, h))
 			   	{
-					*(matrix + (posy + hei + 1) * l + i) = 0.8; 
+					//*(matrix + (posy + hei + 1) * l + i) = 0.8; 
 				}		
 			}
 
@@ -109,13 +110,13 @@ void show_cutting()
 			{
 				if(is_valid(posx-1, j ,l ,h))
 			   	{
-					*(matrix + j*l + posx -1)= 0.8; 
-					printf(" tot %d posx:%d l:%d j:%d \n", j*l + posx -1,posx,l,j);
+					//*(matrix + j*l + posx -1)= 0.8; 
+					//printf(" tot %d posx:%d l:%d j:%d \n", j*l + posx -1,posx,l,j);
 				}
 
 				if(is_valid(posx + wid, posy + wid + 1 , l, h))
 			   	{
-					*(matrix + j*l + posx + wid + 1) = 0.8; 
+					//*(matrix + j*l + posx + wid + 1) = 0.8; 
 				}		
 			}			
 			
