@@ -104,8 +104,8 @@ W_list * v_cutting(double *band_start, double *band_end, int width,
         if (i >= 0)
         {//add space
             info.type = SPACE;
-            info.pos = char_end;
-            info.width = (char_end - (band_start + i + 1));
+            info.width = (char_start - (band_start + i + 1));
+            info.pos = char_start - info.width;
             word_list = WL_add(word_list, info);
         }
     }

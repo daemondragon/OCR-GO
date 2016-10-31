@@ -62,20 +62,13 @@ void show_cutting()
 					*(matrix + j*l + posx + wid + 1) = 0.8;
 				}
 			}
-
     	}
 		else if (word_list->info.type == SPACE)
 		{
-			size_t posx = (word_list->info.pos - matrix)/l;
-			size_t posy = (word_list->info.pos - matrix)%l;
+            double *pos = word_list->info.pos + l * word_list->info.height;
 
-			for(size_t i = posx-1; i< posx + word_list->info.width +1;++i)
-			{
-			    if(is_valid(i,posy,l,h))
-				{
-					//*(matrix+i*l)= 0.6;
-				}
-			}
+			for(size_t i = 2; i < word_list->info.width - 2; ++i)
+		        pos[i] = 0.6;
 		}
 		else
 		{//NEW_LINE
@@ -88,9 +81,7 @@ void show_cutting()
 		        size_t middle = ((pos_up + pos_down) / 2) / l * l;
 
 		        for (int i = 0 ; i < l ; ++i)
-		        {
 		            matrix[middle + i] = 0.8;
-		        }
 		    }
 		}
 		previous = word_list;
