@@ -128,8 +128,7 @@ W_list* cutting(double *matrix, size_t width, size_t height, int threshold)
     {
         while (matrix <= actual && !is_black_line(actual, width, threshold))
             actual -= width;
-        
-        printf("end of white lines: %d\n", (actual - matrix) / width);
+
         //We are on the last black line of a horizontal block (first pixel)
 
         double *band_start = actual - width;
@@ -145,7 +144,10 @@ W_list* cutting(double *matrix, size_t width, size_t height, int threshold)
             break;//Nothing found : cursor before matrix start
 
         //WORK ON BAND
-        printf("lines found! %d %d\n", (band_start - matrix) / width, (band_end - matrix) / width);
+        #ifndef DEBUG
+        printf("lines found! %d %d\n", (band_start - matrix) / width,
+                                       (band_end - matrix) / width);
+        #endif
         
         word_list = v_cutting(band_start, band_end, width,
                               word_list, &sum_space_size, &space_count);

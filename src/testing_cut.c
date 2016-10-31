@@ -66,32 +66,28 @@ void show_cutting()
    	int l = 40;
 	int h = 20;
 
-    double *matrix = file_to_matrix_grey("./image_test/test_cutv0_5.png",0,&l,&h);
-	
-	--l;
-	--h;
-    printf("%f %f %f\n", *matrix, *(matrix + (l * h) / 2), *(matrix + (l * h) - 1));
-    printf("%d\n", is_black_line(matrix, l, 1));
-    printf("%d\n", is_black_line(matrix + l * (h / 2), l, 1));
-    printf("%d\n", is_black_line(matrix + l * (h - 1), l, 1));
+    double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,&l,&h);
 
     W_list *word_list = cutting(matrix,l,h,1);
 
-    #if 1
 	while(word_list!=NULL)
 	{
 		//printf( "%d \n" ,word_list->info.type);
 		if (word_list->info.type == WORD)
     	{
+    	    #ifndef DEBUG
     	    printf("word : w:%d h:%d\n", word_list->info.width,
     	                               word_list->info.height);
+    	    #endif
 
 			size_t posx = (word_list->info.pos - matrix) % l;
 			size_t posy = (word_list->info.pos - matrix) / l;
 			size_t hei = word_list->info.height;
 			size_t wid = word_list->info.width;
 
+            #ifndef DEBUG
             printf("pos: %d %d", posx, posy);
+            #endif
 
         	for(size_t i = posx - 1; i < posx + wid ;++i)
 		    {
@@ -110,7 +106,7 @@ void show_cutting()
 				if(is_valid(posx-1, j ,l ,h))
 			   	{
 					*(matrix + j*l + posx -1)= 0.8; 
-					printf(" tot %d posx:%d l:%d j:%d \n", j*l + posx -1,posx,l,j);
+					//printf(" tot %d posx:%d l:%d j:%d \n", j*l + posx -1,posx,l,j);
 				}
 
 				if(is_valid(posx + wid, posy + wid + 1 , l, h))
@@ -134,7 +130,7 @@ void show_cutting()
 		}
 		word_list = WL_nxt(word_list); 
 	}
-	#endif
+
 	GtkWidget *new_image = image_from_matrix(matrix,l,h);
  	test_window(new_image);
 }
