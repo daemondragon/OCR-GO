@@ -42,11 +42,11 @@ void show_cutting()
 		    {
 				if(is_valid(i, posy-1, l, h))
 			   	{
-					*(matrix + (posy - 1) * l + i) = 0.8;
+					*(matrix + (posy - 1) * l + i) = 0.5;
 				}
 				if(is_valid(i, posy + hei + 1 , l, h))
 			   	{
-					*(matrix + (posy + hei + 1) * l + i) = 0.8;
+					*(matrix + (posy + hei + 1) * l + i) = 0.5;
 				}
 			}
 
@@ -54,12 +54,12 @@ void show_cutting()
 			{
 				if(is_valid(posx-1, j ,l ,h))
 			   	{
-					*(matrix + j*l + posx -1)= 0.8;
+					*(matrix + j*l + posx -1)= 0.5;
 				}
 
 				if(is_valid(posx + wid, posy + wid + 1 , l, h))
 			   	{
-					*(matrix + j*l + posx + wid + 1) = 0.8;
+					*(matrix + j*l + posx + wid + 1) = 0.5;
 				}
 			}
     	}
@@ -68,7 +68,7 @@ void show_cutting()
             double *pos = word_list->info.pos + l * word_list->info.height;
 
 			for(size_t i = 2; i < word_list->info.width - 2; ++i)
-		        pos[i] = 0.6;
+		        pos[i] = 0.5;
 		}
 		else
 		{//NEW_LINE
@@ -81,7 +81,7 @@ void show_cutting()
 		        size_t middle = ((pos_up + pos_down) / 2) / l * l;
 
 		        for (int i = 0 ; i < l ; ++i)
-		            matrix[middle + i] = 0.8;
+		            matrix[middle + i] = 0.5;
 		    }
 		}
 		previous = word_list;
