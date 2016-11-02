@@ -5,7 +5,7 @@
 #include "cutting.h"
 
 #define VERTICAL_THRESHOLD   1
-#define BLACK_THRESHOLD     0.4
+#define BLACK_THRESHOLD     0.5
 
 char is_black_line(double *start, int width, int threshold)
 {
@@ -86,7 +86,7 @@ W_list * v_cutting(double *band_start, double *band_end, int width,
         //Add char
         info.type = WORD;
         info.pos = char_start;
-        info.width = (char_end - char_start);
+        info.width = (char_end - char_start + 1);
         word_list = WL_add(word_list, info);
 
         //Space
@@ -148,12 +148,44 @@ W_list* cutting(double *matrix, size_t width, size_t height, int threshold)
                                        (band_end - matrix) / width);
         #endif
         word_list = v_cutting(band_start, band_end, width,
-        word_list, &sum_space_size, &space_count);
+                              word_list, &sum_space_size, &space_count);
         actual = band_start - width;
     }
 	if (space_count > 0)
 	    word_list = WL_clean(word_list, sum_space_size / space_count);
 
+    adjust_contour(word_list, width);
+
 	return (word_list);
+}
+
+void    adjust_contour(W_list *word_list, int picture_width)
+{
+    // We use the same threshold as the vertical one, because characters
+    // are mostly a square.
+    while (word_list)
+    {
+        if (word_list->info.type == WORD)
+        {
+            while (!is_black_line(word_list->info.pos,
+                                  word_list->info.width,
+                                  VERTICAL_THRESHOLD) &&
+                   word_list->info.height > 0)
+            {
+                word_list->info.pos += picture_width;
+                word_list->info.height--;
+            }
+
+            while (!is_black_line(word_list->info.pos +
+                                      word_list->info.height * picture_width,
+                                  word_list->info.width,
+                                  VERTICAL_THRESHOLD) &&
+                   word_list->info.height > 0)
+            {
+                word_list->info.height--;
+            }
+        }
+        word_list = word_list->nxt;
+    }
 }
 

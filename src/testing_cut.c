@@ -38,7 +38,7 @@ void show_cutting()
             printf("pos: %d %d", posx, posy);
             #endif
 
-        	for(size_t i = posx - 1; i < posx + wid + 2; ++i)
+        	for(size_t i = posx - 1; i < posx + wid + 1; ++i)
 		    {
 				if(is_valid(i, posy-1, l, h))
 			   	{
@@ -57,9 +57,9 @@ void show_cutting()
 					*(matrix + j*l + posx -1)= 0.5;
 				}
 
-				if(is_valid(posx + wid, posy + wid + 1 , l, h))
+				if(is_valid(posx + wid, j , l, h))
 			   	{
-					*(matrix + j*l + posx + wid + 1) = 0.5;
+					*(matrix + j*l + posx + wid) = 0.5;
 				}
 			}
     	}
