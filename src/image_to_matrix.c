@@ -88,9 +88,51 @@ double * new_matrix_copy(double *matrix, double *matrix_end,
 	}
 	return new_matrix;
 }
+
+double * matrix_scale (double *matrix_pos, int line, int matrix_width, int
+		matrix_height, int width, int height)
+{
+	double *new_matrix = malloc(sizeof(double)*width*height);
+	double ratio_w = matrix_width, ratio_h = matrix_height;
+	ratio_w /= width;
+	ratio_h /= height;
+	double x2 = 0 , y2 = 0;
+	for (int y = 0; y<height; y++)
+	{
+		x2 = 0;
+		for (int x = 0; x<width; x++)
+		{
+			*(new_matrix + x + y * width) =  *(matrix_pos +  (int)x2 + ((int)
+						y2) * line);
+			x2 += ratio_w;
+		}
+		y2 += ratio_h;
+	}
+	return new_matrix;
+}
+/*
+   double * matrix_scale (double *matrix_pos, int line, int matrix_width, int
+   matrix_height, int width, int height)
+   {
+   double *new_matrix = malloc(sizeof(double)*width*height);
+   for (int y = 0; y<height; y ++)
+   {
+   for (int x = 0; x<width; x++)
+   {
+ *(new_matrix + x +
+ y*width) =
+ *(matrix_pos +
+ x +
+ y*line);
+ }
+ }
+ return new_matrix;
+ }
+ */
+
 //not used and not tested
 /*double * image_to_matrix_colors(GdkPixbuf *pixbuf)
-{
+  {
   guchar *pixel=NULL;
   gint channel=0;
   gint width=0;
@@ -105,13 +147,13 @@ double * new_matrix_copy(double *matrix, double *matrix_end,
   {
   for (gint x = 0; x<width; x++)
   {
- (matrix + x*3 + y*width*3)  = pixel[(x*channel)+(y*width*channel)]/255;
- (matrix + x*3 + y*width*3 + 1) = pixel[(x*channel)+(y*width*channel)+1]/255;
- (matrix + x*3 + y*width*3 + 2) = pixel[(x*channel)+(y*width*channel)+2]/255;
- }
- }
- return matrix;
- }*/
+  (matrix + x*3 + y*width*3)  = pixel[(x*channel)+(y*width*channel)]/255;
+  (matrix + x*3 + y*width*3 + 1) = pixel[(x*channel)+(y*width*channel)+1]/255;
+  (matrix + x*3 + y*width*3 + 2) = pixel[(x*channel)+(y*width*channel)+2]/255;
+  }
+  }
+  return matrix;
+  }*/
 
 void test_mat_copy()
 {

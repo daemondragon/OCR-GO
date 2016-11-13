@@ -23,6 +23,8 @@ GtkWidget * image_from_matrix (double *matrix, int width, int height);
 double * new_matrix_copy(double *matrix, double *matrix_end,
 			double **new_matrix_end);
 
+double * matrix_scale (double *matrix_pos, int line, int matrix_width, int
+		        matrix_height, int width, int height);
 
 
 void test_mat_copy();
