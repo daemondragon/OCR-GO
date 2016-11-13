@@ -2,40 +2,31 @@
 #include <stdio.h>
 
 #include "show_xor.h"
+#include "load_exemples.h"
 #include "window.h"
 #include "testing_cut.h"
 
 #include "image_to_matrix.h"
 #include "filters.h"
 
-void show_picture()
+double *load_pict(char *string)
 {
-    int w;
-    int h;
+    int w, h;
+    return (file_to_matrix_grey(string, NULL, &w, &h));
+}
 
-    double *pixels = file_to_matrix_grey("./image_test/min.png",NULL, &w, &h);
+void load_examples()
+{
+    uint32_t nb_exemples = 0;
+    neural_exemple_t* exemples = load_exemples("./images/special",
+                                load_pict,
+                                &nb_exemples);
 
-    GtkWidget * widget = image_from_matrix(pixels, w, h);
-
-    int argc = 0;
-    char **argv = NULL;
-    gtk_init(&argc, &argv);
-
-    GtkWidget *Window;
-    GtkWidget *Box;
-
-    Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_container_set_border_width(GTK_CONTAINER(Window),5);
-    gtk_window_set_default_size(GTK_WINDOW(Window),600,600);
-    gtk_window_set_title(GTK_WINDOW(Window),"OCR TEST IMAGE");
-    g_signal_connect(G_OBJECT(Window),"destroy",
-                                     G_CALLBACK(gtk_main_quit), NULL);
-    Box = gtk_vbox_new(FALSE,0);
-    gtk_container_add(GTK_CONTAINER(Window), Box);
-
-    gtk_box_pack_start(GTK_BOX(Box), widget,FALSE,FALSE,5);
-    gtk_widget_show_all(Window);
-    gtk_main();
+    printf("n: %d\n", nb_exemples);
+    for (uint32_t i = 0; i < nb_exemples; ++i)
+    {
+        printf("c: %c\n", exemples[i].answer);
+    }
 }
 
 char is_same_string(char *s1, char *s2)
@@ -62,12 +53,15 @@ typedef struct
 
 int main(int argc, char *argv[])
 {
-    argument_t  arguments[] = {{"xor", "show neural network xor", show_xor},
-			                   {"filter", "test for filters", test_filters},
-					   {"pcut", "pretty test for cutting", show_cutting},
-					   {"mat_copy", "test for copying matrix", test_mat_copy},
-					   {"load", "load image", show_picture}};
+    argument_t  arguments[] = {
+    {"xor",         "show neural network xor",      show_xor},
+    {"filter",      "test for filters",             test_filters},
+	{"pcut",        "pretty test for cutting",      show_cutting},
+	{"mat_copy",    "test for copying matrix",      test_mat_copy},
+	{"load",        "load examples",                load_examples}
+	};
     size_t nb_arguments = 5;
+
     if (argc > 1)
     {
         for (size_t i = 0; i < nb_arguments; i++)

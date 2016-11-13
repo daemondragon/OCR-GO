@@ -57,7 +57,19 @@ neural_exemple_t* load_exemples(char directory_name[],
     {
         if (is_png_picture(current_file->d_name))
         {
-            double *temp = load_picture(current_file->d_name);
+            //Copy string to have the full path
+            char string[1024];
+            int i = 0;
+            for (; directory_name[i] ; ++i)
+                string[i] = directory_name[i];
+            if (directory_name[i] != '/')
+                string[i++] = '/';
+            for (int j = 0; current_file->d_name[j]; ++i, ++j)
+                string[i] = current_file->d_name[j];
+            string[i] = 0;
+
+            //Load file
+            double *temp = load_picture(string);
             if (temp && current_file->d_name[0])
             {
                 exemples[*nb_exemples_loaded].inputs = temp;
