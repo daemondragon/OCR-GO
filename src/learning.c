@@ -6,8 +6,11 @@
 #include "back_propagation.h"
 #include "feed_forward.h"
 
+//  If current_iteration < max_iterations * STOP_PERCENT; continue learning
+// Even if the neural network may overlearn
+#define STOP_PERCENT    0.85
 //To stop overlearning (increase to better stop)
-#define EPSILON 0.01
+#define EPSILON         0.01
 
 void learn(neural_network_t *net,
            neural_exemple_t *exemples,
@@ -96,8 +99,10 @@ void train(neural_network_t *net,
         //Test network learning
         float current_result =
             neural_network_results(net, validation_data, nb_validation_data);
-        continue_training = (last_result <= current_result) ||
-            (current_result - last_result > EPSILON);
+        continue_training = (iteration <= max_iterations * STOP_PERCENT) ||
+            (current_result >= last_result &&
+             current_result - last_result > EPSILON);
+
         #ifdef DEBUG
         printf("Iteration %d: score %2.3f\%%\n", iteration, current_result);
         #endif
