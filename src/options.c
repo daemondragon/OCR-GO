@@ -27,4 +27,51 @@ void on_quitter_btn(GtkWidget* widget, gpointer data)
             break;
     }
 }
+void create_file_selection()
+{
+    GtkWidget *selection;
+
+    selection = gtk_file_selection_new( g_locale_to_utf8(
+                                  "Sélect a file ", -1, NULL, NULL, NULL) );
+    gtk_widget_show(selection);
+
+    //We stop the utilisation of others window during the file selection.
+    gtk_window_set_modal(GTK_WINDOW(selection), TRUE);
+
+    g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(selection)->ok_button),
+     "clicked", G_CALLBACK(get_way), selection );
+
+    g_signal_connect_swapped(G_OBJECT(GTK_FILE_SELECTION(selection)
+                                                            ->cancel_button),
+      "clicked", G_CALLBACK(gtk_widget_destroy), selection);
+}
+
+void get_way(GtkWidget *bouton,GtkWidget *file_selection)
+{
+
+
+  const gchar *chemin;
+  chemin =gtk_file_selection_get_filename(GTK_FILE_SELECTION(file_selection));
+
+bouton = gtk_message_dialog_new(GTK_WINDOW(file_selection),
+ GTK_DIALOG_MODAL,GTK_MESSAGE_INFO,GTK_BUTTONS_OK,
+ "file selected : \n%s", chemin);
+ gtk_dialog_run(GTK_DIALOG(bouton));
+ gtk_widget_destroy(bouton);
+  gtk_widget_destroy(file_selection);
+
+
+}
+void test_xor()
+{
+        show_xor();
+}
+void cut_test()
+{
+     show_cutting();
+}
+void test_filter()
+{
+     test_filters();
+}
 
