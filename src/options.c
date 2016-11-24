@@ -1,4 +1,5 @@
-#include "options.h"
+#include "window.h"
+
 
 void on_quitter_btn(GtkWidget* widget, gpointer data)
 {
@@ -74,4 +75,43 @@ void test_filter()
 {
      test_filters();
 }
+//fonctions for neuronal network 
+void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
+{
 
+	GtkWidget *Entry;
+	
+	
+
+	Dialbox = gtk_dialog_new_with_buttons("Neuronal network creation",
+			GTK_WINDOW(window),
+			GTK_DIALOG_MODAL,
+			GTK_STOCK_OK,GTK_RESPONSE_OK,
+			GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
+			NULL);
+	//creation text zone to write in
+	Entry = gtk_entry_new();
+	gtk_entry_set_text(GTK_ENTRY(Entry),"Enter number of layer");
+	//add the entry into our dialog box
+	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialbox)->vbox),Entry,TRUE,FALSE,0);
+
+	//showing dialog elements
+	gtk_widget_show_all(GTK_DIALOG(Dialbox)->vbox);
+
+	// we launch the dialbox and the user validate or not 
+    	switch (gtk_dialog_run(GTK_DIALOG(Dialbox)))
+    	{
+        	/* L utilisateur valide */
+        	case GTK_RESPONSE_OK:
+        
+            		break;
+        	/* L utilisateur annule */
+        	case GTK_RESPONSE_CANCEL:
+        	case GTK_RESPONSE_NONE:
+        		default:
+            		        		break;
+    	}
+ 
+    /* Destruction de la boite de dialogue */
+    gtk_widget_destroy(Dialbox);
+}

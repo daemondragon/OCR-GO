@@ -65,6 +65,11 @@ int run_window(int argc, char **argv)
 
    Menu = gtk_menu_new();
 
+
+   MenuItems = gtk_menu_item_new_with_label("Create net");
+   g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(create_neuronal_network),
+	(GtkWidget *) Window);
+   gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
    MenuItems = gtk_menu_item_new_with_label("XOR test");
    g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(test_xor),NULL);
    gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
