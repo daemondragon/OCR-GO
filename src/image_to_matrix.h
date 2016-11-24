@@ -20,10 +20,16 @@ double *file_to_matrix_grey(const char *filename, double **matrix_end,
 GtkWidget * image_from_matrix (double *matrix, int width, int height);
 
 // copy a matrix
-double * new_matrix_copy(double *matrix, double *matrix_end,
+double *new_matrix_copy(double *matrix, double *matrix_end,
 			double **new_matrix_end);
 
-double * matrix_scale (double *matrix_pos, int line, int matrix_width, int
+//scale a matrix
+//double *matrix_pos is the start position of the scaled zone
+//int line is the size of the line in the the matrix given by matrix_pos
+//int matrix_width and int matrix_height are the zone of matrix_pos which are
+//going to be scaled
+//int width and int height are the dimensions of the returned matrix
+double *matrix_scale (double *matrix_pos, int line, int matrix_width, int
 		        matrix_height, int width, int height);
 
 
