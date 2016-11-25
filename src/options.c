@@ -76,7 +76,7 @@ void test_filter()
      test_filters();
 }
 //fonctions for neuronal network 
-void create_neuronal_network(GtkWidget * Dialbox,gointer data)
+void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 {
 
 	GtkWidget *Entry;
@@ -84,7 +84,7 @@ void create_neuronal_network(GtkWidget * Dialbox,gointer data)
 	
 
 	Dialbox = gtk_dialog_new_with_buttons("Neuronal network creation",
-			GTK_WINDOW(data),
+			GTK_WINDOW(window),
 			GTK_DIALOG_MODAL,
 			GTK_STOCK_OK,GTK_RESPONSE_OK,
 			GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
