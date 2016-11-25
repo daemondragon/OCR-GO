@@ -1,5 +1,9 @@
 #include "options.h"
 
+#include "show_xor.h"
+#include "testing_cut.h"
+#include "filters.h"
+
 void on_quitter_btn(GtkWidget* widget, gpointer data)
 {
     GtkWidget *Question;

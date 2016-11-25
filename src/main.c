@@ -9,24 +9,37 @@
 #include "image_to_matrix.h"
 #include "filters.h"
 
-double *load_pict(char *string)
-{
-    int w, h;
-    return (file_to_matrix_grey(string, NULL, &w, &h));
-}
+#include "load_exemples.h"
 
-void load_examples()
+void train_tchou_tchou()
 {
-    uint32_t nb_exemples = 0;
-    neural_exemple_t* exemples = load_exemples("./images/special",
-                                load_pict,
-                                &nb_exemples);
-
-    printf("n: %d\n", nb_exemples);
-    for (uint32_t i = 0; i < nb_exemples; ++i)
+    
+    uint32_t nb_neurons_per_layer[] = {576, 1024, 128};
+    neural_network_t *net = create_neural_network(3, nb_neurons_per_layer);
+    if (!net)
     {
-        printf("c: %c\n", exemples[i].answer);
+        printf("Neural network alloc failed\n");
+        return;
     }
+    
+    initialize_weights_and_biaises(net, 0);
+    
+    uint32_t nb_train_data;
+    uint32_t nb_validation_data;
+
+    neural_exemple_t *train_data = load_exemples("./mini/test/",
+                                load_matrix_grey,
+                                &nb_train_data);
+   neural_exemple_t *validation_data = load_exemples("./mini/validation/",
+                                load_matrix_grey,
+                                &nb_validation_data);
+
+    printf("load finished\n");
+    train(net, train_data, nb_train_data, validation_data, nb_validation_data,
+			  1, 1000, 0.01);
+
+    printf("test: %c\n", feed_forward(net, load_matrix_grey("image_test/0_006.png")));
+    printf("test: %c\n", feed_forward(net, load_matrix_grey("image_test/1_015.png")));
 }
 
 char is_same_string(char *s1, char *s2)
@@ -58,7 +71,7 @@ int main(int argc, char *argv[])
     {"filter",      "test for filters",             test_filters},
 	{"pcut",        "pretty test for cutting",      show_cutting},
 	{"mat_copy",    "test for copying matrix",      test_mat_copy},
-	{"load",        "load examples",                load_examples}
+	{"train",       "train a neural network",       train_tchou_tchou}
 	};
     size_t nb_arguments = 5;
 

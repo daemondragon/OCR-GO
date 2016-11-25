@@ -99,13 +99,16 @@ void train(neural_network_t *net,
         //Test network learning
         float current_result =
             neural_network_results(net, validation_data, nb_validation_data);
-        continue_training = (iteration <= max_iterations * STOP_PERCENT) ||
+        continue_training =
+            (current_result < STOP_PERCENT ||
             (current_result >= last_result &&
-             current_result - last_result > EPSILON);
+                current_result - last_result > EPSILON)) &&
+            iteration < max_iterations;
 
         #ifdef DEBUG
-        printf("Iteration %d: score %2.3f\%%\n", iteration, current_result);
+        printf("Iteration %d: score %2.3f\%%\n", iteration, current_result * 100);
         #endif
         iteration++;
+        last_result = current_result;
     } while (continue_training && iteration < max_iterations);
 }

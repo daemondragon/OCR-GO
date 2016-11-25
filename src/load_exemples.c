@@ -32,8 +32,8 @@ static uint32_t count_png_pictures(DIR *directory)
     return (nb_pictures);
 }
 
-neural_exemple_t* load_exemples(char directory_name[],
-                                double* (*load_picture)(char*),
+neural_exemple_t* load_exemples(const char directory_name[],
+                                double* (*load_picture)(const char*),
                                 uint32_t *nb_exemples_loaded)
 {
     if (!load_picture || !nb_exemples_loaded)

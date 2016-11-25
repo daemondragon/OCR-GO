@@ -53,6 +53,12 @@ double *file_to_matrix_grey(const char *filename, double **matrix_end,
 			pointer_height);
 }
 
+double* load_matrix_grey(const char *filename)
+{
+    int w, h;
+    return (file_to_matrix_grey(filename, NULL, &w, &h));
+}
+
 GtkWidget * image_from_matrix (double *matrix, int width, int height)
 {
 	GdkPixbuf *pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, 0, 8, width, height);
