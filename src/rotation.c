@@ -4,6 +4,7 @@
 #include <math.h>
 #define PI 3.14159265
 #include "image_to_matrix.h"
+#include "filters.h"
 
 double *rotate (double *matrix, int *width, int *height, double angle)
 {
@@ -15,25 +16,20 @@ double *rotate (double *matrix, int *width, int *height, double angle)
 	tx = rwidth/2 - *width/2;
 	ty = rheight/2 - *height/2;
 	double *rmatrix = malloc(sizeof(double)*rwidth *rheight);
-	for (int y = 0; y<rheight; y++)
+	for (int y = 0; y<*height; y++)
 	{
-		for (int x = 0; x<rwidth; x++)
+		for (int x = 0; x<*width; x++)
 		{
 			x2 = (int) (x*c + y*s + tx);
-			y2 = (int) (x*s + y*c + ty);
-			if (x2<*width && x2>0 && y2<*height && y2<0)
+			y2 = (int) (-x*s + y*c + ty);
+			if (x2<rwidth && x2>=0 && y2<rheight && y2>=0)
 			{
-				*(rmatrix + x + y*rwidth) = *(matrix + x2 + y2 * *width);
-			}
-			else
-			{
-					*(rmatrix + x + y*rwidth) = 1; 
+				*(rmatrix + x2 + y2*rwidth) = *(matrix + x + y * *width);
 			}
 		}
 	}
 	*width = rwidth;
 	*height = rheight;
-	printf("rotated");
 	return rmatrix;
 }
 void launch_bin_rotation()
@@ -42,7 +38,8 @@ void launch_bin_rotation()
     double *matrix_end;
     double *matrix = file_to_matrix_grey("image_test/binarize.png", &matrix_end,
                     &width, &height);
-	double *matrix2 = rotate(matrix, &width, &height, 10);
+	binarize_simple(matrix, matrix_end);
+	double *matrix2 = rotate(matrix, &width, &height, 1.f);
     GtkWidget *image = image_from_matrix(matrix2, width, height);
     GtkWidget *Window;
     Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -59,7 +56,6 @@ void test_rotation()
     //GtkWidget *test = file_to_image_bin("image_test/binarize.png");
 
     
-    printf("test");
     int argc = 0;
     char **argv = NULL;
     gtk_init(&argc, &argv);
@@ -68,7 +64,7 @@ void test_rotation()
     GtkWidget *Button;
     GtkWidget *table;
     GtkWidget * Box;
-    Button = gtk_button_new_with_label("Binarize2");
+    Button = gtk_button_new_with_label("Binarize");
     Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_container_set_border_width(GTK_CONTAINER(Window),5);
     gtk_window_set_default_size(GTK_WINDOW(Window),600,600);
