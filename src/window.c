@@ -93,7 +93,7 @@ int run_window(int argc, char **argv)
     gtk_table_attach(GTK_TABLE(Table), Button[0],
       9,10 ,9,10,GTK_EXPAND | GTK_FILL, GTK_EXPAND,0, 0);
 
-    gtk_table_attach_defaults(GTK_TABLE(Table),VboxMenu,0,2,0,10);
+    gtk_table_attach_defaults(GTK_TABLE(Table),VboxMenu,1,2,1,10);
     gtk_table_attach_defaults(GTK_TABLE(Table),box_img,3,7,3,7);
     g_signal_connect(G_OBJECT(Button[0]),"clicked",
                               G_CALLBACK(on_quitter_btn),(GtkWidget*) Window);

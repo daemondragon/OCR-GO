@@ -1,6 +1,4 @@
 #include "window.h"
-
-
 #include "show_xor.h"
 #include "testing_cut.h"
 #include "filters.h"
@@ -82,40 +80,94 @@ void test_filter()
 //fonctions for neuronal network 
 void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 {
-
+	//variable declaration
 	GtkWidget *Entry;
-	
-	
-
+	GtkWidget * entr;
+	GtkWidget * number_neur;
+	neural_network_t * net;
+	const gchar*  n1;
+	const gchar* n2;
+	uint32_t  couche;
+	uint32_t*  neur_per_couche;
+	int launch = 1;
+	int b = 1;
 	Dialbox = gtk_dialog_new_with_buttons("Neuronal network creation",
 			GTK_WINDOW(window),
 			GTK_DIALOG_MODAL,
 			GTK_STOCK_OK,GTK_RESPONSE_OK,
 			GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
 			NULL);
+	
 	//creation text zone to write in
 	Entry = gtk_entry_new();
 	gtk_entry_set_text(GTK_ENTRY(Entry),"Enter number of layer");
 	//add the entry into our dialog box
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialbox)->vbox),Entry,TRUE,FALSE,0);
-
+	
+	number_neur = gtk_dialog_new_with_buttons("Neuronal network creation",
+			GTK_WINDOW(window),
+			GTK_DIALOG_MODAL,
+			GTK_STOCK_OK,GTK_RESPONSE_OK,
+			GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
+			NULL);
+	
 	//showing dialog elements
 	gtk_widget_show_all(GTK_DIALOG(Dialbox)->vbox);
-
+	
 	// we launch the dialbox and the user validate or not 
     	switch (gtk_dialog_run(GTK_DIALOG(Dialbox)))
     	{
         	/* L utilisateur valide */
         	case GTK_RESPONSE_OK:
-        
+			b = 0;
+			n1 =  gtk_entry_get_text(GTK_ENTRY(Entry));
+			couche = (unsigned int)n1;		 
             		break;
         	/* L utilisateur annule */
         	case GTK_RESPONSE_CANCEL:
         	case GTK_RESPONSE_NONE:
         		default:
-            		        		break;
+            		     	break;
     	}
  
     /* Destruction de la boite de dialogue */
     gtk_widget_destroy(Dialbox);
+    if (b==0)
+	{	//Second dialog box for the neur_couche number.
+		number_neur = gtk_dialog_new_with_buttons("Neuronal network creation",
+                        GTK_WINDOW(window),
+                        GTK_DIALOG_MODAL,
+                        GTK_STOCK_OK,GTK_RESPONSE_OK,
+                        GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
+                        NULL);
+		entr = gtk_entry_new();
+		gtk_entry_set_text(GTK_ENTRY(entr),"Enter neuronal couche number");
+		gtk_box_pack_start(GTK_BOX(GTK_DIALOG(number_neur)->vbox),entr,TRUE,FALSE,0);
+		
+		gtk_widget_show_all(GTK_DIALOG(number_neur)->vbox);
+		switch (gtk_dialog_run(GTK_DIALOG(number_neur)))
+        {
+                /* L utilisateur valide */
+                case GTK_RESPONSE_OK:
+                        n2 = gtk_entry_get_text(GTK_ENTRY(entr));
+			neur_per_couche = (unsigned int*)n2;
+			launch=0;
+                        break;
+                /* L utilisateur annule */
+                case GTK_RESPONSE_CANCEL:
+                case GTK_RESPONSE_NONE:
+                        default:
+                                  break;
+        }
+	
+    /* Destruction de la boite de dialogue */
+    gtk_widget_destroy(number_neur);
+
+	}
+	if(launch==0)
+	{
+
+		net = create_neural_network(couche,neur_per_couche);
+		
+	}
 }

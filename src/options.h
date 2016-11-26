@@ -10,4 +10,5 @@ void    test_xor();
 void    cut_test();
 void    test_filter();
 void 	create_neuronal_network(GtkWidget * dialbox, GtkWidget * window);
+
 #endif
