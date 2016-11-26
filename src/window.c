@@ -74,9 +74,9 @@ int run_window(int argc, char **argv)
    g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(test_xor),NULL);
    gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
 
-   MenuItems = gtk_menu_item_new_with_label("Filter test");
+   MenuItems = gtk_menu_item_new_with_label("load net");
    g_signal_connect(G_OBJECT(MenuItems),"activate",
-                                        G_CALLBACK(test_filter),NULL);
+                                        G_CALLBACK(create_ner_selection),NULL);
    gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
 
    MenuItems = gtk_menu_item_new_with_label("Cut test");

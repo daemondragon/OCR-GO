@@ -40,7 +40,7 @@ void create_file_selection()
 
     //We stop the utilisation of others window during the file selection.
     gtk_window_set_modal(GTK_WINDOW(selection), TRUE);
-
+     
     g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(selection)->ok_button),
      "clicked", G_CALLBACK(get_way), selection );
 
@@ -48,6 +48,26 @@ void create_file_selection()
                                                             ->cancel_button),
       "clicked", G_CALLBACK(gtk_widget_destroy), selection);
 }
+//i do the same one but with a change in the callback fonction the time i find out how 
+//to make it shorter
+void create_ner_selection()
+{
+
+	GtkWidget * neur_select;
+	
+	neur_select = gtk_file_selection_new( g_locale_to_utf8(
+				"Select the neuronal network to load",-1,
+				 NULL,NULL,NULL));
+	gtk_widget_show(neur_select);
+
+	gtk_window_set_modal(GTK_WINDOW(neur_select),TRUE);
+	
+	g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(neur_select)->ok_button),
+			"clicked",G_CALLBACK(load_neural),neur_select);
+	g_signal_connect_swapped(G_OBJECT(GTK_FILE_SELECTION(neur_select)->cancel_button),
+				"clicked",G_CALLBACK(gtk_widget_destroy),neur_select);
+}
+
 
 void get_way(GtkWidget *bouton,GtkWidget *file_selection)
 {
@@ -64,6 +84,15 @@ bouton = gtk_message_dialog_new(GTK_WINDOW(file_selection),
   gtk_widget_destroy(file_selection);
 
 
+}
+void load_neural(GtkWidget *bout,GtkWidget* neural_selected)
+{
+	
+	 char * way;
+	way =(char*) gtk_file_selection_get_filename(GTK_FILE_SELECTION(neural_selected));
+	load_neural_network(way);
+	gtk_widget_destroy(neural_selected);
+	
 }
 void test_xor()
 {
@@ -84,7 +113,6 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 	GtkWidget *Entry;
 	GtkWidget * entr;
 	GtkWidget * number_neur;
-	neural_network_t * net;
 	const gchar*  n1;
 	const gchar* n2;
 	uint32_t  couche;
@@ -167,7 +195,9 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 	if(launch==0)
 	{
 
-		net = create_neural_network(couche,neur_per_couche);
+		create_neural_network(couche,neur_per_couche);
 		
 	}
 }
+
+ 
