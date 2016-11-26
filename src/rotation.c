@@ -9,18 +9,18 @@
 double *rotate (double *matrix, int *width, int *height, double angle)
 {
 	double deg_to_rad= PI/180;
-	double c = cos(angle*deg_to_rad), s = sin(angle/deg_to_rad);
+	double c = cos(angle*deg_to_rad), s = sin(angle * deg_to_rad);
 	int rwidth, rheight, x2, y2, tx, ty; //t are the translations of matrix;
-	rwidth = (int) (c * *width + s* *height);
-	rheight = (int) (s * *width + c * *height);
-	tx = rwidth/2 - *width/2;
-	ty = rheight/2 - *height/2;
-	double *rmatrix = malloc(sizeof(double)*rwidth *rheight);
+	rwidth =  *width*c + *height*s;
+	rheight = *height*c + *width*s;
+	tx = (*width*c + *height*s);
+	ty = ( *width*s);
+	double *rmatrix = malloc(sizeof(double)*rwidth*rheight);
 	for (int y = 0; y<*height; y++)
 	{
 		for (int x = 0; x<*width; x++)
 		{
-			x2 = (int) (x*c + y*s + tx);
+			x2 = (int) (x*c + y*s);
 			y2 = (int) (-x*s + y*c + ty);
 			if (x2<rwidth && x2>=0 && y2<rheight && y2>=0)
 			{
@@ -39,7 +39,7 @@ void launch_bin_rotation()
     double *matrix = file_to_matrix_grey("image_test/binarize.png", &matrix_end,
                     &width, &height);
 	binarize_simple(matrix, matrix_end);
-	double *matrix2 = rotate(matrix, &width, &height, 1.f);
+	double *matrix2 = rotate(matrix, &width, &height, 10.f);
     GtkWidget *image = image_from_matrix(matrix2, width, height);
     GtkWidget *Window;
     Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);

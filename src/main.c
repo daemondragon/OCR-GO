@@ -10,7 +10,7 @@
 #include "filters.h"
 
 #include "load_exemples.h"
-
+#include "rotation.h"
 void train_tchou_tchou()
 {
     
@@ -68,9 +68,10 @@ int main(int argc, char *argv[])
     {"filter",      "test for filters",             test_filters},
 	{"pcut",        "pretty test for cutting",      show_cutting},
 	{"mat_copy",    "test for copying matrix",      test_mat_copy},
-	{"train",       "train a neural network",       train_tchou_tchou}
+	{"train",       "train a neural network",       train_tchou_tchou},
+	{"rotation",	"make a rotation",				test_rotation}
 	};
-    size_t nb_arguments = 5;
+    size_t nb_arguments = 6;
 
     if (argc > 1)
     {
