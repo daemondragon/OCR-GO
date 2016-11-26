@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <dirent.h>
+#include <stdio.h>
 
 //all pictures must have "*.png" format
 static char is_png_picture(char *name)
@@ -41,7 +42,10 @@ neural_exemple_t* load_exemples(const char directory_name[],
 
     DIR *directory = opendir(directory_name);
     if (!directory)
+    {
+        printf("Can't open %s directory\n", directory_name);
         return (NULL);
+    }
 
     uint32_t nb_theorical_pictures = count_png_pictures(directory);
     neural_exemple_t *exemples = malloc(sizeof(neural_exemple_t) *

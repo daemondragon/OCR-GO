@@ -27,19 +27,16 @@ void train_tchou_tchou()
     uint32_t nb_train_data;
     uint32_t nb_validation_data;
 
-    neural_exemple_t *train_data = load_exemples("./mini/test/",
+    neural_exemple_t *train_data = load_exemples("./images/test/",
                                 load_matrix_grey,
                                 &nb_train_data);
-   neural_exemple_t *validation_data = load_exemples("./mini/validation/",
+   neural_exemple_t *validation_data = load_exemples("./images/validation/",
                                 load_matrix_grey,
                                 &nb_validation_data);
 
     printf("load finished\n");
     train(net, train_data, nb_train_data, validation_data, nb_validation_data,
-			  1, 1000, 0.01);
-
-    printf("test: %c\n", feed_forward(net, load_matrix_grey("image_test/0_006.png")));
-    printf("test: %c\n", feed_forward(net, load_matrix_grey("image_test/1_015.png")));
+			  1, 1000, 10);
 }
 
 char is_same_string(char *s1, char *s2)
