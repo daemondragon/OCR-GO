@@ -6,6 +6,54 @@
 #include "image_to_matrix.h"
 #include "filters.h"
 
+
+double *rotate (double *matrix, int *width, int *height, double angle)
+{
+	double a = angle * PI/180;
+	double c = cos(a), s = sin(a),t = tan(a/2);
+	int rwidth, rheight, x2, y2, tx, ty; //t are the translations of matrix;
+	rwidth = abs(*width*c) + abs(*height*s);
+	rheight = abs(*height*c) + abs(*width*s);
+	tx = *height*s;
+	ty = *width*s;
+	double *rmatrix = malloc(sizeof(double)*rwidth*rheight);
+	for (int y = 0; y<*height; y++)
+	{
+		for (int x = 0; x<*width; x++)
+		{
+			x2 = (int) (x - y*t);
+			y2 = y;
+		/*	if (x2<rwidth && x2>=0 && y2<rheight && y2>=0)
+			{
+				*(rmatrix + x2 + y2*rwidth) = *(matrix + x + y * *width);
+			}
+		*/	y2 = (int) (s*x2 + y2);
+		/*	if (x2<rwidth && x2>=0 && y2<rheight && y2>=0)
+			{
+				*(rmatrix + x2 + y2*rwidth) = *(matrix + x + y * *width);
+			}
+		*/	x2 = (int) (x2 - y2*t);
+			if (angle <=90)
+			{
+				x2 += tx;
+			}
+			else
+			{
+				y2 -= ty;
+			}
+			if (x2<rwidth && x2>=0 && y2<rheight && y2>=0)
+			{
+				*(rmatrix + x2 + y2*rwidth) = *(matrix + x + y * *width);
+			}
+		}
+	}
+	*width = rwidth;
+	*height = rheight;
+	return rmatrix;
+}
+
+
+/* Aliased way
 double *rotate (double *matrix, int *width, int *height, double angle)
 {
 	double deg_to_rad= PI/180;
@@ -32,14 +80,15 @@ double *rotate (double *matrix, int *width, int *height, double angle)
 	*height = rheight;
 	return rmatrix;
 }
+*/
 void launch_bin_rotation()
 {
     int width, height;
     double *matrix_end;
-    double *matrix = file_to_matrix_grey("image_test/binarize.png", &matrix_end,
-                    &width, &height);
+    double *matrix = file_to_matrix_grey("image_test/binarize.png",
+			&matrix_end, &width, &height);
 	binarize_simple(matrix, matrix_end);
-	double *matrix2 = rotate(matrix, &width, &height, 10.f);
+	double *matrix2 = rotate(matrix, &width, &height, 90.f);
     GtkWidget *image = image_from_matrix(matrix2, width, height);
     GtkWidget *Window;
     Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -55,7 +104,7 @@ void test_rotation()
 {
     //GtkWidget *test = file_to_image_bin("image_test/binarize.png");
 
-    
+
     int argc = 0;
     char **argv = NULL;
     gtk_init(&argc, &argv);
@@ -72,8 +121,8 @@ void test_rotation()
     g_signal_connect(G_OBJECT(Window),"destroy",
                      G_CALLBACK(gtk_main_quit),NULL);
     Box = gtk_vbox_new(FALSE,0);
-    
-    
+
+
     table = gtk_table_new(10,10,TRUE);
     gtk_container_add(GTK_CONTAINER(Window),GTK_WIDGET(table));
 
@@ -81,7 +130,8 @@ void test_rotation()
     gtk_table_attach(GTK_TABLE(table),
                        Button,9,10,5,7,GTK_EXPAND | GTK_FILL, GTK_EXPAND,0,0);
     gtk_table_attach_defaults(GTK_TABLE(table),Box,0,8,0,8);
-    g_signal_connect(G_OBJECT(Button),"clicked",G_CALLBACK(launch_bin_rotation),NULL);
+    g_signal_connect(G_OBJECT(Button),"clicked",
+			G_CALLBACK(launch_bin_rotation), NULL);
     gtk_widget_show_all(Window);
     gtk_main();
 }
