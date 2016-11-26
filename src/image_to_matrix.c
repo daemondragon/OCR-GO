@@ -108,8 +108,8 @@ double * matrix_scale (double *matrix_pos, int line, int matrix_width, int
 		x2 = 0;
 		for (int x = 0; x<width; x++)
 		{
-			*(new_matrix + x + y * width) =  *(matrix_pos +  (int)x2 + ((int)
-						y2) * line);
+			*(new_matrix + x + y * width) =  *(matrix_pos +  ((int)(x2 +
+							0.5f)) + ((int) (y2 + 0.5f)) * line);
 			x2 += ratio_w;
 		}
 		y2 += ratio_h;
