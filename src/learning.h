@@ -21,6 +21,10 @@ float   neural_network_results(neural_network_t *net,
                                neural_exemple_t *exemples,
                                uint32_t nb_exemples);
 
+float*  neural_network_advanced_results(neural_network_t *net,
+                                        neural_exemple_t *exemples,
+                                        uint32_t nb_exemples);
+
 //Net need to be initialized
 void	train(neural_network_t *net,
 			  neural_exemple_t *train_data, uint32_t nb_train_data,

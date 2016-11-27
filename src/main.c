@@ -14,15 +14,12 @@
 void train_tchou_tchou()
 {
     
-    uint32_t nb_neurons_per_layer[] = {576, 1024, 128};
-    neural_network_t *net = create_neural_network(3, nb_neurons_per_layer);
+    neural_network_t *net = load_neural_network("net/00000005.nt");
     if (!net)
     {
         printf("Neural network alloc failed\n");
         return;
     }
-    
-    initialize_weights_and_biaises(net, 0);
     
     uint32_t nb_train_data;
     uint32_t nb_validation_data;
@@ -36,7 +33,32 @@ void train_tchou_tchou()
 
     printf("load finished\n");
     train(net, train_data, nb_train_data, validation_data, nb_validation_data,
-			  1, 1000, 10);
+			  1, 1000, 7);
+}
+
+void get_neural_advanced_result()
+{
+    neural_network_t *net = load_neural_network("net/00000007.nt");
+    if (!net)
+    {
+        printf("Neural network alloc failed\n");
+        return;
+    }
+    
+    uint32_t nb_train_data;
+
+    neural_exemple_t *train_data = load_exemples("./images/test/",
+                                load_matrix_grey,
+                                &nb_train_data);
+
+    printf("load finished\n");
+    float *result = neural_network_advanced_results(net, train_data, nb_train_data);
+    if (result)
+    {
+        for (int i = 0; i < 128; ++i)
+            if (result[i] > 0.0f)
+                printf("%c : %3.3f\n", i, result[i] * 100);
+    }
 }
 
 char is_same_string(char *s1, char *s2)
@@ -69,9 +91,10 @@ int main(int argc, char *argv[])
 	{"pcut",        "pretty test for cutting",      show_cutting},
 	{"mat_copy",    "test for copying matrix",      test_mat_copy},
 	{"train",       "train a neural network",       train_tchou_tchou},
-	{"rotation",	"make a rotation",				test_rotation}
+	{"rotation",	"make a rotation",				test_rotation},
+	{"net_result",  "get neural network result",    get_neural_advanced_result}
 	};
-    size_t nb_arguments = 6;
+    size_t nb_arguments = 7;
 
     if (argc > 1)
     {

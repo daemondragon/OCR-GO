@@ -1,5 +1,6 @@
 #include "learning.h"
 
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "save_load_network.h"
@@ -58,6 +59,45 @@ float neural_network_results(neural_network_t *net,
     #ifdef DEBUG
     printf("Neural network pass %.3f\%% of the tests...\n", result * 100);
     #endif
+    return (result);
+}
+
+float* neural_network_advanced_results(neural_network_t *net,
+                                       neural_exemple_t *exemples,
+                                       uint32_t nb_exemples)
+{
+    uint32_t nb_neurons = net->layers[net->nb_layers - 1]->nb_neurons;
+    uint32_t* max = malloc(sizeof(uint32_t) * nb_neurons);
+    uint32_t* actual = malloc(sizeof(uint32_t) * nb_neurons);
+    float* result = malloc(sizeof(float) * nb_neurons);
+    if (!max || !actual || !result)
+    {
+        free(max);
+        free(actual);
+        free(result);
+        return (NULL);
+    }
+
+    for (uint32_t i = 0; i < nb_neurons; ++i)
+    {
+        max[i] = 0;
+        actual[i] = 0;
+        result[i] = 0;
+    }
+
+    for (uint32_t i = 0; i < nb_exemples; ++i)
+    {
+        max[exemples[i].answer]++;
+         actual[exemples[i].answer] +=
+            feed_forward(net, exemples[i].inputs) == exemples[i].answer;
+    }
+
+    for (uint32_t i = 0; i < nb_neurons; ++i)
+        result[i] = max[i] ? actual[i] * 1.0 / max[i] : 0;
+
+    free(max);
+    free(actual);
+
     return (result);
 }
 
