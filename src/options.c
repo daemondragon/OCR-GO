@@ -30,6 +30,11 @@ void on_quitter_btn(GtkWidget* widget, gpointer data)
             break;
     }
 }
+void open_butt(GtkWidget * wind, gpointer user_data)
+{
+	return;
+
+}
 void create_file_selection()
 {
     GtkWidget *selection;
@@ -88,7 +93,7 @@ bouton = gtk_message_dialog_new(GTK_WINDOW(file_selection),
 void load_neural(GtkWidget *bout,GtkWidget* neural_selected)
 {
 	
-	 char * way;
+	 char way;
 	way =(char*) gtk_file_selection_get_filename(GTK_FILE_SELECTION(neural_selected));
 	load_neural_network(way);
 	gtk_widget_destroy(neural_selected);
@@ -199,5 +204,4 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 		
 	}
 }
-
  
