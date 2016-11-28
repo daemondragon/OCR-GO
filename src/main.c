@@ -98,25 +98,32 @@ int main(int argc, char *argv[])
 
     if (argc > 1)
     {
-        for (size_t i = 0; i < nb_arguments; i++)
+        size_t to_call;
+        for (to_call = 0; to_call < nb_arguments &&
+                          !is_same_string(argv[1], arguments[to_call].arg);
+             to_call++) {}
+        
+        if (to_call < nb_arguments)
         {
-            if (is_same_string(argv[1], arguments[i].arg))
+            if (arguments[to_call].fun)
+                arguments[to_call].fun();
+            else
             {
-                if (arguments[i].fun)
-                    arguments[i].fun();
-                else
-                    printf("Error in arg %s : function is NULL\n", argv[1]);
-                break;
+                printf("Error in arg %s : function is NULL\n", argv[1]);
             }
+        }
+        else
+        {//Error
+            printf("Error: no matching argument found for %s\n", argv[1]);
+            printf("%s arguments:\n", argv[0]);
+            for (size_t i = 0; i < nb_arguments; i++)
+                printf("    %s - %s\n", arguments[i].arg,
+                                        arguments[i].description);
         }
     }
     else
     {
-        printf("%s arguments:\n", argv[0]);
-        for (size_t i = 0; i < nb_arguments; i++)
-            printf("    %s - %s\n", arguments[i].arg,
-                                    arguments[i].description);
-
+        printf("Run default program\n");
         run_window(argc, argv);
     }
 
