@@ -33,7 +33,7 @@ void on_quitter_btn(GtkWidget* widget, gpointer data)
 void open_butt(GtkWidget * dialog, gpointer user_data)
 {
 	const gchar * image_name;
-	GtkWidget * image;
+	static GtkWidget * image;
 	dialog = gtk_file_chooser_dialog_new("Open a file",NULL,
 			GTK_FILE_CHOOSER_ACTION_OPEN,
 			GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
@@ -46,9 +46,14 @@ void open_butt(GtkWidget * dialog, gpointer user_data)
 		case GTK_RESPONSE_ACCEPT:
 			
 			image_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-			image= gtk_image_new_from_file(image_name);
-			gtk_box_pack_end(GTK_BOX(box_img),image,TRUE,FALSE,0);
-			gtk_widget_show(image);
+			if(image)
+                                gtk_image_set_from_file(GTK_IMAGE(image),image_name);
+			else
+			{
+				image= gtk_image_new_from_file(image_name);
+				gtk_box_pack_end(GTK_BOX(box_img),image,TRUE,FALSE,0);
+				gtk_widget_show(image);
+			}
 			break;
 		case GTK_RESPONSE_CANCEL:
 		default:
@@ -95,7 +100,29 @@ void create_ner_selection()
 				"clicked",G_CALLBACK(gtk_widget_destroy),neur_select);
 }
 
+void save_neural_net(GtkWidget * dialog, gpointer data)
+{
 
+	char * net_name;
+	dialog = gtk_file_chooser_dialog_new("Save neural network", NULL,	
+				GTK_FILE_CHOOSER_ACTION_SAVE,
+				GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
+				GTK_STOCK_SAVE,GTK_RESPONSE_ACCEPT,
+				NULL);
+	switch(gtk_dialog_run(GTK_DIALOG(dialog)))
+	{
+		case GTK_RESPONSE_ACCEPT:
+				net_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER
+						(dialog));
+				save_neural_network(data,net_name);
+				break;
+		case GTK_RESPONSE_CANCEL:
+		default:
+			break;
+	}
+	gtk_widget_destroy(dialog);		
+
+}
 void get_way(GtkWidget *bouton,GtkWidget *file_selection)
 {
 
