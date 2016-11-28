@@ -64,8 +64,9 @@ int run_window(int argc, char **argv)
     VboxMenu = gtk_vbox_new(FALSE, 0);
     box_img = gtk_vbox_new(FALSE,0);
     MenuBar = gtk_menu_bar_new();
-    Menu = gtk_menu_new();
-
+    
+    Menu = gtk_menu_new(); 
+    
     MenuItems = gtk_image_menu_item_new_from_stock(GTK_STOCK_NEW,NULL);
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
 
@@ -92,15 +93,15 @@ int run_window(int argc, char **argv)
     gtk_menu_shell_append(GTK_MENU_SHELL(MenuBar), MenuItems);
 
     /*second sub menu */
-
+   //tu crées la base de ton menu
    Menu = gtk_menu_new();
 
-
+   //tu commences à créer les différents éléments qui composent ton menu(les boutons)
    MenuItems = gtk_menu_item_new_with_label("Create net");
    g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(create_neuronal_network),
-	(GtkWidget *) Window);
-   gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
-   MenuItems = gtk_menu_item_new_with_label("XOR test");
+	(GtkWidget *) Window);//ici cela te permet d'appeler les fonctions void qui seront lié à tes boutons grace au callback
+   gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);//ici tu attache le bouton à ton menu
+   MenuItems = gtk_menu_item_new_with_label("XOR test");//tu recommences pour les différentrs boutons dont tu as besoin
    g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(test_xor),NULL);
    gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
 
@@ -115,7 +116,9 @@ int run_window(int argc, char **argv)
 
 
    MenuItems = gtk_menu_item_new_with_label("Test");
-   gtk_menu_item_set_submenu(GTK_MENU_ITEM(MenuItems),Menu);
+   gtk_menu_item_set_submenu(GTK_MENU_ITEM(MenuItems),Menu);//ici tu set le dernier item comme le nom global de ton menu
+
+   //et tu t'arrêtes à ce niveau la ^ la ligne du dessous et celle qui rajoute le tout à notre interface
    gtk_menu_shell_append(GTK_MENU_SHELL(MenuBar),MenuItems);
 
     gtk_box_pack_start(GTK_BOX(VboxMenu), MenuBar, FALSE,FALSE,0);
