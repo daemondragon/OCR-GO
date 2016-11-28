@@ -1,5 +1,35 @@
 #include "window.h"
 
+window_t* create_window()
+{
+    window_t* window = malloc(sizeof(window_t));
+    if (!window)
+        return (NULL);
+
+    int argc = 0;
+    char **argv = NULL;
+
+    gtk_init(&argc, &argv);
+
+    window->net = NULL;
+    window->main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+
+    gtk_container_set_border_width(GTK_CONTAINER(window->main_window),5);
+    gtk_window_set_default_size(GTK_WINDOW(window->main_window), 800, 600);
+    gtk_window_set_title(GTK_WINDOW(window->main_window),"OCR GO ");
+    g_signal_connect(G_OBJECT(window->main_window), "destroy",
+                                            G_CALLBACK(gtk_main_quit), NULL);
+
+    return (window);
+}
+
+void delete_window(window_t *window)
+{
+    if (window->net)
+        delete_neural_network(window->net);
+
+    free(window);
+}
 
 int run_window(int argc, char **argv)
 {

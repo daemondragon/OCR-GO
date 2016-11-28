@@ -14,7 +14,7 @@
 void train_tchou_tchou()
 {
     
-    neural_network_t *net = load_neural_network("net/00000005.nt");
+    neural_network_t *net = load_neural_network("net/00000007.nt");
     if (!net)
     {
         printf("Neural network alloc failed\n");
