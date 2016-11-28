@@ -3,117 +3,180 @@
 #include <stdlib.h>
 #include <errno.h>
 
-double * pixbuf_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end, int *pointer_width, int *pointer_height)
+double * pixbuf_to_matrix_grey(GdkPixbuf *pixbuf,double **matrix_end,
+		int *pointer_width, int *pointer_height)
 {
-	guchar *pixel=NULL;
-	gint channel=0;
-	gint width=0;
 	if (!pixbuf)
 	{
 		perror("Erreur fonction pixbuf_to_matrix_grey no pixbuf");
 		return NULL;
 	}
-	pixel=gdk_pixbuf_get_pixels(pixbuf);
-	channel=gdk_pixbuf_get_n_channels(pixbuf);
-	width=gdk_pixbuf_get_width(pixbuf);
+
+	guchar *pixel = gdk_pixbuf_get_pixels(pixbuf);
+	gint channel = gdk_pixbuf_get_n_channels(pixbuf);
+
+	gint width = gdk_pixbuf_get_width(pixbuf);
 	gint height = gdk_pixbuf_get_height(pixbuf);
+	gint rowstride = gdk_pixbuf_get_rowstride(pixbuf);
+
 	*pointer_width = width;
 	*pointer_height = height;
 	guchar red, green, blue;
 	double *matrix = malloc(sizeof(double) * width * height);
-	for (gint y = 0; y<height; y++)
+
+	for (gint y = 0; y < height; y++)
 	{
-		for (gint x = 0; x<width; x++)
+		for (gint x = 0; x < width; x++)
 		{
-			red   = pixel[(x*channel)+(y*width*channel)];
-			green = pixel[(x*channel)+(y*width*channel)+1];
-			blue  = pixel[(x*channel)+(y*width*channel)+2];
-			*(matrix + x + y*width) = (red+green+blue); 
-			*(matrix + x + y*width) = *(matrix + x + y*width)/765;//considering that the max value of each colors is 255
+			red   = pixel[(x * channel)+(y * rowstride)];
+			green = pixel[(x * channel)+(y * rowstride) + 1];
+			blue  = pixel[(x * channel)+(y * rowstride) + 2];
+
+			matrix[x + y * width] = ((int)red + (int)green + (int)blue) / 765.0;
+			//considering that the max value of each colors is 255
 		}
 	}
-	*matrix_end = matrix + width*height;
+
+    if (matrix_end)
+	    *matrix_end = matrix + width * height - 1;
+
 	return matrix;
 }
 
-double * file_to_matrix_grey(const char *filename, double **matrix_end, int *pointer_width, int *pointer_height)
-{	
+double *file_to_matrix_grey(const char *filename, double **matrix_end,
+		int *pointer_width, int *pointer_height)
+{
 	GError *error = NULL;
         GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(filename, &error);
-	return pixbuf_to_matrix_grey(pixbuf, matrix_end, pointer_width, pointer_height);
+
+	return pixbuf_to_matrix_grey(pixbuf, matrix_end, pointer_width,
+			pointer_height);
+}
+
+double* load_matrix_grey(const char *filename)
+{
+    int w, h;
+    return (file_to_matrix_grey(filename, NULL, &w, &h));
 }
 
 GtkWidget * image_from_matrix (double *matrix, int width, int height)
 {
 	GdkPixbuf *pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, 0, 8, width, height);
 	guchar *pixel=gdk_pixbuf_get_pixels(pixbuf);
+
 	int channel=gdk_pixbuf_get_n_channels(pixbuf);
-	for (gint y = 0; y<height; y++)
+	gint rowstride = gdk_pixbuf_get_rowstride(pixbuf);
+
+	for (gint y = 0; y < height; y++)
+    {
+        for (gint x = 0; x < width; x++)
         {
-                for (gint x = 0; x<width; x++)
-                {
-			int grey_level = *(matrix + x + y*width)*255;
-                        pixel[(x*channel)+(y*width*channel)] = grey_level;
-                        pixel[(x*channel)+(y*width*channel)+1] = grey_level;
-                        pixel[(x*channel)+(y*width*channel)+2] = grey_level ;
-                }
+	        int grey_level = matrix[x + y * width] * 255;
+            pixel[(x * channel)+(y * rowstride)] = grey_level;
+            pixel[(x * channel)+(y * rowstride) + 1] = grey_level;
+            pixel[(x * channel)+(y * rowstride) + 2] = grey_level ;
         }
-        return gtk_image_new_from_pixbuf(pixbuf);
+    }
 
+    return gtk_image_new_from_pixbuf(pixbuf);
 }
 
 
-/*double * image_to_matrix_colors(GdkPixbuf *pixbuf) 	//not used and not tested
+double * new_matrix_copy(double *matrix, double *matrix_end,
+		double **new_matrix_end)
 {
-	guchar *pixel=NULL;
-	gint channel=0;
-	gint width=0;
-	if (!pixbuf) return FALSE;
-	pixel=gdk_pixbuf_get_pixels(pixbuf);
-	channel=gdk_pixbuf_get_n_channels(pixbuf);
-	width=gdk_pixbuf_get_width(pixbuf);
-	gint height = gdk_pixbuf_get_height(pixbuf);
-	guchar red, green, blue;
-	double *matrix = malloc(sizeof(double) * width * height * 3);
-	for (gint y = 0; y<height; y++)
+	size_t len = matrix_end - matrix;
+	double *new_matrix = malloc(sizeof(double)*len);
+	*new_matrix_end = new_matrix + len;
+	for (size_t i = 0; i<len; i++)
 	{
-		for (gint x = 0; x<width; x++)
-		{
-				*(matrix + x * 3 + y * width * 3)  = pixel[(x*channel)+(y*width*channel)]/255;
-				*(matrix + x * 3 + y * width * 3 + 1) = pixel[(x*channel)+(y*width*channel)+1]/255;
-				*(matrix + x * 3 + y * width * 3 + 2) = pixel[(x*channel)+(y*width*channel)+2]/255;	
-		}
+		*(new_matrix + i) = *(matrix + i);
 	}
-	return matrix;
-}*/
+	return new_matrix;
+}
+
+double * matrix_scale (double *matrix_pos, int line, int matrix_width, int
+		matrix_height, int width, int height)
+{
+	double *new_matrix = malloc(sizeof(double)*width*height);
+	double ratio_w = matrix_width, ratio_h = matrix_height;
+	ratio_w /= width;
+	ratio_h /= height;
+	double x2 = 0 , y2 = 0;
+	for (int y = 0; y<height; y++)
+	{
+		x2 = 0;
+		for (int x = 0; x<width; x++)
+		{
+			*(new_matrix + x + y * width) =  *(matrix_pos +  ((int)(x2 +
+							0.5f)) + ((int) (y2 + 0.5f)) * line);
+			x2 += ratio_w;
+		}
+		y2 += ratio_h;
+	}
+	return new_matrix;
+}
 /*
-static void activate (GtkApplication* app, gpointer user_data)
-{
-	double * matrix_end;
-	int width, height;
-	double  *matrix = file_to_matrix_grey("test", &matrix_end, &width, &height);
-	binarize_simple(matrix, matrix_end);
-	GtkWidget *Image = image_from_matrix(matrix, width ,height);
-	GtkWidget *window;
+   double * matrix_scale (double *matrix_pos, int line, int matrix_width, int
+   matrix_height, int width, int height)
+   {
+   double *new_matrix = malloc(sizeof(double)*width*height);
+   for (int y = 0; y<height; y ++)
+   {
+   for (int x = 0; x<width; x++)
+   {
+ *(new_matrix + x +
+ y*width) =
+ *(matrix_pos +
+ x +
+ y*line);
+ }
+ }
+ return new_matrix;
+ }
+ */
 
-	window = gtk_application_window_new (app);
-	gtk_window_set_title (GTK_WINDOW (window), "Window");
-	gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
-	gtk_container_add(GTK_CONTAINER (window), Image);
-	gtk_widget_show_all (window);
+//not used and not tested
+/*double * image_to_matrix_colors(GdkPixbuf *pixbuf)
+  {
+  guchar *pixel=NULL;
+  gint channel=0;
+  gint width=0;
+  if (!pixbuf) return FALSE;
+  pixel=gdk_pixbuf_get_pixels(pixbuf);
+  channel=gdk_pixbuf_get_n_channels(pixbuf);
+  width=gdk_pixbuf_get_width(pixbuf);
+  gint height = gdk_pixbuf_get_height(pixbuf);
+  guchar red, green, blue;
+  double *matrix = malloc(sizeof(double) * width * height * 3);
+  for (gint y = 0; y<height; y++)
+  {
+  for (gint x = 0; x<width; x++)
+  {
+  (matrix + x*3 + y*width*3)  = pixel[(x*channel)+(y*width*channel)]/255;
+  (matrix + x*3 + y*width*3 + 1) = pixel[(x*channel)+(y*width*channel)+1]/255;
+  (matrix + x*3 + y*width*3 + 2) = pixel[(x*channel)+(y*width*channel)+2]/255;
+  }
+  }
+  return matrix;
+  }*/
+
+void test_mat_copy()
+{
+	int width=0,height=0;
+	double *matrix_end;
+	double *matrix = file_to_matrix_grey("test", &matrix_end, &width, &height);
+	double *new_matrix_end;
+	double * new_matrix = new_matrix_copy(matrix, matrix_end, &new_matrix_end);
+	size_t len = matrix_end - matrix, i = 0;
+	while (i<len &&  *(matrix + i) == *(new_matrix + i))
+	{
+		printf("%f = %f\n",*(matrix + i), *(new_matrix + i));
+		i++;
+	}
+	if (i==len)
+	{
+		printf("matrix sucefully copied\n");
+	}
 }
 
-
-int main(int argc, char *argv[])	//test the image_to_matrix_grey
-{
-	GtkApplication *app;
-	int status;
-
-	app = gtk_application_new ("org.gtk.example", G_APPLICATION_FLAGS_NONE);
-	g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
-	status = g_application_run (G_APPLICATION (app), argc, argv);
-	g_object_unref (app);
-
-	return status;
-}
-*/

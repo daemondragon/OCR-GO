@@ -6,4 +6,6 @@
 *.tgz
 *.swp
 *.swo
-*.nt
+
+prog
+ocr

@@ -3,18 +3,18 @@
 
 
 #include <stdlib.h>
-typedef struct infos{
-	enum type{W,E,N}type; 
+typedef struct infos
+{
+	enum type{WORD, SPACE, NEW_LINE}type;
 	double *pos;
-	int width;
-	int height;
+	size_t width;
+	size_t height;
 }infos;
 
-typedef struct W_list{
-
+typedef struct W_list
+{
 	infos info;
 	struct W_list *nxt;
-
 }W_list;
 
 // renvoi une liste null
@@ -31,5 +31,7 @@ void WL_free(W_list *liste);
 
 // retourne le prochain element
 W_list* WL_nxt(W_list *liste);
+
+W_list* WL_clean(W_list *liste, float min);
 
 #endif
