@@ -77,7 +77,11 @@ double * autorotate(double *matrix, int *width, int *height)
 	int b = blank_line_count(matrix, width, height);
 	printf("b30 %d h30 %d w30 %d  b  %d h %d w %d \n", b90, h90, w90, b,
 			*height, *width);
-	if (b90>b)
+	double div = b90, div2 = b;
+	div /= h90;
+	div2 /= *height;
+	div = div - div2;
+	if (div>0)
 	{
 		*width = w90;
 		*height = h90;
