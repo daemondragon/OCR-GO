@@ -4,15 +4,24 @@
 #include "info_word.h"
 
 W_list* WL_init(void){
-	return NULL;
+	W_list *new_list = malloc (sizeof(W_list));
+	new_list->size = 0;
+	new_list->infos = NULL;
+	return new_list;
 }
-W_list*  WL_add(W_list *liste ,infos to_add)
+void  WL_add(W_list *liste ,infos to_add)
 {
-	W_list *new_word;
-	new_word = malloc (sizeof(W_list));
-	new_word->info = to_add;
-	new_word->nxt = liste;
-	return new_word;
+	
+	new_word = malloc (sizeof(infos));
+	
+	new_word->type = to_add.type;
+	new_word->pos = to_add.pos ;
+	new_word->width = to_add.width;
+	new_word->height = to_add.height;
+
+	new_word->nxt = liste->first;
+	liste->first = new_word;
+	liste->size ++ ;
 }
 
 infos WL(W_list *liste ,int i)
@@ -25,39 +34,37 @@ infos WL(W_list *liste ,int i)
 
 void WL_free(W_list *list)
 {
-    if (!list)
-        return;
-
-	while(list->nxt != NULL)
+    if (!list->size )
+        {
+		free(list);
+		return;
+	}
+	infos *actual = list->first;
+	while(actual != NULL)
 	{
-	    W_list *temp = list->nxt;
-	    free(temp);
-	    list->nxt = list->nxt->nxt;
+	    infos *temp = actual->nxt;
+	    free(actual);
+	    actual = temp;
 	}
 	free(list);
 }
 
-W_list* WL_nxt(W_list *liste){
-	return liste->nxt;
-}
-
-
-W_list* WL_clean(W_list *list, float min)
+void : WL_clean(W_list *list, float min, float height_rate)
 {
-    if (!list)
-        return (NULL);
+    if (!list->size)
+        return NULL;
 
-    W_list *actual = list;
-    //First element must be a WORD
-    while (actual->nxt)
+    infos *actual = list->first;
+    
+    while (actual)
     {
-        if (actual->nxt->info.type == SPACE)
+        if (actual->type == SPACE)
         {
-            if (actual->nxt->info.width <= min)
+            if (actual->width <= min + height_rate * actual->height) 
             {
-                W_list *temp = actual->nxt;
-                actual->nxt = actual->nxt->nxt;
-                free(temp);
+                infos *temp = actual->nxt;
+                free(actual);
+		actual = temp;
             }
             else
                 actual = actual->nxt;
@@ -66,5 +73,4 @@ W_list* WL_clean(W_list *list, float min)
             actual = actual->nxt;
     }
 
-	return list;
 }
