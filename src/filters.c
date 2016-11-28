@@ -97,6 +97,34 @@ GtkWidget * file_to_image_bin(const char *filename)
 					&width, &height);
 	return image_from_matrix(matrix, width, height);
 }
+
+GtkWidget *extract_image(GtkWidget *image, int x, int y, int width, int height)
+{
+    /*
+	GdkPixbuf *result = gdk_pixbuf_new(GDK_COLORSPACE_RGB,
+	                                   0, 8, width, height);
+	guchar *pixel = gdk_pixbuf_get_pixels(pixbuf);
+
+    int in_channel = 
+	int channel=gdk_pixbuf_get_n_channels(pixbuf);
+	gint rowstride = gdk_pixbuf_get_rowstride(pixbuf);
+
+	for (gint y = 0; y < height; y++)
+    {
+        for (gint x = 0; x < width; x++)
+        {
+	        int grey_level = matrix[x + y * width] * 255;
+            pixel[(x * channel)+(y * rowstride)] = grey_level;
+            pixel[(x * channel)+(y * rowstride) + 1] = grey_level;
+            pixel[(x * channel)+(y * rowstride) + 2] = grey_level ;
+        }
+    }
+
+    return gtk_image_new_from_pixbuf(pixbuf);
+    */
+    return (image);
+}
+
 void launch_bin()
 {
 	GtkWidget *image = file_to_image_bin("image_test/binarize.png");
