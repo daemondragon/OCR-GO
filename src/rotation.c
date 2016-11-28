@@ -24,6 +24,13 @@ double *rotate (double *matrix, int *width, int *height, double angle)
 		ty = *width*s;
 	}
 	double *rmatrix = malloc(sizeof(double)*rwidth*rheight);
+	for (int y = 0; y<rheight; y++)
+	{
+		for (int x = 0; x<rwidth; x++)
+		{
+			*(rmatrix + x + y * rwidth) = 1;
+		}
+	}
 	for (int y = 0; y<*height; y++)
 	{
 		for (int x = 0; x<*width; x++)
@@ -46,7 +53,7 @@ double *rotate (double *matrix, int *width, int *height, double angle)
 
 int blank_line_count(double *matrix, int *width, int *height)
 {
-	int x = 0, count;
+	int x = 0, count = 0;
 	for (int y = 0; y<*height; y++)
 	{
 		while (*(matrix + x + y**width) == 1 && x<*width)
@@ -57,6 +64,7 @@ int blank_line_count(double *matrix, int *width, int *height)
 		{
 			count++;
 		}
+		x = 0;
 	}
 	return count;
 }
@@ -64,9 +72,11 @@ int blank_line_count(double *matrix, int *width, int *height)
 double * autorotate(double *matrix, int *width, int *height)
 {
 	int w90 = *width, h90 = *height;
-	double *m90 = rotate(matrix, &w90, &h90, 45.);
+	double *m90 = rotate(matrix, &w90, &h90, 30.);
 	int b90 = blank_line_count(m90, &w90, &h90);
 	int b = blank_line_count(matrix, width, height);
+	printf("b30 %d h30 %d w30 %d  b  %d h %d w %d \n", b90, h90, w90, b,
+			*height, *width);
 	if (b90>b)
 	{
 		*width = w90;
@@ -125,7 +135,7 @@ void launch_bin_rotation()
 	double *matrix = file_to_matrix_grey("image_test/binarize.png",
 			&matrix_end, &width, &height);
 	binarize_simple(matrix, matrix_end);
-	double *matrix2 = rotate180(matrix, &width, &height);
+	double *matrix2 = autorotate(matrix, &width, &height);
 	GtkWidget *image = image_from_matrix(matrix2, width, height);
 	GtkWidget *Window;
 	Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -137,6 +147,7 @@ void launch_bin_rotation()
 	gtk_container_add(GTK_CONTAINER(Window),GTK_WIDGET(image));
 	gtk_widget_show_all(Window);
 }
+
 void test_rotation()
 {
 	//GtkWidget *test = file_to_image_bin("image_test/binarize.png");
