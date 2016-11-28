@@ -67,10 +67,12 @@ int run_window(int argc, char **argv)
     
     Menu = gtk_menu_new(); 
     
-    MenuItems = gtk_image_menu_item_new_from_stock(GTK_STOCK_NEW,NULL);
+    MenuItems = gtk_image_menu_item_new_with_label("open image");
+    g_signal_connect(G_OBJECT(MenuItems), "activate", 
+			G_CALLBACK(open_butt),(gpointer*)box_img);
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
 
-    MenuItems = gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN,NULL);
+    MenuItems = gtk_image_menu_item_new_with_label("open net");
     g_signal_connect(G_OBJECT(MenuItems), "activate",
                          G_CALLBACK(create_file_selection),
                          NULL);
@@ -78,13 +80,13 @@ int run_window(int argc, char **argv)
 
 
 
-    MenuItems = gtk_image_menu_item_new_from_stock(GTK_STOCK_SAVE,NULL);
+    MenuItems = gtk_image_menu_item_new_with_label("save net");
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
 
-    MenuItems = gtk_image_menu_item_new_from_stock(GTK_STOCK_CLOSE,NULL);
+    MenuItems = gtk_image_menu_item_new_with_label("create net");
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
 
-    MenuItems = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT,NULL);
+    MenuItems = gtk_image_menu_item_new_with_label("leave program");
     g_signal_connect(G_OBJECT(MenuItems), "activate",
                              G_CALLBACK(on_quitter_btn),(GtkWidget*) Window);
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);

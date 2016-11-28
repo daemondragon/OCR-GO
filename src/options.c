@@ -30,9 +30,31 @@ void on_quitter_btn(GtkWidget* widget, gpointer data)
             break;
     }
 }
-void open_butt(GtkWidget * wind, gpointer user_data)
+void open_butt(GtkWidget * dialog, gpointer user_data)
 {
-	return;
+	const gchar * image_name;
+	GtkWidget * image;
+	dialog = gtk_file_chooser_dialog_new("Open a file",NULL,
+			GTK_FILE_CHOOSER_ACTION_OPEN,
+			GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
+			GTK_STOCK_OPEN,GTK_RESPONSE_ACCEPT,
+			NULL);
+	GtkWidget * box_img;
+	box_img = (GtkWidget *)user_data;
+	switch(gtk_dialog_run(GTK_DIALOG(dialog)))
+	{
+		case GTK_RESPONSE_ACCEPT:
+			
+			image_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+			image= gtk_image_new_from_file(image_name);
+			gtk_box_pack_end(GTK_BOX(box_img),image,TRUE,FALSE,0);
+			gtk_widget_show(image);
+			break;
+		case GTK_RESPONSE_CANCEL:
+		default:
+				break; 
+	}
+	gtk_widget_destroy(dialog);
 
 }
 void create_file_selection()
