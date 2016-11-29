@@ -14,7 +14,7 @@
 void train_tchou_tchou()
 {
     
-    neural_network_t *net = load_neural_network("net/00000005.nt");
+    neural_network_t *net = load_neural_network("net/00000009.nt");
     if (!net)
     {
         printf("Neural network alloc failed\n");
@@ -52,6 +52,11 @@ void get_neural_advanced_result()
                                 &nb_train_data);
 
     printf("load finished\n");
+
+    printf("global result: %f\n",
+            neural_network_results(net, train_data, nb_train_data) * 100);
+
+    printf("specific result:\n");
     float *result = neural_network_advanced_results(net, train_data, nb_train_data);
     if (result)
     {
