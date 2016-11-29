@@ -12,4 +12,7 @@ void    cut_test();
 void    test_filter();
 void 	create_neuronal_network(GtkWidget * dialbox, GtkWidget * window);
 void 	load_neural(GtkWidget * bout,GtkWidget * neural_selected);
+void 	save_neural_net(GtkWidget * dialog,gpointer data);
+void 	open_butt(GtkWidget *dialog,gpointer user_data);
+void 	bin_button(GtkWidget * image);
 #endif

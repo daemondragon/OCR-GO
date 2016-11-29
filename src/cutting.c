@@ -42,7 +42,7 @@ char is_black_column(double *start, double *end, int width, int threshold)
 
 
 //return the new modified list (else it will be lost)
-W_list * v_cutting(double *band_start, double *band_end, int width,
+void v_cutting(double *band_start, double *band_end, int width,
                    W_list *word_list,
                    int *sum_space_size, int *space_count)
 {
@@ -58,7 +58,7 @@ W_list * v_cutting(double *band_start, double *band_end, int width,
     info.type = NEW_LINE;
     info.pos = NULL;//ONLY position in list is important
     info.width = 0;
-    word_list = WL_add(word_list, info);
+    WL_add(word_list, info);
 
     int i = width - 1;
     while (i >= 0 &&
@@ -87,7 +87,7 @@ W_list * v_cutting(double *band_start, double *band_end, int width,
         info.type = WORD;
         info.pos = char_start;
         info.width = (char_end - char_start + 1);
-        word_list = WL_add(word_list, info);
+        WL_add(word_list, info);
 
         //Space
         ++temp_space_count;
@@ -106,7 +106,7 @@ W_list * v_cutting(double *band_start, double *band_end, int width,
             info.type = SPACE;
             info.width = (char_start - (band_start + i + 1));
             info.pos = char_start - info.width;
-            word_list = WL_add(word_list, info);
+            WL_add(word_list, info);
         }
     }
 
@@ -114,7 +114,7 @@ W_list * v_cutting(double *band_start, double *band_end, int width,
 }
 
 
-W_list* cutting(double *matrix, size_t width, size_t height, int threshold)
+W_list* cutting(double *matrix, size_t width, size_t height, int threshold, float height_rate)
 {
     //actual is the first pixel of the last line
     double *actual = matrix + width * (height - 1);
@@ -147,14 +147,14 @@ W_list* cutting(double *matrix, size_t width, size_t height, int threshold)
         printf("lines found! %d %d\n", (band_start - matrix) / width,
                                        (band_end - matrix) / width);
         #endif
-        word_list = v_cutting(band_start, band_end, width,
+        v_cutting(band_start, band_end, width,
                               word_list, &sum_space_size, &space_count);
         actual = band_start - width;
     }
 	if (space_count > 0)
-	    word_list = WL_clean(word_list, sum_space_size / space_count);
+	    WL_clean(word_list, sum_space_size / space_count);
 
-    adjust_contour(word_list, width);
+	adjust_contour(word_list, width);
 
 	return (word_list);
 }
@@ -163,29 +163,30 @@ void    adjust_contour(W_list *word_list, int picture_width)
 {
     // We use the same threshold as the vertical one, because characters
     // are mostly a square.
-    while (word_list)
+    infos *word = list->first;
+    while (word)
     {
-        if (word_list->info.type == WORD)
+        if (word->type == WORD)
         {
-            while (!is_black_line(word_list->info.pos,
-                                  word_list->info.width,
+            while (!is_black_line(word->pos,
+                                  word->width,
                                   VERTICAL_THRESHOLD) &&
-                   word_list->info.height > 0)
+                   word->height > 0)
             {
-                word_list->info.pos += picture_width;
-                word_list->info.height--;
+                word->pos += picture_width;
+                word->height--;
             }
 
-            while (!is_black_line(word_list->info.pos +
-                                      word_list->info.height * picture_width,
-                                  word_list->info.width,
+            while (!is_black_line(word->pos +
+                                      word->height * picture_width,
+                                  word->width,
                                   VERTICAL_THRESHOLD) &&
-                   word_list->info.height > 0)
+                   word->height > 0)
             {
-                word_list->info.height--;
+                word->height--;
             }
         }
-        word_list = word_list->nxt;
+        word = word->nxt;
     }
 }
 
