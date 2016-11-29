@@ -71,22 +71,72 @@ int blank_line_count(double *matrix, int *width, int *height)
 
 double * autorotate(double *matrix, int *width, int *height)
 {
-	int w90 = *width, h90 = *height;
-	double *m90 = rotate(matrix, &w90, &h90, 30.);
-	int b90 = blank_line_count(m90, &w90, &h90);
-	int b = blank_line_count(matrix, width, height);
-	printf("b30 %d h30 %d w30 %d  b  %d h %d w %d \n", b90, h90, w90, b,
-			*height, *width);
-	double div = b90, div2 = b;
-	div /= h90;
-	div2 /= *height;
-	div = div - div2;
-	if (div>0)
+	int wmin = *width, hmin = *height, wmax = *width, hmax = *height;
+	double *mmin = rotate(matrix, &wmin, &hmin, 340.);
+	double *mmax = rotate(matrix, &wmax, &hmax, 20.);
+	int bmin = blank_line_count(mmin, &wmin, &hmin);
+	int bmax = blank_line_count(mmax, &wmax, &hmax);
+	double divmax = bmax, divmin = bmin, amax = 20, amin = -20;
+	divmax /= hmax;
+	divmin /= hmin;
+	printf("before\n");
+	while (amax - amin > 2.5)
 	{
-		*width = w90;
-		*height = h90;
-		free(matrix);
-		return(m90);
+		printf("amin: %f divmin: %f amax %f divmax %f\n", amin, divmin, amax,
+				divmax);
+		if (divmax>divmin)
+		{
+			amin = (amax + amin)/2.;
+			free(mmin);
+			wmin = *width;
+			hmin = *height;
+			if (amin<0.)
+			{
+				mmin = rotate(matrix, &wmin, &hmin, amin + 360.);
+			}
+			else
+			{
+				mmin = rotate(matrix, &wmin, &hmin, amin);
+			}
+			bmin = blank_line_count(mmin, &wmin, &hmin);
+			divmin = bmin;
+			divmin /= hmin;
+		}
+		else
+		{
+			amax = (amax + amin)/2.;
+			free(mmax);
+			wmax = *width;
+			hmax = *height;
+			if (amax<0.)
+			{
+				mmax = rotate(matrix, &wmax, &hmax, amax + 360.);
+			}
+			else 
+			{
+				mmax = rotate(matrix, &wmax, &hmax, amax);
+			}
+			bmax = blank_line_count(mmax, &wmax, &hmax);
+			divmax = bmax;
+			divmax /= hmax;
+		}
+	}
+	printf("after\n");
+	if (divmax>divmin)
+	{
+		free(mmin);
+		*width = wmax;
+		*height = hmax;
+		printf("%f\n", amax);
+		return mmax;
+	}
+	else
+	{
+		free (mmax);
+		*width = wmin;
+		*height = hmin;
+		printf("%f\n", amin);
+		return mmin;
 	}
 	return(matrix);
 }
