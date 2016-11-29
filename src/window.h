@@ -4,10 +4,9 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 #include "show_xor.h"
-#include "testing_cut.h"
 #include "filters.h"
 #include "options.h"
-
+#include "testing_cut.h"
 typedef struct window_s
 {
     GtkWidget           *main_window;

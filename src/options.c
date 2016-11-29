@@ -1,8 +1,7 @@
 #include "window.h"
 #include "show_xor.h"
-#include "testing_cut.h"
 #include "filters.h"
-
+#include "testing_cut.h"
 void on_quitter_btn(GtkWidget* widget, gpointer data)
 {
     GtkWidget *Question;
@@ -123,6 +122,18 @@ void save_neural_net(GtkWidget * dialog, gpointer data)
 	gtk_widget_destroy(dialog);		
 
 }
+void text_xor()
+{
+	return;
+}
+void cut_test()
+{
+	return;
+}
+void test_filter()
+{
+	return;
+}
 void get_way(GtkWidget *bouton,GtkWidget *file_selection)
 {
 
@@ -147,18 +158,6 @@ void load_neural(GtkWidget *bout,GtkWidget* neural_selected)
 	load_neural_network(way);
 	gtk_widget_destroy(neural_selected);
 	
-}
-void test_xor()
-{
-        show_xor();
-}
-void cut_test()
-{
-     show_cutting();
-}
-void test_filter()
-{
-     test_filters();
 }
 //fonctions for neuronal network 
 void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
@@ -253,4 +252,9 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 		
 	}
 }
- 
+void bin_button(GtkWidget * image, gpointer data)
+{
+
+
+
+} 
