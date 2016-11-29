@@ -252,9 +252,4 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 		
 	}
 }
-void bin_button(GtkWidget * image, gpointer data)
-{
 
-
-
-} 
