@@ -13,8 +13,9 @@ double *file_to_matrix_bin(const char *filename, double **matrix_end,
 
 GtkWidget *file_to_image_bin(const char *filename);
 
+//Extract a w * h picture from image, starting at (x;y)
 GtkWidget *extract_image(GtkWidget *image,
-                         int x, int y, int width, int height);
+                         int x, int y, int w, int h);
 
 
 #endif

@@ -98,31 +98,47 @@ GtkWidget * file_to_image_bin(const char *filename)
 	return image_from_matrix(matrix, width, height);
 }
 
-GtkWidget *extract_image(GtkWidget *image, int x, int y, int width, int height)
+GtkWidget *extract_image(GtkWidget *image, int x, int y, int w, int h)
 {
-    /*
-	GdkPixbuf *result = gdk_pixbuf_new(GDK_COLORSPACE_RGB,
-	                                   0, 8, width, height);
-	guchar *pixel = gdk_pixbuf_get_pixels(pixbuf);
+    GdkPixbuf *pixbuf[2];
+    pixbuf[0] = gdk_pixbuf_from_image(image);//image to pixbuf
+    pixbuf[1] = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 0, 8, w, h);
 
-    int in_channel = 
-	int channel=gdk_pixbuf_get_n_channels(pixbuf);
-	gint rowstride = gdk_pixbuf_get_rowstride(pixbuf);
+    guchar  *pixels[2];
+    gint    channel[2];
+    gint    width[2];
+    gint    height[2];
+    gint    rowstride[2];
 
-	for (gint y = 0; y < height; y++)
+    for (int i = 0; i < 2; ++i)
     {
-        for (gint x = 0; x < width; x++)
+        pixels[i]       = gdk_pixbuf_get_pixels(pixbuf[i]);
+        channel[i]      = gdk_pixbuf_get_n_channels(pixbuf[i]);
+        width[i]        = gdk_pixbuf_get_width(pixbuf[i]);
+        height[i]       = gdk_pixbuf_get_height(pixbuf[i]);
+        rowstride[i]    = gdk_pixbuf_get_rowstride(pixbuf[i]);
+    }
+
+    if (x + w > width[0] || y + h > height[0])
+        return (gtk_image_new_from_pixbuf(pixbuf[1]));
+
+    for (gint j = 0; j < h; ++j)
+    {
+        for (gint i = 0; i < w; ++i)
         {
-	        int grey_level = matrix[x + y * width] * 255;
-            pixel[(x * channel)+(y * rowstride)] = grey_level;
-            pixel[(x * channel)+(y * rowstride) + 1] = grey_level;
-            pixel[(x * channel)+(y * rowstride) + 2] = grey_level ;
+            pixels[1][(i * channel[1]) + (j * rowstride[1])] =
+                pixels[0][((i + x) * channel[0]) +
+                          ((j + y) * rowstride[0])];
+            pixels[1][(i * channel[1]) + (j * rowstride[1]) + 1] =
+                pixels[0][((i + x) * channel[0]) +
+                          ((j + y) * rowstride[0]) + 1];
+            pixels[1][(i * channel[1]) + (j * rowstride[1]) + 2] =
+                pixels[0][((i + x) * channel[0]) +
+                          ((j + y) * rowstride[0]) + 2];
         }
     }
 
-    return gtk_image_new_from_pixbuf(pixbuf);
-    */
-    return (image);
+    return gtk_image_new_from_pixbuf(pixbuf[1]);
 }
 
 void launch_bin()
