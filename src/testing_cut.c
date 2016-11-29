@@ -10,7 +10,7 @@ char is_valid(size_t x ,size_t y, size_t width, size_t heigth)
 }
 
 void show_cutting()
-{
+{/*
    	int l = 40;
 	int h = 20;
 
@@ -90,6 +90,8 @@ void show_cutting()
 
 	GtkWidget *new_image = image_from_matrix(matrix,l,h);
  	test_window(new_image);
+*/
+return NULL;
 }
 
 void test_window(GtkWidget *widget)

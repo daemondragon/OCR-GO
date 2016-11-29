@@ -6,13 +6,13 @@
 W_list* WL_init(void){
 	W_list *new_list = malloc (sizeof(W_list));
 	new_list->size = 0;
-	new_list->infos = NULL;
+	new_list->first = NULL;
 	return new_list;
 }
 void  WL_add(W_list *liste ,infos to_add)
 {
 	
-	new_word = malloc (sizeof(infos));
+	infos *new_word = malloc (sizeof(infos));
 	
 	new_word->type = to_add.type;
 	new_word->pos = to_add.pos ;
@@ -24,13 +24,6 @@ void  WL_add(W_list *liste ,infos to_add)
 	liste->size ++ ;
 }
 
-infos WL(W_list *liste ,int i)
-{
-	for(int j=0;j<i;++j){
-		liste=liste->nxt;
-	}
-	return liste->info;
-}
 
 void WL_free(W_list *list)
 {
@@ -49,10 +42,10 @@ void WL_free(W_list *list)
 	free(list);
 }
 
-void : WL_clean(W_list *list, float min, float height_rate)
+void WL_clean(W_list *list, float min, float height_rate)
 {
     if (!list->size)
-        return NULL;
+        return;
 
     infos *actual = list->first;
     

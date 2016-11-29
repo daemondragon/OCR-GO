@@ -108,9 +108,9 @@ void v_cutting(double *band_start, double *band_end, int width,
             info.pos = char_start - info.width;
             WL_add(word_list, info);
         }
-    }
-
-    return (word_list);
+    
+     }
+ 
 }
 
 
@@ -152,7 +152,7 @@ W_list* cutting(double *matrix, size_t width, size_t height, int threshold, floa
         actual = band_start - width;
     }
 	if (space_count > 0)
-	    WL_clean(word_list, sum_space_size / space_count);
+	    WL_clean(word_list, sum_space_size / space_count, height_rate);
 
 	adjust_contour(word_list, width);
 
@@ -163,7 +163,7 @@ void    adjust_contour(W_list *word_list, int picture_width)
 {
     // We use the same threshold as the vertical one, because characters
     // are mostly a square.
-    infos *word = list->first;
+    infos *word = word_list->first;
     while (word)
     {
         if (word->type == WORD)
