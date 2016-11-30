@@ -77,7 +77,7 @@ int run_window(int argc, char **argv)
 
     MenuItems = gtk_image_menu_item_new_with_label("open net");
     g_signal_connect(G_OBJECT(MenuItems), "activate",
-                         G_CALLBACK(create_file_selection),
+                         G_CALLBACK(create_ner_selection),
                          NULL);
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
 

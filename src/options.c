@@ -217,7 +217,7 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
     if (b==0)
 	{
 		uint32_t * tab = malloc(sizeof(5));
-		for(uint32_t i = 0; i<couche;i++)
+		for(uint32_t i = 0; i<5;i++)
 		{
 			//Second dialog box for the neur_couche number.
 			number_neur = gtk_dialog_new_with_buttons("Neuronal network creation",
