@@ -33,13 +33,17 @@ void open_butt(GtkWidget * dialog, gpointer user_data)
 {
 	const gchar * image_name;
 	static GtkWidget * image;
+	GtkWidget * box_img;
+	struct box_s * box;
+	box = (box_t *)user_data;
 	dialog = gtk_file_chooser_dialog_new("Open a file",NULL,
 			GTK_FILE_CHOOSER_ACTION_OPEN,
 			GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
 			GTK_STOCK_OPEN,GTK_RESPONSE_ACCEPT,
 			NULL);
-	GtkWidget * box_img;
-	box_img = (GtkWidget *)user_data;
+	box_img = box->main_box;
+	
+	
 	switch(gtk_dialog_run(GTK_DIALOG(dialog)))
 	{
 		case GTK_RESPONSE_ACCEPT:
@@ -51,6 +55,7 @@ void open_butt(GtkWidget * dialog, gpointer user_data)
 			{
 				image= gtk_image_new_from_file(image_name);
 				gtk_box_pack_end(GTK_BOX(box_img),image,TRUE,FALSE,0);
+				box->image_name = image_name;
 				gtk_widget_show(image);
 			}
 			break;
@@ -261,7 +266,6 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 }
 void rotation_bout(GtkWidget * image, gpointer data)
 {
-	GtkWidget * box_imag = (GtkWidget *) data;
-	return;	
-
+	if(image && data)
+		return;
 }
