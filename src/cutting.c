@@ -59,7 +59,6 @@ void v_cutting(double *band_start, double *band_end, int width,
     info.pos = NULL;//ONLY position in list is important
     info.width = 0;
     WL_add(word_list, info);
-
     int i = width - 1;
     while (i >= 0 &&
            !is_black_column(band_start + i, band_end + i, width, threshold))
