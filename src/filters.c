@@ -98,10 +98,10 @@ GtkWidget * file_to_image_bin(const char *filename)
 	return image_from_matrix(matrix, width, height);
 }
 
-GtkWidget *extract_image(GtkWidget *image, int x, int y, int w, int h)
+GdkPixbuf *extract_image(GdkPixbuf *input_pixbuf, int x, int y, int w, int h)
 {
     GdkPixbuf *pixbuf[2];
-    pixbuf[0] = gtk_image_get_pixbuf(image);//image to pixbuf
+    pixbuf[0] = input_pixbuf;
     pixbuf[1] = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 0, 8, w, h);
 
     guchar  *pixels[2];
@@ -120,7 +120,7 @@ GtkWidget *extract_image(GtkWidget *image, int x, int y, int w, int h)
     }
 
     if (x + w > width[0] || y + h > height[0])
-        return (gtk_image_new_from_pixbuf(pixbuf[1]));
+        return (pixbuf[1]);
 
     for (gint j = 0; j < h; ++j)
     {
@@ -138,7 +138,7 @@ GtkWidget *extract_image(GtkWidget *image, int x, int y, int w, int h)
         }
     }
 
-    return gtk_image_new_from_pixbuf(pixbuf[1]);
+    return (pixbuf[1]);
 }
 
 void launch_bin()
