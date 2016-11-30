@@ -11,9 +11,17 @@ typedef struct window_s
 {
     GtkWidget           *main_window;
     neural_network_t    *net;
+   
 } window_t;
+typedef struct box_s
+{
+	GtkWidget 	*main_box;
+	const gchar 	*image_name;
+	GtkWidget 	*image;
 
+} box_t;
 window_t*   create_window();
+box_t*	    create_box();
 void        delete_window(window_t *window);
 
 int     run_window(int argc, char **argv);

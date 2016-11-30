@@ -259,4 +259,9 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 		
 	}
 }
+void rotation_bout(GtkWidget * image, gpointer data)
+{
+	GtkWidget * box_imag = (GtkWidget *) data;
+	return;	
 
+}

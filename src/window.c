@@ -22,7 +22,17 @@ window_t* create_window()
 
     return (window);
 }
+box_t*  create_box()
+{
+	box_t *  box = malloc(sizeof(box_t));
+	if(!box)
+		return NULL;
+	box->main_box = gtk_vbox_new(FALSE,0); 
+	box->image = NULL;
+	box->image_name = NULL;
+	return box;
 
+}
 void delete_window(window_t *window)
 {
     if (window->net)
