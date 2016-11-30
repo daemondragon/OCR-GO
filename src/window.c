@@ -13,7 +13,6 @@ window_t* create_window()
 
     window->net = NULL;
     window->main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-
     gtk_container_set_border_width(GTK_CONTAINER(window->main_window),5);
     gtk_window_set_default_size(GTK_WINDOW(window->main_window), 1024, 768);
     gtk_window_set_title(GTK_WINDOW(window->main_window),"OCR GO ");
@@ -28,9 +27,9 @@ box_t*  create_box()
 	if(!box)
 		return NULL;
 	box->main_box = gtk_vbox_new(FALSE,0); 
-	box->image = NULL;
+	
 	box->image_name = NULL;
-	return box;
+	return (box);
 
 }
 void delete_window(window_t *window)
@@ -44,6 +43,7 @@ void delete_window(window_t *window)
 int run_window(int argc, char **argv)
 {
     struct window_s * wind;
+    struct box_s * box;
     GtkWidget *Window;
     GtkWidget *Table;
     GtkWidget *Button[1];
@@ -58,6 +58,7 @@ int run_window(int argc, char **argv)
     /* creation of the window and initialisation of size and place
     of the window */
     wind = create_window();
+    box = create_box();
     Window = wind->main_window;
 	//gtk_window_new(GTK_WINDOW_TOPLEVEL);
     //gtk_container_set_border_width(GTK_CONTAINER(Window),5);
@@ -75,14 +76,14 @@ int run_window(int argc, char **argv)
 
     /*Creation of the Menu Box and his different parameter */
     VboxMenu = gtk_vbox_new(FALSE, 0);
-    box_img = gtk_vbox_new(FALSE,0);
+    box_img = box->main_box;
     MenuBar = gtk_menu_bar_new();
     
     Menu = gtk_menu_new(); 
     
     MenuItems = gtk_image_menu_item_new_with_label("open image");
     g_signal_connect(G_OBJECT(MenuItems), "activate", 
-			G_CALLBACK(open_butt),(gpointer*)box_img);
+			G_CALLBACK(open_butt),(gpointer*)box);
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
 
     MenuItems = gtk_image_menu_item_new_with_label("open net");
