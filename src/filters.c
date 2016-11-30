@@ -101,7 +101,7 @@ GtkWidget * file_to_image_bin(const char *filename)
 GtkWidget *extract_image(GtkWidget *image, int x, int y, int w, int h)
 {
     GdkPixbuf *pixbuf[2];
-    pixbuf[0] = gdk_pixbuf_from_image(image);//image to pixbuf
+    pixbuf[0] = gtk_image_get_pixbuf(image);//image to pixbuf
     pixbuf[1] = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 0, 8, w, h);
 
     guchar  *pixels[2];
