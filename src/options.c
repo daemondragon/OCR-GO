@@ -276,11 +276,10 @@ void binarize_op(GtkWidget * image,gpointer data)
 	box = (box_t*)data;
 	GtkWidget * box_img;
 	box_img = box->main_box;
-	GtkWidget * img;
-	img = box->image;
+	image = box->image;
 	char * image_name =(char*) box->image_name;
-	image = file_to_image_bin(image_name);
-	gtk_box_pack_start(GTK_BOX(box_img),image,TRUE,FALSE,0);
+	image= file_to_image_bin(image_name);
+	gtk_box_pack_end(GTK_BOX(box_img),image,TRUE,FALSE,0);
 	gtk_widget_show(image);
 	
 
