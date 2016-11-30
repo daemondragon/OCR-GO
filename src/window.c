@@ -33,6 +33,7 @@ void delete_window(window_t *window)
 
 int run_window(int argc, char **argv)
 {
+    struct window_s * wind;
     GtkWidget *Window;
     GtkWidget *Table;
     GtkWidget *Button[1];
@@ -46,12 +47,14 @@ int run_window(int argc, char **argv)
     gtk_init(&argc, &argv);
     /* creation of the window and initialisation of size and place
     of the window */
-    Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_container_set_border_width(GTK_CONTAINER(Window),5);
-    gtk_window_set_default_size(GTK_WINDOW(Window), 1024, 768);
-    gtk_window_set_title(GTK_WINDOW(Window),"OCR GO ");
-    g_signal_connect(G_OBJECT(Window), "destroy",
-                                            G_CALLBACK(gtk_main_quit), NULL);
+    wind = create_window();
+    Window = wind->main_window;
+	//gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    //gtk_container_set_border_width(GTK_CONTAINER(Window),5);
+    //gtk_window_set_default_size(GTK_WINDOW(Window), 1024, 768);
+    //gtk_window_set_title(GTK_WINDOW(Window),"OCR GO ");
+    //g_signal_connect(G_OBJECT(Window), "destroy",
+      //                                      G_CALLBACK(gtk_main_quit), NULL);
 
     /* Creation and insertion of the 10 & 10 table in the window */
     Table=gtk_table_new(10,10,TRUE);
