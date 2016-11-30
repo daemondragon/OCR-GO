@@ -119,11 +119,11 @@ int run_window(int argc, char **argv)
 
    //tu commences à créer les différents éléments qui composent ton menu(les boutons)
    MenuItems = gtk_menu_item_new_with_label("Rotation");
-   g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(create_neuronal_network),
-	(GtkWidget *) Window);//ici cela te permet d'appeler les fonctions void qui seront lié à tes boutons grace au callback
+   g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(rotation_bout),
+	(gpointer *)box);//ici cela te permet d'appeler les fonctions void qui seront lié à tes boutons grace au callback
    gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);//ici tu attache le bouton à ton menu
    MenuItems = gtk_menu_item_new_with_label("Binarize");//tu recommences pour les différentrs boutons dont tu as besoin
-   g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(test_filters),NULL);
+   g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(binarize_op),(gpointer*)box);
    gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);
 
    MenuItems = gtk_menu_item_new_with_label("extract");

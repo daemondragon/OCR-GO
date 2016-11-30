@@ -2,6 +2,8 @@
 #include "show_xor.h"
 #include "filters.h"
 #include "testing_cut.h"
+#include "rotation.h"
+#include "image_to_matrix.h"
 void on_quitter_btn(GtkWidget* widget, gpointer data)
 {
     GtkWidget *Question;
@@ -88,9 +90,7 @@ void create_file_selection()
 //to make it shorter
 void create_ner_selection()
 {
-
 	GtkWidget * neur_select;
-	
 	neur_select = gtk_file_selection_new( g_locale_to_utf8(
 				"Select the neuronal network to load",-1,
 				 NULL,NULL,NULL));
@@ -127,18 +127,6 @@ void save_neural_net(GtkWidget * dialog, gpointer data)
 	gtk_widget_destroy(dialog);		
 
 }
-void text_xor()
-{
-	return;
-}
-void cut_test()
-{
-	return;
-}
-void test_filter()
-{
-	return;
-}
 void get_way(GtkWidget *bouton,GtkWidget *file_selection)
 {
 
@@ -155,11 +143,11 @@ bouton = gtk_message_dialog_new(GTK_WINDOW(file_selection),
 
 
 }
-void load_neural(GtkWidget *bout,GtkWidget* neural_selected)
+void load_neural(GtkWidget *bouton,GtkWidget* neural_selected)
 {
 	
-	 char way;
-	way =(char*) gtk_file_selection_get_filename(GTK_FILE_SELECTION(neural_selected));
+	 char* way;
+	way = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(neural_selected));
 	load_neural_network(way);
 	
 }
@@ -207,8 +195,8 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
         	case GTK_RESPONSE_OK:
 			b = 0;
 			n1 =  gtk_entry_get_text(GTK_ENTRY(Entry));
-			couche = (uint32_t)n1;
-			printf("couche = %d \n", couche);		 
+			couche = (uint32_t*)n1;
+					 
             		break;
         	/* L utilisateur annule */
         	case GTK_RESPONSE_CANCEL:
@@ -221,7 +209,7 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
     gtk_widget_destroy(Dialbox);
     if (b==0)
 	{
-		uint32_t * tab = malloc(sizeof(5));
+	
 		for(uint32_t i = 0; i<5;i++)
 		{
 			//Second dialog box for the neur_couche number.
@@ -241,7 +229,7 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
                 		/* L utilisateur valide */
                 		case GTK_RESPONSE_OK:
                         		n2 = gtk_entry_get_text(GTK_ENTRY(entr));
-					neur_per_couche =(unsigned int*)n2;
+					neur_per_couche =(uint32_t*)n2;
 					launch=0;
                         		break;
                 		/* L utilisateur annule */
@@ -264,8 +252,36 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 		
 	}
 }
-void rotation_bout(GtkWidget * image, gpointer data)
+void rotation_bout(char * image, gpointer data)
 {
-	if(image && data)
-		return;
+	GtkWidget * img;
+	
+	int width,height;
+	double *matrix_end;
+	struct box_s * box;
+	box = (box_t*) data;
+	GtkWidget * box_img = box->main_box;
+	image =(char*) box->image_name;
+	double *matrix = file_to_matrix_grey(image,&matrix_end,&width,&height);
+	binarize_simple(matrix,matrix_end);
+	double *matrix2 = autorotate(matrix,&width,&height);
+	img =(GtkWidget *) image_from_matrix(matrix2,width,height);
+	gtk_box_pack_end(GTK_BOX(box_img),img,TRUE,FALSE,0);	
+	gtk_widget_show(img);	
+}
+void binarize_op(GtkWidget * image,gpointer data)
+{
+	
+	struct box_s * box;
+	box = (box_t*)data;
+	GtkWidget * box_img;
+	box_img = box->main_box;
+	GtkWidget * img;
+	img = box->image;
+	char * image_name =(char*) box->image_name;
+	image = file_to_image_bin(image_name);
+	gtk_box_pack_start(GTK_BOX(box_img),image,TRUE,FALSE,0);
+	gtk_widget_show(image);
+	
+
 }
