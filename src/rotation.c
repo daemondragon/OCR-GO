@@ -35,10 +35,10 @@ double *rotate (double *matrix, int *width, int *height, double angle)
 	{
 		for (int x = 0; x<*width; x++)
 		{
-			x2 = (int) (x - y*t);
+			x2 = (int) (x - y*t + 0.5);
 			y2 = y;
-			y2 = (int) (s*x2 + y2);
-			x2 = (int) (x2 - y2*t) + tx;
+			y2 = (int) (s*x2 + y2 + 0.5);
+			x2 = (int) (x2 - y2*t + 0.5) + tx;
 			y2 -= ty;
 			if (x2<rwidth && x2>=0 && y2<rheight && y2>=0)
 			{
@@ -48,6 +48,22 @@ double *rotate (double *matrix, int *width, int *height, double angle)
 	}
 	*width = rwidth;
 	*height = rheight;
+	return rmatrix;
+}
+
+double *rotate_90(double *matrix, int *width, int*height)
+{
+	double *rmatrix = malloc(sizeof(double)**width**height);
+	for (int y = 0; y<*height; y++)
+	{
+		for (int x = 0; x<*width; x++)
+		{
+			*(rmatrix + x**width + y) = *(matrix + x + y**width);
+		}
+	}
+	int tmp = *width;
+	*width = *height;
+	*height = tmp;
 	return rmatrix;
 }
 
@@ -79,11 +95,8 @@ double * autorotate(double *matrix, int *width, int *height)
 	double divmax = bmax, divmin = bmin, amax = 20, amin = -20;
 	divmax /= hmax;
 	divmin /= hmin;
-	printf("before\n");
-	while (amax - amin > 2.5)
+	while (amax - amin > 1)
 	{
-		printf("amin: %f divmin: %f amax %f divmax %f\n", amin, divmin, amax,
-				divmax);
 		if (divmax>divmin)
 		{
 			amin = (amax + amin)/2.;
@@ -121,13 +134,11 @@ double * autorotate(double *matrix, int *width, int *height)
 			divmax /= hmax;
 		}
 	}
-	printf("after\n");
 	if (divmax>divmin)
 	{
 		free(mmin);
 		*width = wmax;
 		*height = hmax;
-		printf("%f\n", amax);
 		return mmax;
 	}
 	else
@@ -135,7 +146,6 @@ double * autorotate(double *matrix, int *width, int *height)
 		free (mmax);
 		*width = wmin;
 		*height = hmin;
-		printf("%f\n", amin);
 		return mmin;
 	}
 	return(matrix);
@@ -151,6 +161,40 @@ double * rotate180(double *matrix, int *width, int *height)
 			*(rmatrix + x + *width*(*height-y-1)) = *(matrix + x + y**width);
 		}
 	}
+	return rmatrix;
+}
+
+double * rotate90(double *matrix, int *width, int*height)
+{
+	double *rmatrix = malloc(sizeof(double)* *width * *height);
+	for (int y = 0; y<*height; y++)
+	{
+		for (int x = 0; x<*width; x++)
+		{
+			*(rmatrix + ((x+1)**height) - y) = *(matrix + x + y**width);
+		}
+	}
+	int tmp = *width;
+	*width = *height;
+	*height = tmp;
+	return rmatrix;
+}
+
+double * rotate270(double *matrix, int *width, int*height)
+{
+	int size = *height * *width;
+	double *rmatrix = malloc(sizeof(double)* size);
+	size -= *height;
+	for (int y = 0; y<*height; y++)
+	{
+		for (int x = 0; x<*width; x++)
+		{
+			*(rmatrix + size - (x**height) + y) = *(matrix + x + y**width);
+		}
+	}
+	int tmp = *width;
+	*width = *height;
+	*height = tmp;
 	return rmatrix;
 }
 
@@ -186,7 +230,7 @@ void launch_bin_rotation()
 {
 	int width, height;
 	double *matrix_end;
-	double *matrix = file_to_matrix_grey("image_test/binarize.png",
+	double *matrix = file_to_matrix_grey("image_test/rotation.jpg",
 			&matrix_end, &width, &height);
 	binarize_simple(matrix, matrix_end);
 	double *matrix2 = autorotate(matrix, &width, &height);
@@ -210,12 +254,12 @@ void test_rotation()
 	int argc = 0;
 	char **argv = NULL;
 	gtk_init(&argc, &argv);
-	GtkWidget *image = gtk_image_new_from_file ("image_test/binarize.png");
+	GtkWidget *image = gtk_image_new_from_file ("image_test/rotation.jpg");
 	GtkWidget *Window;
 	GtkWidget *Button;
 	GtkWidget *table;
 	GtkWidget * Box;
-	Button = gtk_button_new_with_label("Binarize");
+	Button = gtk_button_new_with_label("Auto Rotate");
 	Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width(GTK_CONTAINER(Window),5);
 	gtk_window_set_default_size(GTK_WINDOW(Window),600,600);
