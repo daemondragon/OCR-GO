@@ -156,7 +156,6 @@ void load_neural(GtkWidget *bout,GtkWidget* neural_selected)
 	 char way;
 	way =(char*) gtk_file_selection_get_filename(GTK_FILE_SELECTION(neural_selected));
 	load_neural_network(way);
-	gtk_widget_destroy(neural_selected);
 	
 }
 //fonctions for neuronal network 
@@ -168,7 +167,8 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 	GtkWidget * number_neur;
 	const gchar*  n1;
 	const gchar* n2;
-	uint32_t  couche;
+
+	uint32_t*  couche;
 	uint32_t*  neur_per_couche;
 	int launch = 1;
 	int b = 1;
@@ -202,7 +202,8 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
         	case GTK_RESPONSE_OK:
 			b = 0;
 			n1 =  gtk_entry_get_text(GTK_ENTRY(Entry));
-			couche = (unsigned int)n1;		 
+			couche = (uint32_t)n1;
+			printf("couche = %d \n", couche);		 
             		break;
         	/* L utilisateur annule */
         	case GTK_RESPONSE_CANCEL:
@@ -214,37 +215,43 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
     /* Destruction de la boite de dialogue */
     gtk_widget_destroy(Dialbox);
     if (b==0)
-	{	//Second dialog box for the neur_couche number.
-		number_neur = gtk_dialog_new_with_buttons("Neuronal network creation",
-                        GTK_WINDOW(window),
-                        GTK_DIALOG_MODAL,
-                        GTK_STOCK_OK,GTK_RESPONSE_OK,
-                        GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
-                        NULL);
-		entr = gtk_entry_new();
-		gtk_entry_set_text(GTK_ENTRY(entr),"Enter neuronal couche number");
-		gtk_box_pack_start(GTK_BOX(GTK_DIALOG(number_neur)->vbox),entr,TRUE,FALSE,0);
+	{
+		uint32_t * tab = malloc(sizeof(5));
+		for(uint32_t i = 0; i<couche;i++)
+		{
+			//Second dialog box for the neur_couche number.
+			number_neur = gtk_dialog_new_with_buttons("Neuronal network creation",
+                        	GTK_WINDOW(window),
+                        	GTK_DIALOG_MODAL,
+                        	GTK_STOCK_OK,GTK_RESPONSE_OK,
+                        	GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
+                        	NULL);
+			entr = gtk_entry_new();
+			gtk_entry_set_text(GTK_ENTRY(entr),"Enter neuronal couche number");
+			gtk_box_pack_start(GTK_BOX(GTK_DIALOG(number_neur)->vbox),entr,TRUE,FALSE,0);
 		
-		gtk_widget_show_all(GTK_DIALOG(number_neur)->vbox);
-		switch (gtk_dialog_run(GTK_DIALOG(number_neur)))
-        {
-                /* L utilisateur valide */
-                case GTK_RESPONSE_OK:
-                        n2 = gtk_entry_get_text(GTK_ENTRY(entr));
-			neur_per_couche = (unsigned int*)n2;
-			launch=0;
-                        break;
-                /* L utilisateur annule */
-                case GTK_RESPONSE_CANCEL:
-                case GTK_RESPONSE_NONE:
-                        default:
-                                  break;
-        }
+			gtk_widget_show_all(GTK_DIALOG(number_neur)->vbox);
+			switch (gtk_dialog_run(GTK_DIALOG(number_neur)))
+        		{
+                		/* L utilisateur valide */
+                		case GTK_RESPONSE_OK:
+                        		n2 = gtk_entry_get_text(GTK_ENTRY(entr));
+					neur_per_couche =(unsigned int*)n2;
+					launch=0;
+                        		break;
+                		/* L utilisateur annule */
+                		case GTK_RESPONSE_CANCEL:
+                		case GTK_RESPONSE_NONE:
+                        	default:
+					 launch =42;
+                                 	 break;
+        		}
 	
-    /* Destruction de la boite de dialogue */
-    gtk_widget_destroy(number_neur);
-
+    			/* Destruction de la boite de dialogue */
+   			 gtk_widget_destroy(number_neur);
+		}
 	}
+	
 	if(launch==0)
 	{
 
