@@ -1,6 +1,6 @@
 CC          = gcc
 EXEC        = prog
-CFLAGS      = -Wall -Wextra -lm -std=c99 -DDEBUG
+CFLAGS      = -Wall -Wextra -lm -std=c99 -DDEBUG -g
 LIBFLAGS    = `pkg-config gtk+-2.0 --cflags --libs`
 
 SOURCES     = $(wildcard src/*.c)

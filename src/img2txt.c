@@ -31,4 +31,16 @@ char* img_to_string(double *matrix, size_t width , size_t height, int threshold,
 	return string;
 }
 
+void string_to_file(char *filename, char *string)
+{
+	if( filename && string)
+	{
 
+		FILE *f = fopen(filename, "w");
+		if(f)
+		{
+			fprintf("%s",string);
+			fclose(f);
+		}	
+	}
+}
