@@ -11,6 +11,8 @@
 
 #include "load_exemples.h"
 #include "rotation.h"
+
+#include "testing_img2txt.h"
 void train_tchou_tchou()
 {
     
@@ -94,12 +96,13 @@ int main(int argc, char *argv[])
     {"xor",         "show neural network xor",      show_xor},
     {"filter",      "test for filters",             test_filters},
 	{"pcut",        "pretty test for cutting",      show_cutting},
+	{"test_s",	"revoi la string comprise par le neural", test_string},
 	{"mat_copy",    "test for copying matrix",      test_mat_copy},
 	{"train",       "train a neural network",       train_tchou_tchou},
 	{"rotation",	"make a rotation",				test_rotation},
 	{"net_result",  "get neural network result",    get_neural_advanced_result}
 	};
-    size_t nb_arguments = 7;
+    size_t nb_arguments = 8;
 
     if (argc > 1)
     {
