@@ -174,7 +174,6 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 	GtkWidget * number_neur;
 	char*  n1;
 	const gchar* n2;
-
 	uint32_t*  couche;
 	uint32_t*  neur_per_couche;
 	int launch = 1;
@@ -221,9 +220,11 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
  
     /* Destruction de la boite de dialogue */
     gtk_widget_destroy(Dialbox);
+     
     if (b==0)
 	{
 	
+		
 		for(uint32_t i = 0; i<5;i++)
 		{
 			//Second dialog box for the neur_couche number.
@@ -243,7 +244,8 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
                 		/* L utilisateur valide */
                 		case GTK_RESPONSE_OK:
                         		n2 = gtk_entry_get_text(GTK_ENTRY(entr));
-					neur_per_couche =(uint32_t*)n2;
+					neur_per_couche=(uint32_t*)n2;
+				
 					launch=0;
                         		break;
                 		/* L utilisateur annule */
@@ -268,23 +270,20 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 }
 void rotation_bout(char * image, gpointer data)
 {
-
-	struct box_s * box;
-	box = (box_t*)data;
-	GtkWidget * box_img;
+	struct box_s* box;
+	box = (box_t*) data;
+	GtkWidget *box_img;
 	box_img = box->main_box;
+	image = (char*) box->image_name;
 	GtkWidget * img;
-	img = box->image;
-	image= (char*) box->image_name;
+	gtk_widget_destroy(box_img);
 	int width,height;
-	double *matrix_end;
-	double *matrix = file_to_matrix_grey(image,&matrix_end,&width,&height);
+	double * matrix_end;
+	double * matrix = file_to_matrix_grey(image,
+		&matrix_end,&width,&height);
 	binarize_simple(matrix,matrix_end);
 	double *matrix2 = autorotate(matrix,&width,&height);
-	img = image_from_matrix(matrix2,width,height);
-	gtk_box_pack_end(GTK_BOX(box_img),img,TRUE,FALSE,0);
-	gtk_widget_show(img);
-	
+			
 }
 void binarize_op(GtkWidget * image,gpointer data)
 {

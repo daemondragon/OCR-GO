@@ -11,6 +11,8 @@ typedef struct window_s
 {
     GtkWidget           *main_window;
     neural_network_t    *net;
+    GtkWidget 		*table;
+    GtkWidget 		*box;
    
    
 } window_t;
