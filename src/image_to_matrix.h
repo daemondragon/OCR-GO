@@ -21,6 +21,10 @@ double* load_matrix_grey(const char *filename);
 // create image from matrix
 GtkWidget * image_from_matrix (double *matrix, int width, int height);
 
+//set image from matrix
+void image_set_from_matrix (GtkImage *image ,double *matrix, int width, int
+		height);
+
 // copy a matrix
 double *new_matrix_copy(double *matrix, double *matrix_end,
 			double **new_matrix_end);
