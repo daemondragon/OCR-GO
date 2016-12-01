@@ -268,21 +268,23 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 }
 void rotation_bout(char * image, gpointer data)
 {
+
+	struct box_s * box;
+	box = (box_t*)data;
+	GtkWidget * box_img;
+	box_img = box->main_box;
 	GtkWidget * img;
-	
+	img = box->image;
+	image= (char*) box->image_name;
 	int width,height;
 	double *matrix_end;
-	struct box_s * box;
-	box = (box_t*) data;
-	GtkWidget * box_img = box->main_box;
-	img = box->image;
-	image =(char*) box->image_name;
 	double *matrix = file_to_matrix_grey(image,&matrix_end,&width,&height);
 	binarize_simple(matrix,matrix_end);
 	double *matrix2 = autorotate(matrix,&width,&height);
-	img =(GtkWidget *) image_from_matrix(matrix2,width,height);
-	gtk_box_pack_end(GTK_BOX(box_img),img,TRUE,FALSE,0);	
-	gtk_widget_show(img);	
+	img = image_from_matrix(matrix2,width,height);
+	gtk_box_pack_end(GTK_BOX(box_img),img,TRUE,FALSE,0);
+	gtk_widget_show(img);
+	
 }
 void binarize_op(GtkWidget * image,gpointer data)
 {
