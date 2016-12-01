@@ -88,8 +88,8 @@ int run_window(int argc, char **argv)
 
     MenuItems = gtk_image_menu_item_new_with_label("open net");
     g_signal_connect(G_OBJECT(MenuItems), "activate",
-                         G_CALLBACK(create_ner_selection),
-                         NULL);
+                         G_CALLBACK(load_neural),
+                         (gpointer*)wind);
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
 
 
@@ -102,7 +102,7 @@ int run_window(int argc, char **argv)
     MenuItems = gtk_image_menu_item_new_with_label("create net");
     g_signal_connect(G_OBJECT(MenuItems),"activate",
 			G_CALLBACK(create_neuronal_network),
-				(GtkWidget *) Window);
+				(GtkWidget*)Window);
     gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItems);
 
     MenuItems = gtk_image_menu_item_new_with_label("leave program");
