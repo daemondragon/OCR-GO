@@ -51,21 +51,7 @@ double *rotate (double *matrix, int *width, int *height, double angle)
 	return rmatrix;
 }
 
-double *rotate_90(double *matrix, int *width, int*height)
-{
-	double *rmatrix = malloc(sizeof(double)**width**height);
-	for (int y = 0; y<*height; y++)
-	{
-		for (int x = 0; x<*width; x++)
-		{
-			*(rmatrix + x**width + y) = *(matrix + x + y**width);
-		}
-	}
-	int tmp = *width;
-	*width = *height;
-	*height = tmp;
-	return rmatrix;
-}
+
 
 int blank_line_count(double *matrix, int *width, int *height)
 {
@@ -95,8 +81,55 @@ double * autorotate(double *matrix, int *width, int *height)
 	double divmax = bmax, divmin = bmin, amax = 20, amin = -20;
 	divmax /= hmax;
 	divmin /= hmin;
+	double atmp = amax;
+	while (amin < atmp)
+	{
+		amin += 5.0;
+		hmin = *height;
+		wmin = *width;
+		free(mmin);
+		if (amin<0.)
+		{
+			mmin = rotate(matrix, &wmin, &hmin, 360. + amin);
+		}
+		else
+		{
+			mmin = rotate(matrix, &wmin, &hmin, amin);
+		}
+		bmin = blank_line_count(mmin, &wmin, &hmin);
+		divmin = bmin;
+		divmin /=hmin;
+		if (divmin>divmax)
+		{
+			amax = amin;
+			divmax = divmin;
+		}
+	}
+	if (amax<0)
+	{
+		amin = amax;
+		amax = 0;
+		wmax = *width;
+		hmax = *height;
+		mmax = rotate(matrix, &wmax, &hmax, 0.);
+		bmax = blank_line_count(mmax, &wmax, &hmax);
+		divmax = bmax;
+		divmax /= hmax;
+	}
+	else
+	{	
+		amin = 0;
+		wmin = *width;
+		hmin = *height;
+		mmin = rotate(matrix, &wmin, &wmax, 0.);
+		bmin = blank_line_count(mmin, &wmin, &hmin);
+		divmin = bmin;
+		divmin /= hmin;
+	}
 	while (amax - amin > 1)
 	{
+		//printf("amin: %f divmin: %f amax %f divmax %f\n", amin, divmin, amax,
+		//		divmax);
 		if (divmax>divmin)
 		{
 			amin = (amax + amin)/2.;
