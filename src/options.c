@@ -116,8 +116,7 @@ void save_neural_net(GtkWidget * dialog, gpointer data)
 	switch(gtk_dialog_run(GTK_DIALOG(dialog)))
 	{
 		case GTK_RESPONSE_ACCEPT:
-				net_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER
-						(dialog));
+				net_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 				save_neural_network(data,net_name);
 				break;
 		case GTK_RESPONSE_CANCEL:
@@ -143,13 +142,28 @@ bouton = gtk_message_dialog_new(GTK_WINDOW(file_selection),
 
 
 }
-void load_neural(GtkWidget *bouton,GtkWidget* neural_selected)
+void load_neural(GtkWidget *bouton,gpointer  data)
 {
 	
-	 char* way;
-	way = (char*)gtk_file_selection_get_filename(GTK_FILE_SELECTION(neural_selected));
-	load_neural_network(way);
-	
+	char * way;
+	struct window_s * wind;
+	wind = (window_t*) data;
+	bouton = gtk_file_chooser_dialog_new("Choose neural network to load",NULL,
+				GTK_FILE_CHOOSER_ACTION_OPEN,
+				GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
+				GTK_STOCK_OPEN,GTK_RESPONSE_ACCEPT,
+				NULL);
+	switch(gtk_dialog_run(GTK_DIALOG(bouton)))
+	{
+		case GTK_RESPONSE_ACCEPT:
+			way = (char*)gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(bouton));
+			wind->net = load_neural_network(way);
+			break;
+		case GTK_RESPONSE_CANCEL:
+		default:
+			break;
+	}				     
+	gtk_widget_destroy(bouton);
 }
 //fonctions for neuronal network 
 void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
@@ -158,7 +172,7 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 	GtkWidget *Entry;
 	GtkWidget * entr;
 	GtkWidget * number_neur;
-	const gchar*  n1;
+	char*  n1;
 	const gchar* n2;
 
 	uint32_t*  couche;
@@ -194,7 +208,7 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
         	/* L utilisateur valide */
         	case GTK_RESPONSE_OK:
 			b = 0;
-			n1 =  gtk_entry_get_text(GTK_ENTRY(Entry));
+			n1 =(char*)  gtk_entry_get_text(GTK_ENTRY(Entry));
 			couche = (uint32_t*)n1;
 					 
             		break;
@@ -261,6 +275,7 @@ void rotation_bout(char * image, gpointer data)
 	struct box_s * box;
 	box = (box_t*) data;
 	GtkWidget * box_img = box->main_box;
+	img = box->image;
 	image =(char*) box->image_name;
 	double *matrix = file_to_matrix_grey(image,&matrix_end,&width,&height);
 	binarize_simple(matrix,matrix_end);
