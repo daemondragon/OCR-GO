@@ -125,12 +125,12 @@ GdkPixbuf *extract_image(GdkPixbuf *input_pixbuf, int x, int y, int w, int h)
         h = input_height - y;
     
     GdkPixbuf *output_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 0, 8, w, h);
-    if (output_pixbuf)
+    if (!output_pixbuf)
         return (NULL);
 
-    guchar  *output_pixels     = gdk_pixbuf_get_pixels(input_pixbuf);
-    gint    output_channel     = gdk_pixbuf_get_n_channels(input_pixbuf);
-    gint    output_rowstride   = gdk_pixbuf_get_rowstride(input_pixbuf);
+    guchar  *output_pixels     = gdk_pixbuf_get_pixels(output_pixbuf);
+    gint    output_channel     = gdk_pixbuf_get_n_channels(output_pixbuf);
+    gint    output_rowstride   = gdk_pixbuf_get_rowstride(output_pixbuf);
 
     for (gint j = 0; j < h; ++j)
     {
@@ -181,16 +181,17 @@ void erase_zone_from_image(GdkPixbuf *pixbuf, int x, int y, int w, int h)
     {
         for (gint i = 0; i < w; ++i)
         {
-            pixels[(i * channel) + (j * rowstride)]     = 255;
-            pixels[(i * channel) + (j * rowstride) + 1] = 255;
-            pixels[(i * channel) + (j * rowstride) + 2] = 255;
+            pixels[((x + i) * channel) + ((y + j) * rowstride)]     = 255;
+            pixels[((x + i) * channel) + ((y + j) * rowstride) + 1] = 255;
+            pixels[((x + i) * channel) + ((y + j) * rowstride) + 2] = 255;
         }
     }
 }
 
 void launch_bin()
 {
-	GtkWidget *image = file_to_image_bin("image_test/binarize.png");
+	GtkImage *image = (GtkImage*)file_to_image_bin("image_test/binarize.png");
+
     GtkWidget *Window;
     Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_container_set_border_width(GTK_CONTAINER(Window),5);

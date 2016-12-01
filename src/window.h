@@ -16,7 +16,7 @@ typedef struct window_s
 typedef struct box_s
 {
 	GtkWidget 	*main_box;
-	const gchar 	*image_name;
+	const gchar *image_name;
 	GtkWidget 	*image;
 
 } box_t;
