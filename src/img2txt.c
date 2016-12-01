@@ -12,5 +12,5 @@
 #include "neural_network.h" 
 
 char* img_to_string(double *matrix, size_t width , size_t height, int threshold, float height_rate,neural_network_t *net);
-
+//lol
 #endif
