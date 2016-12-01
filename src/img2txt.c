@@ -22,7 +22,7 @@ char* img_to_string(double *matrix, size_t width , size_t height, int threshold,
 	}
 	
 	WL_free(word_list);
-
+	*(string++) = '\0';
 	return (string_start);
 }
 
