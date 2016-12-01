@@ -100,45 +100,92 @@ GtkWidget * file_to_image_bin(const char *filename)
 
 GdkPixbuf *extract_image(GdkPixbuf *input_pixbuf, int x, int y, int w, int h)
 {
-    GdkPixbuf *pixbuf[2];
-    pixbuf[0] = input_pixbuf;
-    pixbuf[1] = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 0, 8, w, h);
+    guchar  *input_pixels     = gdk_pixbuf_get_pixels(input_pixbuf);
+    gint    input_channel     = gdk_pixbuf_get_n_channels(input_pixbuf);
+    gint    input_width       = gdk_pixbuf_get_width(input_pixbuf);
+    gint    input_height      = gdk_pixbuf_get_height(input_pixbuf);
+    gint    input_rowstride   = gdk_pixbuf_get_rowstride(input_pixbuf);
 
-    guchar  *pixels[2];
-    gint    channel[2];
-    gint    width[2];
-    gint    height[2];
-    gint    rowstride[2];
+    if (x >= input_width || y >= input_height)
+        return (NULL);
 
-    for (int i = 0; i < 2; ++i)
+    if (x < 0)
     {
-        pixels[i]       = gdk_pixbuf_get_pixels(pixbuf[i]);
-        channel[i]      = gdk_pixbuf_get_n_channels(pixbuf[i]);
-        width[i]        = gdk_pixbuf_get_width(pixbuf[i]);
-        height[i]       = gdk_pixbuf_get_height(pixbuf[i]);
-        rowstride[i]    = gdk_pixbuf_get_rowstride(pixbuf[i]);
+        w += x;
+        x = 0;
     }
+    if (y < 0)
+    {
+        h += y;
+        y = 0;
+    }
+    if (x + w >= input_width)
+        w = input_width - x;
+    if (y + h >= input_height)
+        h = input_height - y;
+    
+    GdkPixbuf *output_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 0, 8, w, h);
+    if (output_pixbuf)
+        return (NULL);
 
-    if (x + w > width[0] || y + h > height[0])
-        return (pixbuf[1]);
+    guchar  *output_pixels     = gdk_pixbuf_get_pixels(input_pixbuf);
+    gint    output_channel     = gdk_pixbuf_get_n_channels(input_pixbuf);
+    gint    output_rowstride   = gdk_pixbuf_get_rowstride(input_pixbuf);
 
     for (gint j = 0; j < h; ++j)
     {
         for (gint i = 0; i < w; ++i)
         {
-            pixels[1][(i * channel[1]) + (j * rowstride[1])] =
-                pixels[0][((i + x) * channel[0]) +
-                          ((j + y) * rowstride[0])];
-            pixels[1][(i * channel[1]) + (j * rowstride[1]) + 1] =
-                pixels[0][((i + x) * channel[0]) +
-                          ((j + y) * rowstride[0]) + 1];
-            pixels[1][(i * channel[1]) + (j * rowstride[1]) + 2] =
-                pixels[0][((i + x) * channel[0]) +
-                          ((j + y) * rowstride[0]) + 2];
+            output_pixels[(i * output_channel) + (j * output_rowstride)] =
+                input_pixels[((i + x) * input_channel) +
+                          ((j + y) * input_rowstride)];
+            output_pixels[(i * output_channel) + (j * output_rowstride) + 1] =
+                input_pixels[((i + x) * input_channel) +
+                          ((j + y) * input_rowstride) + 1];
+            output_pixels[(i * output_channel) + (j * output_rowstride) + 2] =
+                input_pixels[((i + x) * input_channel) +
+                          ((j + y) * input_rowstride) + 2];
         }
     }
 
-    return (pixbuf[1]);
+    return (output_pixbuf);
+}
+
+void erase_zone_from_image(GdkPixbuf *pixbuf, int x, int y, int w, int h)
+{
+    guchar  *pixels     = gdk_pixbuf_get_pixels(pixbuf);
+    gint    channel     = gdk_pixbuf_get_n_channels(pixbuf);
+    gint    width       = gdk_pixbuf_get_width(pixbuf);
+    gint    height      = gdk_pixbuf_get_height(pixbuf);
+    gint    rowstride   = gdk_pixbuf_get_rowstride(pixbuf);
+
+    if (x >= width || y >= height)
+        return;
+
+    if (x < 0)
+    {
+        w += x;
+        x = 0;
+    }
+    if (y < 0)
+    {
+        h += y;
+        y = 0;
+    }
+    if (x + w >= width)
+        w = width - x;
+    if (y + h >= height)
+        h = height - y;
+
+    for (gint j = 0; j < h; ++j)
+    {
+        for (gint i = 0; i < w; ++i)
+        {
+            pixels[(i * channel) + (j * rowstride)]     = 255;
+            pixels[(i * channel) + (j * rowstride) + 1] = 255;
+            pixels[(i * channel) + (j * rowstride) + 2] = 255;
+        }
+    }
 }
 
 void launch_bin()

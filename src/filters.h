@@ -17,6 +17,8 @@ GtkWidget *file_to_image_bin(const char *filename);
 GdkPixbuf *extract_image(GdkPixbuf *input_pixbuf,
                          int x, int y, int w, int h);
 
+//Put the zone in white
+void    erase_zone_from_image(GdkPixbuf *pixbuf, int x, int y, int w, int h);
 
 #endif
 
