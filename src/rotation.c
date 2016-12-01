@@ -121,7 +121,7 @@ double * autorotate(double *matrix, int *width, int *height)
 		amin = 0;
 		wmin = *width;
 		hmin = *height;
-		mmin = rotate(matrix, &wmin, &wmax, 0.);
+		mmin = rotate(matrix, &wmin, &hmin, 0.);
 		bmin = blank_line_count(mmin, &wmin, &hmin);
 		divmin = bmin;
 		divmin /= hmin;

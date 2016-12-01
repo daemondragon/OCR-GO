@@ -10,6 +10,6 @@ void test_string()
 
         double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,&l,&h);
 	neural_network_t *net = load_neural_network("./net/83,585\%.nt");
-	printf( img_to_string(matrix, l, h, 1, 0.1, net) );
+	printf("%s\n", img_to_string(matrix, l, h, 1, 0.1, net) );
 }
 
