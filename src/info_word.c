@@ -27,11 +27,6 @@ void  WL_add(W_list *liste ,infos to_add)
 
 void WL_free(W_list *list)
 {
-    if (!list->size )
-        {
-		free(list);
-		return;
-	}
 	infos *actual = list->first;
 	while(actual != NULL)
 	{
@@ -44,20 +39,21 @@ void WL_free(W_list *list)
 
 void WL_clean(W_list *list, float min, float height_rate)
 {
-    if (!list->size)
+    if (list->size <= 1)//First word MUST be a WORD
         return;
 
     infos *actual = list->first;
     
-    while (actual)
+    while (actual->nxt)
     {
-        if (actual->type == SPACE)
+        if (actual->nxt->type == SPACE)
         {
-            if (actual->width <= min + height_rate * actual->height) 
+            if (actual->nxt->width <=
+                    min + height_rate * actual->nxt->height) 
             {
-                infos *temp = actual->nxt;
-                free(actual);
-		actual = temp;
+                infos *temp = actual->nxt->nxt;
+                free(actual->nxt);
+		        actual->nxt = temp;
             }
             else
                 actual = actual->nxt;
