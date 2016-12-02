@@ -14,10 +14,11 @@ window_t* create_window()
     window->net = NULL;
     window->main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_container_set_border_width(GTK_CONTAINER(window->main_window),5);
-    gtk_window_set_default_size(GTK_WINDOW(window->main_window), 1024, 768);
+    gtk_window_set_default_size(GTK_WINDOW(window->main_window), 1024,768);
     gtk_window_set_title(GTK_WINDOW(window->main_window),"OCR GO ");
-    gtk_window_set_position(GTK_WINDOW(window->main_window),GTK_WIN_POS_CENTER_ALWAYS);
+    gtk_window_set_position(GTK_WINDOW(window->main_window),GTK_WIN_POS_CENTER);
     gtk_window_maximize(GTK_WINDOW(window->main_window));
+    gtk_window_set_gravity(GTK_WINDOW(window->main_window),GDK_GRAVITY_CENTER);
     g_signal_connect(G_OBJECT(window->main_window), "destroy",
                                             G_CALLBACK(gtk_main_quit), NULL);
 
@@ -28,12 +29,29 @@ box_t*  create_box()
 	box_t *  box = malloc(sizeof(box_t));
 	if(!box)
 		return NULL;
-	box->main_box = gtk_vbox_new(FALSE,0); 
+	box->main_box = gtk_vbox_new(TRUE,0); 
 	
 	box->image_name = NULL;
 	return (box);
 
 }
+text_t*	create_text()
+{
+	text_t * text = malloc(sizeof(text_t));
+	if(!text)
+		return NULL;
+	
+	text->box = gtk_vbox_new(FALSE,5);
+	text->scrollbar =gtk_scrolled_window_new(NULL,NULL);
+	gtk_box_pack_start(GTK_BOX(text->box),text->scrollbar,TRUE,TRUE,5);
+
+	text->text_view = gtk_text_view_new();
+	gtk_container_add(GTK_CONTAINER(text->scrollbar),text->text_view);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(text->scrollbar),
+		GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
+	return (text);
+}
+
 void delete_window(window_t *window)
 {
     if (window->net)
@@ -46,7 +64,7 @@ int run_window(int argc, char **argv)
 {
     struct window_s * wind;
     struct box_s * box;
-    struct box_s * texte;
+    struct text_s * texte;
     GtkWidget *Window;
     GtkWidget *Table;
     GtkWidget *Button[2];
@@ -62,7 +80,7 @@ int run_window(int argc, char **argv)
     of the window */
     wind = create_window();
     box = create_box(); 
-    texte = create_box();
+    texte = create_text();
     Window = wind->main_window;
 	//gtk_window_new(GTK_WINDOW_TOPLEVEL);
     //gtk_container_set_border_width(GTK_CONTAINER(Window),5);
@@ -81,7 +99,7 @@ int run_window(int argc, char **argv)
     /*Creation of the Menu Box and his different parameter */
     VboxMenu = gtk_vbox_new(FALSE, 0);
     box_img = box->main_box;
-    box_result = texte->main_box;
+    box_result = texte->box;
     MenuBar = gtk_menu_bar_new();
     
     Menu = gtk_menu_new(); 
@@ -150,9 +168,10 @@ int run_window(int argc, char **argv)
       9,10 ,0,1,GTK_EXPAND | GTK_FILL, GTK_EXPAND,0, 0);
 
     gtk_table_attach_defaults(GTK_TABLE(Table),VboxMenu,0,3,0,2);
-    gtk_table_attach_defaults(GTK_TABLE(Table),box_img,0,5,0,9);
+    gtk_table_attach_defaults(GTK_TABLE(Table),box_img,0,5,2,9);
     gtk_table_attach_defaults(GTK_TABLE(Table),Button[1],9,10,9,10);
-    gtk_table_attach_defaults(GTK_TABLE(Table),box_result,6,10,0,9);
+    gtk_table_attach_defaults(GTK_TABLE(Table),box_result,6,10,2,9);
+
     g_signal_connect(G_OBJECT(Button[0]),"clicked",
                               G_CALLBACK(on_quitter_btn),(GtkWidget*) Window);
 
