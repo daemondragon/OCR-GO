@@ -49,6 +49,7 @@ int run_window(int argc, char **argv)
 {
     struct window_s * wind;
     struct box_s * box;
+    struct box_s * texte;
     GtkWidget *Window;
     GtkWidget *Table;
     GtkWidget *Button[2];
@@ -63,7 +64,8 @@ int run_window(int argc, char **argv)
     /* creation of the window and initialisation of size and place
     of the window */
     wind = create_window();
-    box = create_box();
+    box = create_box(); 
+    texte = create_box();
     Window = wind->main_window;
     Table = wind->table;
 	//gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -83,7 +85,7 @@ int run_window(int argc, char **argv)
     /*Creation of the Menu Box and his different parameter */
     VboxMenu = gtk_vbox_new(FALSE, 0);
     box_img = box->main_box;
-    box_result = gtk_vbox_new(FALSE,0);
+    box_result = texte->main_box;
     MenuBar = gtk_menu_bar_new();
     
     Menu = gtk_menu_new(); 
@@ -152,12 +154,14 @@ int run_window(int argc, char **argv)
       9,10 ,0,1,GTK_EXPAND | GTK_FILL, GTK_EXPAND,0, 0);
 
     gtk_table_attach_defaults(GTK_TABLE(Table),VboxMenu,1,2,1,10);
-    gtk_table_attach_defaults(GTK_TABLE(Table),box_img,3,7,0,6);
+    gtk_table_attach_defaults(GTK_TABLE(Table),box_img,0,5,0,9);
     gtk_table_attach_defaults(GTK_TABLE(Table),Button[1],9,10,9,10);
-    gtk_table_attach_defaults(GTK_TABLE(Table),box_result,4,8,2,5);
+    gtk_table_attach_defaults(GTK_TABLE(Table),box_result,6,10,0,9);
     g_signal_connect(G_OBJECT(Button[0]),"clicked",
                               G_CALLBACK(on_quitter_btn),(GtkWidget*) Window);
 
+    g_signal_connect(G_OBJECT(Button[1]),"clicked",
+				G_CALLBACK(open_butt),(gpointer*)texte);
 
 
     gtk_widget_show_all(Window);
