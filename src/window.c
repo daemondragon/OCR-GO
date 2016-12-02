@@ -13,9 +13,6 @@ window_t* create_window()
 
     window->net = NULL;
     window->main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    window->table=gtk_table_new(10,10,TRUE);
-    gtk_container_add(GTK_CONTAINER(window->main_window),
-		 GTK_WIDGET(window->table));
     gtk_container_set_border_width(GTK_CONTAINER(window->main_window),5);
     gtk_window_set_default_size(GTK_WINDOW(window->main_window), 1024, 768);
     gtk_window_set_title(GTK_WINDOW(window->main_window),"OCR GO ");
@@ -49,6 +46,7 @@ int run_window(int argc, char **argv)
 {
     struct window_s * wind;
     struct box_s * box;
+    struct box_s * texte;
     GtkWidget *Window;
     GtkWidget *Table;
     GtkWidget *Button[2];
@@ -63,9 +61,9 @@ int run_window(int argc, char **argv)
     /* creation of the window and initialisation of size and place
     of the window */
     wind = create_window();
-    box = create_box();
+    box = create_box(); 
+    texte = create_box();
     Window = wind->main_window;
-    Table = wind->table;
 	//gtk_window_new(GTK_WINDOW_TOPLEVEL);
     //gtk_container_set_border_width(GTK_CONTAINER(Window),5);
     //gtk_window_set_default_size(GTK_WINDOW(Window), 1024, 768);
@@ -74,8 +72,8 @@ int run_window(int argc, char **argv)
       //                                      G_CALLBACK(gtk_main_quit), NULL);
 
     /* Creation and insertion of the 10 & 10 table in the window */
-    //Table=gtk_table_new(10,10,TRUE);
-    //gtk_container_add(GTK_CONTAINER(Window), GTK_WIDGET(Table));
+    Table=gtk_table_new(10,10,TRUE);
+    gtk_container_add(GTK_CONTAINER(Window), GTK_WIDGET(Table));
 
      Button[0] = gtk_button_new_from_stock(GTK_STOCK_QUIT);
      Button[1] = gtk_button_new_with_label("get result");
@@ -83,7 +81,7 @@ int run_window(int argc, char **argv)
     /*Creation of the Menu Box and his different parameter */
     VboxMenu = gtk_vbox_new(FALSE, 0);
     box_img = box->main_box;
-    box_result = gtk_vbox_new(FALSE,0);
+    box_result = texte->main_box;
     MenuBar = gtk_menu_bar_new();
     
     Menu = gtk_menu_new(); 
@@ -127,7 +125,7 @@ int run_window(int argc, char **argv)
    //tu commences à créer les différents éléments qui composent ton menu(les boutons)
    MenuItems = gtk_menu_item_new_with_label("Rotation");
    g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(rotation_bout),
-	(gpointer *)wind);//ici cela te permet d'appeler les fonctions void qui seront lié à tes boutons grace au callback
+	(gpointer *)box);//ici cela te permet d'appeler les fonctions void qui seront lié à tes boutons grace au callback
    gtk_menu_shell_append(GTK_MENU_SHELL(Menu),MenuItems);//ici tu attache le bouton à ton menu
    MenuItems = gtk_menu_item_new_with_label("Binarize");//tu recommences pour les différentrs boutons dont tu as besoin
    g_signal_connect(G_OBJECT(MenuItems),"activate",G_CALLBACK(binarize_op),(gpointer*)box);
@@ -151,13 +149,15 @@ int run_window(int argc, char **argv)
     gtk_table_attach(GTK_TABLE(Table), Button[0],
       9,10 ,0,1,GTK_EXPAND | GTK_FILL, GTK_EXPAND,0, 0);
 
-    gtk_table_attach_defaults(GTK_TABLE(Table),VboxMenu,1,2,1,10);
-    gtk_table_attach_defaults(GTK_TABLE(Table),box_img,3,7,0,6);
+    gtk_table_attach_defaults(GTK_TABLE(Table),VboxMenu,0,3,0,2);
+    gtk_table_attach_defaults(GTK_TABLE(Table),box_img,0,5,0,9);
     gtk_table_attach_defaults(GTK_TABLE(Table),Button[1],9,10,9,10);
-    gtk_table_attach_defaults(GTK_TABLE(Table),box_result,4,8,2,5);
+    gtk_table_attach_defaults(GTK_TABLE(Table),box_result,6,10,0,9);
     g_signal_connect(G_OBJECT(Button[0]),"clicked",
                               G_CALLBACK(on_quitter_btn),(GtkWidget*) Window);
 
+    g_signal_connect(G_OBJECT(Button[1]),"clicked",
+				G_CALLBACK(open_butt),(gpointer*)texte);
 
 
     gtk_widget_show_all(Window);

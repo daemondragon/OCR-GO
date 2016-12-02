@@ -11,6 +11,6 @@ void 	create_neuronal_network(GtkWidget * dialbox, GtkWidget * window);
 void 	load_neural(GtkWidget * bouton,gpointer data);
 void 	save_neural_net(GtkWidget * dialog,gpointer data);
 void 	open_butt(GtkWidget *dialog,gpointer user_data);
-void 	rotation_bout(char * image, gpointer data);
+void 	rotation_bout(const char * image_name, gpointer data);
 void 	binarize_op(GtkWidget* image, gpointer data);
 #endif
