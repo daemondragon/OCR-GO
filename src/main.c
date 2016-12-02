@@ -97,12 +97,13 @@ int main(int argc, char *argv[])
     {"filter",      "test for filters",             test_filters},
 	{"pcut",        "pretty test for cutting",      show_cutting},
 	{"test_s",	"revoi la string comprise par le neural", test_string},
+	{"test_save",	"test la sauvegarde de resultat"    , test_save},
 	{"mat_copy",    "test for copying matrix",      test_mat_copy},
 	{"train",       "train a neural network",       train_tchou_tchou},
 	{"rotation",	"make a rotation",				test_rotation},
 	{"net_result",  "get neural network result",    get_neural_advanced_result}
 	};
-    size_t nb_arguments = 8;
+    size_t nb_arguments = 9;
 
     if (argc > 1)
     {

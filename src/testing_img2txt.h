@@ -7,6 +7,7 @@
 #include "save_load_network.h"
 #include "testing_img2txt.h"
 void test_string();
+void test_save();
 
 #endif
 

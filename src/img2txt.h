@@ -10,6 +10,7 @@
 #include "cutting.h"
 
 char* img_to_string(double *matrix, size_t width , size_t height, int threshold, float height_rate,neural_network_t *net);
+void string_to_file(char *filename, char *string);
 
 
 #endif

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "img2txt.h"
+#include <string.h>
 
 char* img_to_string(double *matrix, size_t width , size_t height, int threshold, float height_rate,neural_network_t *net)
 {
@@ -20,7 +21,7 @@ char* img_to_string(double *matrix, size_t width , size_t height, int threshold,
 		else if (ac_char->type == NEW_LINE)
 			*(string++) = '\n';
 	}
-	
+
 	WL_free(word_list);
 	*(string++) = '\0';
 	return (string_start);
@@ -30,11 +31,30 @@ void string_to_file(char *filename, char *string)
 {
 	if( filename && string)
 	{
+		char* save_name = malloc(sizeof(char)* (strlen(filename)+1) );
+		*save_name = *filename;
+		char *save_name_start = save_name;
+		++filename;
+		++save_name;
 
-		FILE *f = fopen(filename, "w");
+		for(;*filename != '.'; ++filename)
+		{
+			*save_name = *filename;
+			save_name ++;
+		}
+		
+		*save_name = '.';
+                ++save_name;
+		*save_name = 't';
+		++save_name;
+		*save_name ='x';
+		++save_name;
+		*save_name = 't';
+		printf("%s \n", save_name_start);
+		FILE *f = fopen(save_name_start, "w");
 		if(f)
 		{
-			fprintf("%s",string);
+			fprintf(f,string);
 			fclose(f);
 		}	
 	}
