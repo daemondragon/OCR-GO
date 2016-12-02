@@ -153,7 +153,7 @@ int run_window(int argc, char **argv)
     gtk_table_attach(GTK_TABLE(Table), Button[0],
       9,10 ,0,1,GTK_EXPAND | GTK_FILL, GTK_EXPAND,0, 0);
 
-    gtk_table_attach_defaults(GTK_TABLE(Table),VboxMenu,1,2,1,10);
+    gtk_table_attach_defaults(GTK_TABLE(Table),VboxMenu,0,3,0,2);
     gtk_table_attach_defaults(GTK_TABLE(Table),box_img,0,5,0,9);
     gtk_table_attach_defaults(GTK_TABLE(Table),Button[1],9,10,9,10);
     gtk_table_attach_defaults(GTK_TABLE(Table),box_result,6,10,0,9);
