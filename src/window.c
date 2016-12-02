@@ -19,6 +19,8 @@ window_t* create_window()
     gtk_container_set_border_width(GTK_CONTAINER(window->main_window),5);
     gtk_window_set_default_size(GTK_WINDOW(window->main_window), 1024, 768);
     gtk_window_set_title(GTK_WINDOW(window->main_window),"OCR GO ");
+    gtk_window_set_position(GTK_WINDOW(window->main_window),GTK_WIN_POS_CENTER_ALWAYS);
+    gtk_window_maximize(GTK_WINDOW(window->main_window));
     g_signal_connect(G_OBJECT(window->main_window), "destroy",
                                             G_CALLBACK(gtk_main_quit), NULL);
 
@@ -49,13 +51,13 @@ int run_window(int argc, char **argv)
     struct box_s * box;
     GtkWidget *Window;
     GtkWidget *Table;
-    GtkWidget *Button[1];
+    GtkWidget *Button[2];
     GtkWidget * VboxMenu;
     GtkWidget * MenuBar;
     GtkWidget * Menu;
     GtkWidget * MenuItems;
     GtkWidget * box_img;
-  
+    GtkWidget * box_result;
 	
     gtk_init(&argc, &argv);
     /* creation of the window and initialisation of size and place
@@ -76,11 +78,12 @@ int run_window(int argc, char **argv)
     //gtk_container_add(GTK_CONTAINER(Window), GTK_WIDGET(Table));
 
      Button[0] = gtk_button_new_from_stock(GTK_STOCK_QUIT);
-
+     Button[1] = gtk_button_new_with_label("get result");
 
     /*Creation of the Menu Box and his different parameter */
     VboxMenu = gtk_vbox_new(FALSE, 0);
     box_img = box->main_box;
+    box_result = gtk_vbox_new(FALSE,0);
     MenuBar = gtk_menu_bar_new();
     
     Menu = gtk_menu_new(); 
@@ -146,10 +149,12 @@ int run_window(int argc, char **argv)
     gtk_box_pack_start(GTK_BOX(VboxMenu), MenuBar, FALSE,FALSE,0);
     /* Insertion of boutons */
     gtk_table_attach(GTK_TABLE(Table), Button[0],
-      9,10 ,9,10,GTK_EXPAND | GTK_FILL, GTK_EXPAND,0, 0);
+      9,10 ,0,1,GTK_EXPAND | GTK_FILL, GTK_EXPAND,0, 0);
 
     gtk_table_attach_defaults(GTK_TABLE(Table),VboxMenu,1,2,1,10);
-    gtk_table_attach_defaults(GTK_TABLE(Table),box_img,3,7,3,7);
+    gtk_table_attach_defaults(GTK_TABLE(Table),box_img,3,7,0,6);
+    gtk_table_attach_defaults(GTK_TABLE(Table),Button[1],9,10,9,10);
+    gtk_table_attach_defaults(GTK_TABLE(Table),box_result,4,8,2,5);
     g_signal_connect(G_OBJECT(Button[0]),"clicked",
                               G_CALLBACK(on_quitter_btn),(GtkWidget*) Window);
 
