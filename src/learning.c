@@ -9,7 +9,7 @@
 
 //  If current_iteration < max_iterations * STOP_PERCENT; continue learning
 // Even if the neural network may overlearn
-#define STOP_PERCENT    0.85
+#define STOP_PERCENT    0.95
 //To stop overlearning (increase to better stop)
 #define EPSILON         0.01
 
@@ -146,7 +146,8 @@ void train(neural_network_t *net,
             iteration < max_iterations;
 
         #ifdef DEBUG
-        printf("Iteration %d: score %2.3f\%%\n", iteration, current_result * 100);
+        printf("Iteration %d: score %2.3f\%% | delta %f\n",
+                iteration, current_result * 100, current_result - last_result);
         #endif
         iteration++;
         last_result = current_result;

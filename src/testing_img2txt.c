@@ -9,7 +9,7 @@ void test_string()
         int h = 20;
 
         double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,&l,&h);
-	neural_network_t *net = load_neural_network("./net/83,585\%.nt");
+	neural_network_t *net = load_neural_network("./net/90,749\%.nt");
 	printf("%s\n", img_to_string(matrix, l, h, 1, 0.1, net) );
 }
 
