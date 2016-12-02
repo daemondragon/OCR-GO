@@ -16,14 +16,12 @@
 void train_tchou_tchou()
 {
     
-    neural_network_t *net = load_neural_network("net/00000000.nt");
+    neural_network_t *net = load_neural_network("net/tchou_tchou.nt");
     if (!net)
     {
         printf("Neural network alloc failed\n");
         return;
     }
-
-    initialize_weights_and_biaises(net, 0);
 
     uint32_t nb_train_data;
     uint32_t nb_validation_data;
