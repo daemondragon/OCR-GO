@@ -51,10 +51,10 @@ void string_to_file(char *filename, char *string)
 		++save_name;
 		*save_name = 't';
 		printf("%s \n", save_name_start);
-		FILE *f = fopen(save_name_start, "w");
+		FILE *f = fopen((const char*)save_name_start, "w");
 		if(f)
 		{
-			fprintf(f,string);
+			fprintf(f,"%s",string);
 			fclose(f);
 		}	
 	}
