@@ -40,8 +40,8 @@ void train_tchou_tchou()
 
 void get_neural_advanced_result()
 {
-    uint32_t neurons[] = {576, 1024, 128};
-    neural_network_t *net = create_neural_network(3, neurons);
+
+    neural_network_t *net = load_neural_network("./net/tchou_tchou.nt");
     if (!net)
     {
         printf("Neural network alloc failed\n");

@@ -163,7 +163,7 @@ void train(neural_network_t *net,
             uint32_t *nb_neurons_per_layer = malloc(sizeof(uint32_t) * nb_layers);
             if (nb_neurons_per_layer)
             {
-                for (int i = 0; i < nb_layers; ++i)
+                for (uint32_t i = 0; i < nb_layers; ++i)
                     nb_neurons_per_layer[i] = net->layers[i]->nb_neurons;
                 delete_neural_network(net);
                 net = create_neural_network(nb_layers, nb_neurons_per_layer);
