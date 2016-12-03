@@ -9,9 +9,9 @@
 
 //  If current_iteration < max_iterations * STOP_PERCENT; continue learning
 // Even if the neural network may overlearn
-#define STOP_PERCENT    0.95
+#define STOP_PERCENT    0.90
 //To stop overlearning (increase to better stop)
-#define EPSILON         0.01
+#define EPSILON         0.0001
 
 void learn(neural_network_t *net,
            neural_exemple_t *exemples,
@@ -112,6 +112,9 @@ void train(neural_network_t *net,
         !validation_data || !nb_validation_data)
         return;
 
+    printf("STOP_PERCENT %3.3f | EPSILON %3.3f\n",
+            STOP_PERCENT,        EPSILON * 100);
+
     float last_result = neural_network_results(net, train_data, nb_train_data);
     char        continue_training = 1;
     uint32_t    iteration = 0;
@@ -139,6 +142,7 @@ void train(neural_network_t *net,
         //Test network learning
         float current_result =
             neural_network_results(net, validation_data, nb_validation_data);
+        
         continue_training =
             (current_result < STOP_PERCENT ||
             (current_result >= last_result &&
@@ -149,6 +153,30 @@ void train(neural_network_t *net,
         printf("Iteration %d: score %2.3f\%% | delta %f\n",
                 iteration, current_result * 100, current_result - last_result);
         #endif
+
+        if (!continue_training)
+        {
+            #ifdef DEBUG
+            printf("Stop training asked : creating new network and starting over\n");
+            #endif
+            uint32_t nb_layers = net->nb_layers;
+            uint32_t *nb_neurons_per_layer = malloc(sizeof(uint32_t) * nb_layers);
+            if (nb_neurons_per_layer)
+            {
+                for (uint32_t i = 0; i < nb_layers; ++i)
+                    nb_neurons_per_layer[i] = net->layers[i]->nb_neurons;
+                delete_neural_network(net);
+                net = create_neural_network(nb_layers, nb_neurons_per_layer);
+                free(nb_neurons_per_layer);
+                if (net)
+                {
+                    initialize_weights_and_biaises(net, iteration);
+                    iteration += 100;
+                    continue_training = 1;
+                }
+            }
+        }
+
         iteration++;
         last_result = current_result;
     } while (continue_training && iteration < max_iterations);
