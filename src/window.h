@@ -21,8 +21,16 @@ typedef struct box_s
 	GtkWidget 	*image;
 
 } box_t;
+typedef struct text_s
+{
+	GtkWidget* box;
+	GtkWidget * scrollbar;
+	GtkWidget * text_view;
+}text_t;
+
 window_t*   create_window();
 box_t*	    create_box();
+text_t*	    create_text();
 void        delete_window(window_t *window);
 
 int     run_window(int argc, char **argv);
