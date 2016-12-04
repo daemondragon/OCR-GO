@@ -180,7 +180,7 @@ int run_window(int argc, char **argv)
                               G_CALLBACK(on_quitter_btn),(GtkWidget*) Window);
 
     g_signal_connect(G_OBJECT(Button[1]),"clicked",
-				G_CALLBACK(open_butt),(gpointer*)texte);
+				G_CALLBACK(get_result),texte);
 
 
     gtk_widget_show_all(Window);

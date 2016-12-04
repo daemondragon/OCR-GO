@@ -2,6 +2,7 @@
 #define WINDOW_H
 
 #include <stdlib.h>
+#include<stdio.h>
 #include <gtk/gtk.h>
 #include "show_xor.h"
 #include "filters.h"
