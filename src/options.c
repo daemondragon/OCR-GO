@@ -35,9 +35,11 @@ void open_butt(GtkWidget * dialog, gpointer user_data)
 {
 	const gchar * image_name;
 	static GtkWidget * image;
+	struct window_s * wind;
+	wind = (window_t*)user_data;
 	GtkWidget * box_img;
 	struct box_s * box;
-	box = (box_t *)user_data;
+	box = wind->box;
 	dialog = gtk_file_chooser_dialog_new("Open a file",NULL,
 			GTK_FILE_CHOOSER_ACTION_OPEN,
 			GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,
@@ -54,7 +56,7 @@ void open_butt(GtkWidget * dialog, gpointer user_data)
 			if(image)
 			{
                                 gtk_image_set_from_file(GTK_IMAGE(image),image_name);
-				box->image_name = image_name;
+				wind->image_name = image_name;
 			}
 			else
 			{
@@ -62,7 +64,7 @@ void open_butt(GtkWidget * dialog, gpointer user_data)
 			
 				image= gtk_image_new_from_file(image_name);
 				gtk_box_pack_end(GTK_BOX(box_img),image,TRUE,FALSE,0);
-				box->image_name = image_name;
+				wind->image_name = image_name;
 				gtk_widget_show(image);
 			}
 			break;
@@ -275,35 +277,54 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 }
 void rotation_bout(const char * image_name, gpointer data)
 {
+	struct window_s * window;
+	window = (window_t *)data;
+	GtkWidget * wind = window->main_window;
 	struct box_s * box;
-	box = (box_t*) data;
-	GtkWidget * image;
+	box = window->box;
 	GtkWidget * box_img;
 	box_img = box->main_box;
-	image_name =box->image_name;
+	gtk_widget_destroy(box_img);
+	GtkWidget * image;
+	GtkWidget * box2;
+	image_name = window->image_name;
+	box = create_box();
+	box2 = box->main_box;
 	int width,height;
-	double * matrix_end;
-	double * matrix = file_to_matrix_grey(image_name,
-		&matrix_end,&width,&height);
-	binarize_simple(matrix,matrix_end);
-	double * matrix2 = autorotate(matrix,&width,&height);
-	image = image_from_matrix(matrix2,width,height);
-	gtk_box_pack_end(GTK_BOX(box_img),image,TRUE,FALSE,0);
-	gtk_widget_show(image);
+        double * matrix_end;
+        double * matrix = file_to_matrix_grey(image_name,
+                &matrix_end,&width,&height);
+        binarize_simple(matrix,matrix_end);
+        double * matrix2 = autorotate(matrix,&width,&height);
+        image = image_from_matrix(matrix2,width,height);
+	gtk_box_pack_end(GTK_BOX(box2),image,TRUE,FALSE,0);
+	gtk_table_attach_defaults(GTK_TABLE(window->Table),box2,0,5,2,9);
+	window->box->main_box=box2;
+	gtk_widget_show_all(wind);
+		
 			
 }
 void binarize_op(GtkWidget * image,gpointer data)
 {
-	
+	struct window_s * window;
+	window = (window_t*)data;
+	GtkWidget * box2;
+	GtkWidget * wind;
+	wind = window->main_window;	
 	struct box_s * box;
 	box = (box_t*)data;
 	GtkWidget * box_img;
 	box_img = box->main_box;
 	image = box->image;
-	char * image_name =(char*) box->image_name;
+	gtk_widget_destroy(box_img);
+	struct box_s *box_res;
+	box_res = create_box();
+	box2=box_res->main_box;
+	char * image_name =(char*) window->image_name;
 	image= file_to_image_bin(image_name);
-	gtk_box_pack_end(GTK_BOX(box_img),image,TRUE,FALSE,0);
-	gtk_widget_show(image);
+	gtk_box_pack_end(GTK_BOX(box2),image,TRUE,FALSE,0);
+	gtk_table_attach_defaults(GTK_TABLE(window->Table),box2,0,5,2,9);
+	gtk_widget_show_all(wind);
 	
 
 }
