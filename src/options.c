@@ -4,6 +4,9 @@
 #include "testing_cut.h"
 #include "rotation.h"
 #include "image_to_matrix.h"
+#include "img2txt.h"
+#include "testing_img2txt.h"
+#include "save_load_network.h"
 void on_quitter_btn(GtkWidget* widget, gpointer data)
 {
     GtkWidget *Question;
@@ -304,27 +307,53 @@ void rotation_bout(const char * image_name, gpointer data)
 		
 			
 }
-void binarize_op(GtkWidget * image,gpointer data)
+void binarize_op(const char* image,gpointer data)
 {
 	struct window_s * window;
-	window = (window_t*)data;
-	GtkWidget * box2;
-	GtkWidget * wind;
-	wind = window->main_window;	
+	window = (window_t *)data;
 	struct box_s * box;
-	box = (box_t*)data;
+	box = window->box;
 	GtkWidget * box_img;
 	box_img = box->main_box;
-	image = box->image;
-	gtk_widget_destroy(box_img);
-	struct box_s *box_res;
-	box_res = create_box();
-	box2=box_res->main_box;
-	char * image_name =(char*) window->image_name;
-	image= file_to_image_bin(image_name);
-	gtk_box_pack_end(GTK_BOX(box2),image,TRUE,FALSE,0);
-	gtk_table_attach_defaults(GTK_TABLE(window->Table),box2,0,5,2,9);
-	gtk_widget_show_all(wind);
+	GtkWidget * img;
+	img = box->image;
+	gtk_widget_hide(box_img);
+	GtkWidget * img2;
+	image = window->image_name;
+	img2 = file_to_image_bin(image);
+	gtk_image_set_from_image(GTK_IMAGE(img),img2,0);
+	gtk_widget_show(img);
+}
+void get_result(GtkWidget * text,gpointer data)
+{
+ 	test_save();	
+	struct text_s * test;
+	test = (text_t*)data;
+	text = test->text_view;
+	GtkTextBuffer *buffer;
+    	GtkTextIter start;
+    	GtkTextIter end;
+    	FILE *fichier;
+    	const gchar *chemin;
+    	gchar lecture[1024];
+     
+    	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text));
+     
+    	chemin = "./image_test/test_cut.txt";
+    	fichier = fopen(chemin,"rt");
+     
+	gtk_text_buffer_get_start_iter(buffer,&start);
+    	gtk_text_buffer_get_end_iter(buffer,&end);
+   	gtk_text_buffer_delete(buffer, &start, &end);
+     
+    	while(fgets(lecture, 1024, fichier))
+    	{
+        	gtk_text_buffer_get_end_iter(buffer,&end);
+        	gtk_text_buffer_insert(buffer, &end, g_locale_to_utf8
+		(lecture, -1, NULL, NULL, NULL), -1);
+    	}
+     
+    	fclose(fichier);
 	
 
 }

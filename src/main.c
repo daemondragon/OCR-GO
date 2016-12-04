@@ -37,7 +37,7 @@ void improve()
                     effiCitur juStO nOn COnguel Nullam tinCidunt\n\
                     SCeleriSque eX at tempuSl NunC CurSuS feugiat\n\
                     pellenteSquel";
-    improve_string(string);
+    improve_string(string,NULL);
     printf("string improved:\n%s\n", string);
 }
 
