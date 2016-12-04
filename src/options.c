@@ -117,6 +117,9 @@ void create_ner_selection()
 void save_neural_net(GtkWidget * dialog, gpointer data)
 {
 
+	struct window_s * window;
+	window = (window_t *)data;
+	
 	char * net_name;
 	dialog = gtk_file_chooser_dialog_new("Save neural network", NULL,	
 				GTK_FILE_CHOOSER_ACTION_SAVE,
@@ -127,7 +130,7 @@ void save_neural_net(GtkWidget * dialog, gpointer data)
 	{
 		case GTK_RESPONSE_ACCEPT:
 				net_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-				save_neural_network(data,net_name);
+				save_neural_network(window->net,net_name);
 				break;
 		case GTK_RESPONSE_CANCEL:
 		default:
@@ -176,16 +179,23 @@ void load_neural(GtkWidget *bouton,gpointer  data)
 	gtk_widget_destroy(bouton);
 }
 //fonctions for neuronal network 
-void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
+void create_neuronal_network(GtkWidget * Dialbox,gpointer data)
 {
+	struct window_s * wind;
+	wind = (window_t*) data;
+	GtkWidget * window;
+	window = wind->main_window;
 	//variable declaration
 	GtkWidget *Entry;
 	GtkWidget * entr;
 	GtkWidget * number_neur;
-	char*  n1;
-	const gchar* n2;
-	uint32_t*  couche;
-	uint32_t*  neur_per_couche;
+	uint32_t  couche;
+	uint32_t * neur_per_couche;
+	char* n1;//represent user enter value
+	char *n2;
+	
+	//create_neural_network(couche,neur_per_couche);
+
 	int launch = 1;
 	int b = 1;
 	Dialbox = gtk_dialog_new_with_buttons("Neuronal network creation",
@@ -214,28 +224,29 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 	// we launch the dialbox and the user validate or not 
     	switch (gtk_dialog_run(GTK_DIALOG(Dialbox)))
     	{
-        	/* L utilisateur valide */
+        	//L utilisateur valide 
         	case GTK_RESPONSE_OK:
 			b = 0;
 			n1 =(char*)  gtk_entry_get_text(GTK_ENTRY(Entry));
-			couche = (uint32_t*)n1;
+			couche= (uint32_t)strtoul(n1,NULL,0);
+			 printf("couche = %d \n",couche);
 					 
             		break;
-        	/* L utilisateur annule */
+        	// L utilisateur annule 
         	case GTK_RESPONSE_CANCEL:
         	case GTK_RESPONSE_NONE:
         		default:
             		     	break;
     	}
  
-    /* Destruction de la boite de dialogue */
+    // Destruction de la boite de dialogue 
     gtk_widget_destroy(Dialbox);
      
     if (b==0)
 	{
-	
+		neur_per_couche = malloc(sizeof(uint32_t) * couche);	
 		
-		for(uint32_t i = 0; i<5;i++)
+		for(uint32_t i = 0; i<couche;i++)
 		{
 			//Second dialog box for the neur_couche number.
 			number_neur = gtk_dialog_new_with_buttons("Neuronal network creation",
@@ -251,14 +262,14 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 			gtk_widget_show_all(GTK_DIALOG(number_neur)->vbox);
 			switch (gtk_dialog_run(GTK_DIALOG(number_neur)))
         		{
-                		/* L utilisateur valide */
+                		// L utilisateur valide 
                 		case GTK_RESPONSE_OK:
-                        		n2 = gtk_entry_get_text(GTK_ENTRY(entr));
-					neur_per_couche=(uint32_t*)n2;
-				
+                        		n2 =(char*) gtk_entry_get_text(GTK_ENTRY(entr));
+					neur_per_couche[i]=(uint32_t)strtoul(n2,NULL,0);
+					printf("nb_neurone = %d \n", neur_per_couche[i]);
 					launch=0;
                         		break;
-                		/* L utilisateur annule */
+                		// L utilisateur annule 
                 		case GTK_RESPONSE_CANCEL:
                 		case GTK_RESPONSE_NONE:
                         	default:
@@ -266,7 +277,7 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
                                  	 break;
         		}
 	
-    			/* Destruction de la boite de dialogue */
+    			// Destruction de la boite de dialogue 
    			 gtk_widget_destroy(number_neur);
 		}
 	}
@@ -274,7 +285,7 @@ void create_neuronal_network(GtkWidget * Dialbox,GtkWidget * window)
 	if(launch==0)
 	{
 
-		create_neural_network(couche,neur_per_couche);
+		wind->net=create_neural_network(couche,neur_per_couche);
 		
 	}
 }
