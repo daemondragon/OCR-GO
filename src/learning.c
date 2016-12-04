@@ -158,8 +158,8 @@ void train(neural_network_t *net,
         if (!continue_training)
         {
             #ifdef DEBUG
-            printf("Stop training asked : creating
-				new network and starting over\n");
+            printf("Stop training asked : creating \
+new network and starting over\n");
             #endif
             uint32_t nb_layers = net->nb_layers;
             uint32_t *nb_neurons_per_layer=malloc(sizeof(uint32_t)*nb_layers);

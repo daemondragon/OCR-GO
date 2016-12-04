@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "img2txt.h"
 #include <string.h>
+
+#include "img2txt.h"
+#include "improve_string.h"
 
 char* img_to_string(double *matrix, size_t width , size_t height,
 		int threshold, float height_rate,neural_network_t *net)
@@ -24,9 +26,11 @@ char* img_to_string(double *matrix, size_t width , size_t height,
 		else if (ac_char->type == NEW_LINE)
 			*(string++) = '\n';
 	}
-
-	WL_free(word_list);
 	*(string++) = '\0';
+
+    improve_string(string_start, word_list);
+
+    WL_free(word_list);
 	return (string_start);
 }
 
