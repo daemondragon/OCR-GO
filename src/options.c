@@ -117,6 +117,9 @@ void create_ner_selection()
 void save_neural_net(GtkWidget * dialog, gpointer data)
 {
 
+	struct window_s * window;
+	window = (window_t *)data;
+	
 	char * net_name;
 	dialog = gtk_file_chooser_dialog_new("Save neural network", NULL,	
 				GTK_FILE_CHOOSER_ACTION_SAVE,
@@ -127,7 +130,7 @@ void save_neural_net(GtkWidget * dialog, gpointer data)
 	{
 		case GTK_RESPONSE_ACCEPT:
 				net_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-				save_neural_network(data,net_name);
+				save_neural_network(window->net,net_name);
 				break;
 		case GTK_RESPONSE_CANCEL:
 		default:
@@ -282,7 +285,7 @@ void create_neuronal_network(GtkWidget * Dialbox,gpointer data)
 	if(launch==0)
 	{
 
-		create_neural_network(couche,neur_per_couche);
+		wind->net=create_neural_network(couche,neur_per_couche);
 		
 	}
 }
