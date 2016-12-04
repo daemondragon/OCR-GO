@@ -81,7 +81,9 @@ GtkWidget * image_from_matrix (double *matrix, int width, int height)
     return gtk_image_new_from_pixbuf(pixbuf);
 }
 
-void image_set_from_matrix (GtkImage *image ,double *matrix, int width, int height)
+void image_set_from_matrix (GtkImage *image ,double *matrix,
+			int width, int height)
+
 {
 	GdkPixbuf *pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, 0, 8, width, height);
 	guchar *pixel=gdk_pixbuf_get_pixels(pixbuf);
@@ -100,7 +102,7 @@ void image_set_from_matrix (GtkImage *image ,double *matrix, int width, int heig
         }
     }
 
-    gtk_image_set_from_pixbuf(image, pixbuf); 
+    gtk_image_set_from_pixbuf(image, pixbuf);
 }
 
 

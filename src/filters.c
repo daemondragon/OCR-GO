@@ -123,7 +123,7 @@ GdkPixbuf *extract_image(GdkPixbuf *input_pixbuf, int x, int y, int w, int h)
         w = input_width - x;
     if (y + h >= input_height)
         h = input_height - y;
-    
+
     GdkPixbuf *output_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 0, 8, w, h);
     if (!output_pixbuf)
         return (NULL);

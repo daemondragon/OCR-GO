@@ -11,9 +11,9 @@ W_list* WL_init(void){
 }
 void  WL_add(W_list *liste ,infos to_add)
 {
-	
+
 	infos *new_word = malloc (sizeof(infos));
-	
+
 	new_word->type = to_add.type;
 	new_word->pos = to_add.pos ;
 	new_word->width = to_add.width;
@@ -43,13 +43,13 @@ void WL_clean(W_list *list, float min, float height_rate)
         return;
 
     infos *actual = list->first;
-    
+
     while (actual->nxt)
     {
         if (actual->nxt->type == SPACE)
         {
             if (actual->nxt->width <=
-                    min + height_rate * actual->nxt->height) 
+                    min + height_rate * actual->nxt->height)
             {
                 infos *temp = actual->nxt->nxt;
                 free(actual->nxt);

@@ -115,7 +115,8 @@ void train(neural_network_t *net,
     printf("STOP_PERCENT %3.3f | EPSILON %3.3f\n",
             STOP_PERCENT,        EPSILON * 100);
 
-    float last_result = neural_network_results(net, train_data, nb_train_data);
+    float last_result = neural_network_results(net,
+				train_data, nb_train_data);
     char        continue_training = 1;
     uint32_t    iteration = 0;
     char        net_name[16] = "net/00000000.nt";
@@ -142,7 +143,7 @@ void train(neural_network_t *net,
         //Test network learning
         float current_result =
             neural_network_results(net, validation_data, nb_validation_data);
-        
+
         continue_training =
             (current_result < STOP_PERCENT ||
             (current_result >= last_result &&
@@ -151,16 +152,17 @@ void train(neural_network_t *net,
 
         #ifdef DEBUG
         printf("Iteration %d: score %2.3f\%% | delta %f\n",
-                iteration, current_result * 100, current_result - last_result);
+                iteration, current_result * 100, current_result -last_result);
         #endif
 
         if (!continue_training)
         {
             #ifdef DEBUG
-            printf("Stop training asked : creating new network and starting over\n");
+            printf("Stop training asked : creating
+				new network and starting over\n");
             #endif
             uint32_t nb_layers = net->nb_layers;
-            uint32_t *nb_neurons_per_layer = malloc(sizeof(uint32_t) * nb_layers);
+            uint32_t *nb_neurons_per_layer=malloc(sizeof(uint32_t)*nb_layers);
             if (nb_neurons_per_layer)
             {
                 for (uint32_t i = 0; i < nb_layers; ++i)

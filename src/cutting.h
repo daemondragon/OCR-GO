@@ -23,6 +23,7 @@ void v_cutting(double *band_start, double *band_end, int width,
 void    adjust_contour(W_list *word_list, int picture_width);
 
 // call the orevious function and return the list of words cleaned
-W_list* cutting(double *matrix, size_t width, size_t height, int threshold,float height_rate);
+W_list* cutting(double *matrix, size_t width, size_t height,
+					int threshold,float height_rate);
 
 #endif

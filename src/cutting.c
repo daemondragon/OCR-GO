@@ -113,7 +113,8 @@ void v_cutting(double *band_start, double *band_end, int width,
 }
 
 
-W_list* cutting(double *matrix, size_t width, size_t height, int threshold, float height_rate)
+W_list* cutting(double *matrix, size_t width, size_t height,
+					int threshold, float height_rate)
 {
 	//actual is the first pixel of the last line
 	double *actual = matrix + width * (height - 1);
