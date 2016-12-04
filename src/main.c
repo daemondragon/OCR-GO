@@ -13,6 +13,34 @@
 #include "rotation.h"
 
 #include "testing_img2txt.h"
+#include "improve_string.h"
+
+void improve()
+{
+    char string[] = "LOrem ipSum dOlOr Sit ametr COnSeCtetur adipiSCing\n\
+                    elitl Ut faCiliSiSr? urna Vel SCeleriSque\n\
+                    VenenatiSr quam puruS Vulputate OrCir eget\n\
+                    ulVinar diam quam finibuS antel Sed erat mir\n\
+                    laCinia neC aCCumSan: eur elementum Vel Sapienl\n\
+                    PellenteSque auCtOr leO puruSr at pOrttitOr dOlOr\n\
+                    ViVerra egetl DuiS enim erOSr tinCidunt in Sapien\n\
+                    Velr aliquam pOrttitOr! juStOl Nam laOreet augue\n\
+                    Sit amet fauCibuS pellenteSquel VeStibulum\n\
+                    SuSCipit magna eget nibh COnSequat COnguel DOneC\n\
+                    pharetra SOlliCitudin arCu Sit amet VariuSl Sed\n\
+                    VehiCula niSi quiS OrCi. mOlliSr id laOreet Sem\n\
+                    ViVerral PhaSelluS SagittiS OrCi diamr Vitae\n\
+                    SagittiS erat maXimuS fermentuml Nam ultriCeS\n\
+                    juStO ut maSSa mOleStie. mOleStiel Tnteger\n\
+                    VenenatiS triStique erat Vel COnSeCteturl Aliquam\n\
+                    plaCerat VariuS neque Vitae luCtuSl MauriS euiSmOd\n\
+                    effiCitur juStO nOn COnguel Nullam tinCidunt\n\
+                    SCeleriSque eX at tempuSl NunC CurSuS feugiat\n\
+                    pellenteSquel";
+    improve_string(string);
+    printf("string improved:\n%s\n", string);
+}
+
 void train_tchou_tchou()
 {
     
@@ -102,9 +130,10 @@ int main(int argc, char *argv[])
 	{"mat_copy",    "test for copying matrix",      test_mat_copy},
 	{"train",       "train a neural network",       train_tchou_tchou},
 	{"rotation",	"make a rotation",				test_rotation},
-	{"net_result",  "get neural network result",    get_neural_advanced_result}
+	{"net_result",  "get neural network result",    get_neural_advanced_result},
+	{"improve_s",   "improve string",               improve}
 	};
-    size_t nb_arguments = 9;
+    size_t nb_arguments = 10;
 
     if (argc > 1)
     {
