@@ -117,7 +117,7 @@ double * autorotate(double *matrix, int *width, int *height)
 		divmax /= hmax;
 	}
 	else
-	{	
+	{
 		amin = 0;
 		wmin = *width;
 		hmin = *height;
@@ -158,7 +158,7 @@ double * autorotate(double *matrix, int *width, int *height)
 			{
 				mmax = rotate(matrix, &wmax, &hmax, amax + 360.);
 			}
-			else 
+			else
 			{
 				mmax = rotate(matrix, &wmax, &hmax, amax);
 			}

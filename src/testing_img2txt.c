@@ -19,9 +19,11 @@ void test_save()
  int l = 40;
         int h = 20;
 
-        double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,&l,&h);
+        double *matrix = file_to_matrix_grey(
+			"./image_test/test_cut.png",0,&l,&h);
         neural_network_t *net = load_neural_network("./net/83,585\%.nt");
-        string_to_file("./image_test/test_cut.png", img_to_string(matrix, l, h, 1, 0.1, net) );
+        string_to_file("./image_test/test_cut.png",
+				img_to_string(matrix, l, h, 1, 0.1, net) );
 
 
 }
