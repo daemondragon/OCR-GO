@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "testing_cut.h"
 #include "image_to_matrix.h"
-
+#include "show_cutting.h"
 
 char is_valid(size_t x ,size_t y, size_t width, size_t heigth)
 {
@@ -17,6 +17,7 @@ void show_cutting()
     double *matrix = file_to_matrix_grey("./image_test/test_cut.png",0,&l,&h);
 
     W_list *word_list = cutting(matrix,l,h,1,0.1);
+    /*
     infos *word = word_list->first;
 
     infos *previous = NULL;
@@ -89,8 +90,12 @@ void show_cutting()
 	    previous = word;
 	    word = word->nxt;
     }
-    GtkWidget *new_image = image_from_matrix(matrix,l,h);
-    test_window(new_image);
+    */
+    GtkImage *new_image = (GtkImage*)image_from_matrix(matrix,l,h);
+    GdkPixbuf *pixbuf = gtk_image_get_pixbuf(new_image);
+    frame_cut_characters(pixbuf, matrix, word_list);
+    gtk_image_set_from_pixbuf(new_image, pixbuf);
+    test_window((GtkWidget*)new_image);
 
 }
 
