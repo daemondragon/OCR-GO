@@ -11,13 +11,15 @@ typedef struct window_s
 {
     GtkWidget           *main_window;
     neural_network_t    *net;
-   
+    GtkWidget 		*Table;
+    const gchar 	*image_name;
+    struct box_s	*box;
    
 } window_t;
 typedef struct box_s
 {
 	GtkWidget 	*main_box;
-	const gchar *image_name;
+	//const gchar *image_name;
 	GtkWidget 	*image;
 
 } box_t;

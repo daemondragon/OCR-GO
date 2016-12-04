@@ -9,7 +9,7 @@
 
 //  If current_iteration < max_iterations * STOP_PERCENT; continue learning
 // Even if the neural network may overlearn
-#define STOP_PERCENT    0.90
+#define STOP_PERCENT    0.97
 //To stop overlearning (increase to better stop)
 #define EPSILON         0.0001
 
